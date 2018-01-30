@@ -67,6 +67,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <!-- log api -->
         <slf4j.api.version>1.7.25</slf4j.api.version>
+        <commons.lang3.version>3.4</commons.lang3.version>
+        <jsr305.version>3.0.1</jsr305.version>
     </properties>
 
     <dependencies>
@@ -75,6 +77,11 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.api.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons.lang3.version}</version>
+        </dependency>
         <!-- test -->
         <dependency>
             <groupId>junit</groupId>
@@ -92,6 +99,18 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
             <version>2.6.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>1.17.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>1.17.4</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
