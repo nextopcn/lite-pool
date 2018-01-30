@@ -46,8 +46,6 @@ maven-3.2.3+
 | interval   | 15 seconds         |  default pulse interval     |
   
 
-![date](./doc/date.png)  
-
 ## 2.2. Create your own pool  
 
 ```java  
