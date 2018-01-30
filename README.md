@@ -8,11 +8,6 @@ Table of Contents
    * [2. Simple usage](#2-simple-usage)
       * [2.1. Pool config](#21-pool-config)
       * [2.2. Create your own pool](#22-create-your-own-pool)
-      * [2.3. Select year](#23-select-year)
-      * [2.4. Select year month](#24-select-year-month)
-      * [2.5. Select time](#25-select-time)
-      * [2.6. Filters](#26-filters)
-      * [2.7. XCalendarSelectEvent](#27-xcalendarselectevent)
    * [3. Benchmark](#3-benchmark)
 
 
