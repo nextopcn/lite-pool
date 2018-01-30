@@ -35,7 +35,7 @@ maven-3.2.3+
     ...
 ```
   
-|**config  **| **default value**  |  **details**                |
+|**config**  | **default value**  |  **details**                |
 | ---------- | ------------------ | ----------------------------|
 | minimum    | 0                  |  min objects in pool        |
 | maximum    | 16                 |  max objects in pool        |
