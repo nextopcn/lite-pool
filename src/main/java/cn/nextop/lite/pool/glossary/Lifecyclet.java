@@ -56,9 +56,9 @@ public abstract class Lifecyclet implements Lifecycle {
 	 * 
 	 */
 	public Lifecyclet() {
-		this.references = new AtomicInteger(0);
 		this.started = new XFutureEx();
-		this.status = new AtomicReference<Status>(Status.STOPPED);
+		this.references = new AtomicInteger(0);
+		this.status = new AtomicReference<>(Status.STOPPED);
 	}
 	
 	/**
