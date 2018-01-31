@@ -16,7 +16,6 @@
 
 package cn.nextop.lite.pool.util.concurrent.thread;
 
-import cn.nextop.lite.pool.util.Maps;
 import cn.nextop.lite.pool.util.Objects;
 import org.apache.commons.lang3.ClassUtils;
 import org.slf4j.Logger;
@@ -149,7 +148,8 @@ public final class XThreadFactory implements ThreadFactory {
 	private long getSequence(final String invoker) {
 		AtomicLong r = this.sequences.get(invoker);
 		if(r == null) {
-			r = Maps.putIfAbsent(this.sequences, invoker, new AtomicLong(0));
+			AtomicLong v = new AtomicLong(0);
+			r = sequences.putIfAbsent(invoker, v); if (r == null) r = v;
 		}
 		return r.incrementAndGet();
 	}

@@ -16,10 +16,10 @@
 
 package cn.nextop.lite.pool;
 
-import cn.nextop.lite.pool.util.Maps;
 import cn.nextop.lite.pool.util.Objects;
 import cn.nextop.lite.pool.util.Strings;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -42,7 +42,7 @@ public class PoolConfig<T> {
 	protected long timeout = TimeUnit.SECONDS.toMillis(8);
 	protected long interval = TimeUnit.SECONDS.toMillis(15);
 	protected PoolValidation validation = new PoolValidation((byte)1); // PULSE
-	protected final ConcurrentMap<Object, Object> cookies = Maps.newConcurrentHashMap(8);
+	protected final ConcurrentMap<Object, Object> cookies = new ConcurrentHashMap<>();
 	
 	/**
 	 * 

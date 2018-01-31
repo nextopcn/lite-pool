@@ -20,7 +20,6 @@ import cn.nextop.lite.pool.support.PoolAllocator.Slot;
 import cn.nextop.lite.pool.util.Assertion;
 import cn.nextop.lite.pool.util.Comparators;
 import cn.nextop.lite.pool.util.LongHashMap;
-import cn.nextop.lite.pool.util.Maps;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,7 +61,7 @@ public class AllocationQueue<E> {
 	public AllocationQueue(int init, boolean fair, AllocationPolicy policy) {
 		this.lock = new ReentrantLock(fair);
 		this.policy = policy; this.comparator = new PolicyComparator();
-		values = new ArrayList<>(init); index = Maps.newLongHashMap(init << 2);
+        values = new ArrayList<>(init); index = new LongHashMap<>(init << 1);
 		this.notFull = lock.newCondition(); this.notEmpty = lock.newCondition();
 	}
 
