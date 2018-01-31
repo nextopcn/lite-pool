@@ -74,8 +74,7 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 
     @Override
     protected void doStart() throws Exception {
-        super.doStart();
-        queue = new AllocationQueue<>(getConfig().getMaximum(), policy);
+		super.doStart(); this.queue = new AllocationQueue<>(this.pool);
         scheduler.schedule(new ExecutorJob(name + ".pulse", this::pulse,
         fixDelay(0L, getConfig().getInterval(), TimeUnit.MILLISECONDS)));
     }

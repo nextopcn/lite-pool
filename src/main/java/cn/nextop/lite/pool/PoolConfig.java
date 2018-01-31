@@ -32,6 +32,8 @@ import java.util.function.Supplier;
  */
 public class PoolConfig<T> {
 	//
+	protected boolean fifo = false;
+	protected boolean local = true;
 	protected Consumer<T> consumer;
 	protected Supplier<T> supplier;
 	protected Predicate<T> validator;
@@ -43,18 +45,22 @@ public class PoolConfig<T> {
 	protected long interval = TimeUnit.SECONDS.toMillis(15);
 	protected PoolValidation validation = new PoolValidation((byte)1); // PULSE
 	protected final ConcurrentMap<Object, Object> cookies = new ConcurrentHashMap<>();
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public long getTti() { return this.tti; }
 	public long getTtl() { return this.ttl; }
 	public void setTti(long v) { this.tti = v; }
 	public void setTtl(long v) { this.ttl = v; }
+	public boolean isFifo() { return this.fifo; }
+	public boolean isLocal() { return this.local; }
 	public int getMinimum() { return this.minimum; }
 	public int getMaximum() { return this.maximum; }
 	public long getTenancy() { return this.tenancy; }
 	public long getTimeout() { return this.timeout; }
+	public void setFifo(boolean v) { this.fifo = v; }
+	public void setLocal(boolean v) { this.local = v; }
 	public long getInterval() { return this.interval; }
 	public void setMinimum(int v) { this.minimum = v; }
 	public void setMaximum(int v) { this.maximum = v; }

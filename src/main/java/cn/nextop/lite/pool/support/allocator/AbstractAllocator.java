@@ -23,7 +23,6 @@ import cn.nextop.lite.pool.glossary.Lifecyclet;
 import cn.nextop.lite.pool.support.PoolAllocator;
 import cn.nextop.lite.pool.support.PoolAllocatorListener;
 import cn.nextop.lite.pool.support.PoolAllocatorListeners;
-import cn.nextop.lite.pool.support.allocator.allocation.AllocationPolicy;
 import cn.nextop.lite.pool.util.Objects;
 import cn.nextop.lite.pool.util.Strings;
 import cn.nextop.lite.pool.util.concurrent.PaddedAtomicLong;
@@ -54,7 +53,6 @@ public abstract class AbstractAllocator<T> extends Lifecyclet implements PoolAll
     protected final Pool<T> pool;
     protected final PaddedAtomicLong sequence;
     protected PoolAllocatorListeners<T> listeners;
-    protected AllocationPolicy policy = AllocationPolicy.LIFO;
 
     //
     protected abstract Slot<T> doRelease(T t);
@@ -88,16 +86,8 @@ public abstract class AbstractAllocator<T> extends Lifecyclet implements PoolAll
                 .append("name", name).toString();
     }
 
-    public AllocationPolicy getPolicy() {
-        return policy;
-    }
-
     protected PoolConfig<T> getConfig() {
         return this.pool.getConfig();
-    }
-
-    public void setPolicy (AllocationPolicy policy) {
-        this.policy = policy;
     }
 
     protected PoolValidation getValidation() {
