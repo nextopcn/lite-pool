@@ -40,6 +40,7 @@ maven-3.2.3+
 | interval   | 15 seconds         |  default house keeping scheduler's interval, unit ms                 |
 | local      | true               |  use `ThreadAllocator` as L1 cache or not                            |
 | verbose    | false              |  print log or not                                                    |
+| fifo       | false              |  pool allocation order, `false` has better performance               |
 | allocator  | DefaultAllocator   |  pool allocator, can be customized by extending `AbstractAllocator`  |
 | supplier   |                    |  required callback for creating pool objects                         |
 | consumer   |                    |  optional callback for destroying pool objects                       |
