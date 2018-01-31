@@ -64,10 +64,10 @@ public class ObjectPoolBenchmark {
     public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
             .include(ObjectPoolBenchmark.class.getSimpleName())
-            .warmupIterations(8)
-            .measurementIterations(8)
+            .warmupIterations(10)
+            .measurementIterations(10)
             .forks(1)
-            .threads(1)
+            .threads(20)
             .build();
 
         new Runner(opt).run();
