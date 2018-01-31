@@ -33,8 +33,8 @@ maven-3.2.3+
 | ---------- | ------------------ | ---------------------------------------------------------------------|
 | minimum    | 0                  |  minimum allowed objects in pool                                     |
 | maximum    | 16                 |  maximum allowed objects in pool                                     |
-| tti        | 15 minutes         |  maximum object idle time                                            |
-| ttl        | 60 minutes         |  maximum object life time                                            |
+| tti        | 15 minutes         |  maximum pool objects' idle time                                     |
+| ttl        | 60 minutes         |  maximum pool objects' life time                                     |
 | tenancy    | 1  minutes         |  maximum leak detection time(**MUST** greater than `interval`)       |
 | timeout    | 8  seconds         |  default acquire timeout                                             |
 | interval   | 15 seconds         |  default pulse interval                                              |
