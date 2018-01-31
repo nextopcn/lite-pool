@@ -152,18 +152,18 @@ public abstract class AbstractAllocator<T> extends Lifecyclet implements PoolAll
     /**
      *
      */
-    protected static boolean isTimeout(final long time, long timeout) {
+    protected static final boolean isTimeout(final long time, long timeout) {
         return ((timeout > 0) && (time + timeout < System.currentTimeMillis()));
     }
 
-    protected static boolean isEquals(final Slot<?> a, final Object b) {
-        if(a == b) return true; else if(a == null || b == null) return false;
-        return b instanceof Slot<?> ? a.getId() == ((Slot<?>)b).getId() : false;
-    }
-
-    protected static boolean isEquals(Identity<?> a, final Object b) {
+    protected static final boolean isEquals(Identity<?> a, final Object b) {
         if(a == b) return true; else if(a == null || b == null) return false;
         return b instanceof Identity ? a.item == ((Identity<?>) b).item : false;
+    }
+
+    protected static final boolean isEquals(final Slot<?> a, final Object b) {
+        if(a == b) return true; else if (a == null || b == null) return false;
+        return b instanceof Slot<?> ? a.getId() == ((Slot<?>)b).getId() : false;
     }
 
     /**

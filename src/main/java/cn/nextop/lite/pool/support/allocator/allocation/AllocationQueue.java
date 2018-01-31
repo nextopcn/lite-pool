@@ -62,7 +62,7 @@ public class AllocationQueue<E> {
 	public AllocationQueue(int init, boolean fair, AllocationPolicy policy) {
 		this.lock = new ReentrantLock(fair);
 		this.policy = policy; this.comparator = new PolicyComparator();
-		values = new ArrayList<>(init); index = Maps.newLongHashMap(init * 4);
+		values = new ArrayList<>(init); index = Maps.newLongHashMap(init << 2);
 		this.notFull = lock.newCondition(); this.notEmpty = lock.newCondition();
 	}
 

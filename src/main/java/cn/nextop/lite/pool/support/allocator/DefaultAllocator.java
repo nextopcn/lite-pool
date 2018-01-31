@@ -68,7 +68,7 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 	 */
 	public DefaultAllocator(Pool<T> pool, String name) {
 		super(pool, name); executor = create(name + ".executor", 1);
-		slots = new ConcurrentHashMap<>(getConfig().getMaximum() * 4);
+		slots = new ConcurrentHashMap<>(getConfig().getMaximum() << 2);
 		start(scheduler = new ExecutorScheduler(name + ".scheduler", 1));
 	}
 
