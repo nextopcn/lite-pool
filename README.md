@@ -33,11 +33,11 @@ maven-3.2.3+
 | ---------- | ------------------ | ---------------------------------------------------------------------|
 | minimum    | 0                  |  minimum allowed objects in pool                                     |
 | maximum    | 16                 |  maximum allowed objects in pool                                     |
-| tti        | 15 minutes         |  time to idle, maximum pool objects' idle time                       |
-| ttl        | 60 minutes         |  time to live, maximum pool objects' life time                       |
-| tenancy    | 1  minutes         |  maximum leak detection time(**MUST** greater than `interval`)       |
-| timeout    | 8  seconds         |  default acquire timeout                                             |
-| interval   | 15 seconds         |  default house keeping scheduler's interval                          |
+| tti        | 15 minutes         |  time to idle, maximum pool objects' idle time, unit ms              |
+| ttl        | 60 minutes         |  time to live, maximum pool objects' life time, unit ms              |
+| tenancy    | 1  minutes         |  leak detection timeout, unit ms, (**MUST** >= `interval`)           |
+| timeout    | 8  seconds         |  default acquire timeout, unit ms                                    |
+| interval   | 15 seconds         |  default house keeping scheduler's interval, unit ms                 |
 | local      | true               |  use `ThreadAllocator` as L1 cache or not                            |
 | verbose    | false              |  print log or not                                                    |
 | allocator  | DefaultAllocator   |  pool allocator, can be customized by extending `AbstractAllocator`  |
