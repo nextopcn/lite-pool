@@ -58,8 +58,7 @@ public class PoolBuilder<T> {
      *
      */
     public Pool<T> build(String name) {
-        PoolAllocatorFactory<T> v = this.factory;
-        if(this.config.isLocal()) v = new ThreadAllocator.Factory<>(v);
+        PoolAllocatorFactory<T> v = this.factory; if(this.config.isLocal()) v = new ThreadAllocator.Factory<>(v);
         ObjectPool<T> r = new ObjectPool<>(name); r.setConfig(config); r.setFactory(v); r.setVerbose(verbose); return r;
     }
 }
