@@ -7,7 +7,7 @@ Table of Contents
       * [1.3. Install from source code](#13-install-from-source-code)
    * [2. Simple usage](#2-simple-usage)
       * [2.1. Pool config](#21-pool-config)
-      * [2.2. Create your own pool](#22-create-your-own-pool)
+      * [2.2. Usage](#22-usage)
    * [3. Benchmark](#3-benchmark)
 
 
@@ -40,9 +40,9 @@ maven-3.2.3+
 | ---------- | ------------------ | ---------------------------------------------------------------------|
 | minimum    | 0                  |  minimum objects is allowed in pool                                  |
 | maximum    | 16                 |  maximum objects is allowed in pool                                  |
-| tti        | 15 minutes         |  maximum object expired time                                         |
+| tti        | 15 minutes         |  maximum object idle time                                            |
 | ttl        | 60 minutes         |  maximum object lifetime                                             |
-| tenancy    | 1  minutes         |  maximum leak detection time(greater than `interval`)                |
+| tenancy    | 1  minutes         |  maximum leak detection time(**MUST** greater than `interval`)       |
 | timeout    | 8  seconds         |  default acquire timeout                                             |
 | interval   | 15 seconds         |  default pulse interval                                              |
 | supplier   |                    |  invoke this callback when create the pool object                    |
@@ -51,7 +51,7 @@ maven-3.2.3+
 
   
 
-## 2.2. Create your own pool  
+## 2.2. Usage  
 
 ```java  
     public class YourPoolObject {
