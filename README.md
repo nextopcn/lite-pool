@@ -31,16 +31,16 @@ maven-3.2.3+
 
 | **config** | **default value**  |  **details**                                                         |
 | ---------- | ------------------ | ---------------------------------------------------------------------|
-| minimum    | 0                  |  minimum objects is allowed in pool                                  |
-| maximum    | 16                 |  maximum objects is allowed in pool                                  |
+| minimum    | 0                  |  minimum allowed objects in pool                                     |
+| maximum    | 16                 |  maximum allowed objects in pool                                     |
 | tti        | 15 minutes         |  maximum object idle time                                            |
-| ttl        | 60 minutes         |  maximum object lifetime                                             |
+| ttl        | 60 minutes         |  maximum object life time                                            |
 | tenancy    | 1  minutes         |  maximum leak detection time(**MUST** greater than `interval`)       |
 | timeout    | 8  seconds         |  default acquire timeout                                             |
 | interval   | 15 seconds         |  default pulse interval                                              |
 | local      | true               |  specify `ThreadAllocator` as L1 cache                               |
 | verbose    | false              |  print verbose log                                                   |
-| allocator  | DefaultAllocator   |  specify your own allocator(extends `AbstractAllocator`)             |
+| allocator  | DefaultAllocator   |  pool allocator, can be customized by extending `AbstractAllocator`) |
 | supplier   | required           |  callback for creating the pool object                               |
 | consumer   | optional           |  callback after destroying the pool object                           |
 | validator  | optional           |  callback for validating the pool object                             |
