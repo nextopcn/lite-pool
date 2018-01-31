@@ -6,7 +6,7 @@ Table of Contents
       * [1.2. Requirements](#12-requirements)
       * [1.3. Install from source code](#13-install-from-source-code)
    * [2. Simple usage](#2-simple-usage)
-      * [2.1. Pool config](#21-pool-config)
+      * [2.1. PoolBuilder](#21-poolbuilder)
       * [2.2. Usage](#22-usage)
    * [3. Benchmark](#3-benchmark)
 
@@ -27,7 +27,7 @@ maven-3.2.3+
 ```  
 
 # 2. Simple usage  
-## 2.1. Pool config  
+## 2.1. PoolBuilder  
 
 | **config** | **default value**  |  **details**                                                         |
 | ---------- | ------------------ | ---------------------------------------------------------------------|
@@ -38,6 +38,9 @@ maven-3.2.3+
 | tenancy    | 1  minutes         |  maximum leak detection time(**MUST** greater than `interval`)       |
 | timeout    | 8  seconds         |  default acquire timeout                                             |
 | interval   | 15 seconds         |  default pulse interval                                              |
+| local      | true               |  specify `ThreadAllocator` as L1 cache                               |
+| verbose    | false              |  print verbose log                                                   |
+| allocator  | DefaultAllocator   |  specify your own allocator(extends `AbstractAllocator`)             |
 | supplier   |                    |  invoke this callback when create the pool object                    |
 | consumer   |                    |  invoke this callback when destroy the pool object                   |
 | validator  |                    |  invoke this callback when check the pool object is legal or illegal |
