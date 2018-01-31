@@ -87,18 +87,18 @@ maven-3.2.3+
 Test env:  
 
 ```xml  
-OS : Windows 7 Home(64bit)
-CPU: Intel(R) Core(TM) i3-4710 CPU @ 3.70GHz  3.70GHz
-RAM: 8.00 GB
-JDK: java version "1.8.0_151"
+    OS : Windows 7 Home(64bit)
+    CPU: Intel(R) Core(TM) i3-4710 CPU @ 3.70GHz  3.70GHz
+    RAM: 8.00 GB
+    JDK: java version "1.8.0_151"
 
 ```
 
 Test case:  
   
 ```java  
-        TestObject object = pool.acquire();
-        if (object != null) pool.release(object);
+    TestObject object = pool.acquire();
+    if (object != null) pool.release(object);
 ```
   
 (unit: ops/ms)  
