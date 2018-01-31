@@ -48,7 +48,7 @@ public class AllocationQueue<T> {
 	protected final List<Entry<T>> values;
 	protected final Condition notFull, notEmpty;
 	protected final LongHashMap<Entry<T>> index;
-	protected final Comparator<Entry<T>> comparator = new PolicyComparator();
+	protected final Comparator<Entry<T>> comparator = new FifoComparator();
 
 	/**
 	 *
@@ -159,7 +159,7 @@ public class AllocationQueue<T> {
 	/**
 	 *
 	 */
-	protected class PolicyComparator implements Comparator<Entry<T>> {
+	protected class FifoComparator implements Comparator<Entry<T>> {
 		@Override public final int compare(Entry<T> v1, Entry<T> v2) {
 			boolean asc = !fifo; int r = cmp(v1.sequence, v2.sequence, asc); if((r != 0)) return r;
 			return Comparators.cmp(v1.slot.getId(), v2.slot.getId(), asc); // should not reach here
