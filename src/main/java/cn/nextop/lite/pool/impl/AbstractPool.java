@@ -41,7 +41,7 @@ public abstract class AbstractPool<T> extends Lifecyclet implements Pool<T> {
 	protected PoolListeners<T> listeners;
 	protected PoolAllocatorFactory<T> factory;
 	protected PoolConfig<T> config = new PoolConfig<>();
-	
+
 	/**
 	 *
 	 */
@@ -49,91 +49,91 @@ public abstract class AbstractPool<T> extends Lifecyclet implements Pool<T> {
 		this.name = name;
 		this.listeners = new PoolListeners<>(name + ".listeners");
 	}
-	
+
 	@Override
 	protected void doStart() throws Exception {
 		Lifecyclet.start(this.allocator = this.factory.create(this));
 	}
-	
+
 	@Override
 	protected long doStop(long timeout, TimeUnit unit) throws Exception {
 		return Lifecyclet.stopQuietly(this.allocator, timeout, unit);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public String getName() {
 		return name;
 	}
-	
+
 	@Override
 	public String toString() {
 		return Strings.build(this)
-		.append("name", name).toString();
+				.append("name", name).toString();
 	}
-	
+
 	@Override
 	public PoolConfig<T> getConfig() {
 		return config;
 	}
-	
+
 	public PoolListeners<T> getListeners() {
 		return listeners;
 	}
-	
+
 	public void setConfig(PoolConfig<T> config) {
 		this.config = config;
 	}
-	
+
 	public PoolAllocatorFactory<T> getFactory() {
 		return factory;
 	}
-	
+
 	public void setListeners(PoolListeners<T> v) {
 		this.listeners = v;
 	}
-	
+
 	public void setFactory(PoolAllocatorFactory<T> v) {
 		factory = v;
 	}
-	
+
 	/**
 	 * Event
 	 */
 	@Override
-	public void publish(PoolEvent<T> event) {
+	public void notify(PoolEvent<T> event) {
 		this.listeners.onEvent(event);
 	}
-	
+
 	@Override
 	public boolean addListener(PoolListener<T> listener) {
 		return this.listeners.addListener(listener);
 	}
-	
+
 	@Override
 	public boolean delListener(PoolListener<T> listener) {
 		return this.listeners.delListener(listener);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public T acquire() {
 		return acquire(config.getTimeout(), MILLISECONDS);
 	}
-	
+
 	@Override
 	public void release(T item) {
 		final Slot<T> slot = this.allocator.release(item);
-		if(slot != null) publish(PoolEvent.release(item));
+		if (slot != null) notify(PoolEvent.release(item));
 	}
-	
+
 	@Override
-	public T acquire(long timeout, TimeUnit unit) {
-		Slot<T> r = allocator.acquire(timeout, unit); if(r == null) return null;
-		final T item = (r.get()); publish(PoolEvent.acquire(item)); return item;
+	public T acquire(long t, TimeUnit u) {
+		Slot<T> r = allocator.acquire(t, u); if(r == null) return null;
+		T item = r.get(); notify(PoolEvent.acquire(item)); return item;
 	}
 }

@@ -16,9 +16,6 @@
 
 package cn.nextop.lite.pool;
 
-import cn.nextop.lite.pool.impl.ObjectPool;
-import cn.nextop.lite.pool.support.allocator.DefaultAllocator;
-import cn.nextop.lite.pool.support.allocator.ThreadAllocator;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.CompilerControl;
 import org.openjdk.jmh.annotations.Level;
@@ -41,7 +38,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @State(Scope.Benchmark)
 public class ObjectPoolBenchmark {
 
-    public ObjectPool<TestObject> pool;
+    public Pool<TestObject> pool;
 
     @Setup(Level.Trial)
     public void doSetup() {
@@ -73,26 +70,16 @@ public class ObjectPoolBenchmark {
         new Runner(opt).run();
     }
 
-    public static ObjectPool<TestObject> create(int minimum, int maximum, long timeout, long interval, long ttl, long tti) {
-        ObjectPool<TestObject> pool = new ObjectPool<>("object.pool");
-        pool.setVerbose(true);
-        PoolConfig<TestObject> config = new PoolConfig<>();
-        config.setConsumer(v -> {
+    public static Pool<TestObject> create(int minimum, int maximum, long timeout, long interval, long ttl, long tti) {
+        PoolBuilder<TestObject> builder = new PoolBuilder<>();
+        Pool<TestObject> pool = builder.local(true).consumer(v -> {
             System.out.println("deleted object:" + v);
-        });
-        config.setSupplier(() -> {
+        }).supplier(() -> {
             TestObject t =new TestObject();
             System.out.println("created object:" + t);
             return t;
-        });
-        config.setInterval(interval);
-        config.setMinimum(minimum);
-        config.setMaximum(maximum);
-        config.setTimeout(timeout);
-        config.setTtl(ttl);
-        config.setTti(tti);
-        pool.setConfig(config);
-        pool.setFactory(new ThreadAllocator.Factory<>(new DefaultAllocator.Factory<>()));
+        }).interval(interval).minimum(minimum).maximum(maximum).timeout(timeout).ttl(ttl).tti(tti).verbose(true).build("object pool");
+
         return pool;
     }
 

@@ -163,14 +163,14 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 		} catch (Throwable root) {
 			LOGGER.error("[" + name + "]failed to pulse pool", root);
 		}
-		
+
 		// Leak?
 		final long tenancy = getConfig().getTenancy();
 		if(tenancy > 0) for(Slot<T> v : this.slots.values()) {
 			if(!v.isLeaked(tenancy)) continue;
 			if((TRUE == v.setCookie(LEAKAGE, TRUE))) continue;
-			if(verbose) LOGGER.warn("[{}]leak, slot: {}", name, v);
-			listeners.onLeakage(v); pool.publish(leakage(v.get()));
+			if(verbose) LOGGER.warn("[{}]leak slot: {}", name, v);
+			listeners.onLeakage(v); pool.notify(leakage(v.get()));
 		}
 		
 		//

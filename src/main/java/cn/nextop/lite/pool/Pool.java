@@ -17,6 +17,7 @@
 package cn.nextop.lite.pool;
 
 
+import cn.nextop.lite.pool.glossary.Lifecycle;
 import cn.nextop.lite.pool.glossary.Named;
 
 import java.util.concurrent.TimeUnit;
@@ -24,23 +25,23 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Baoyi Chen
  */
-public interface Pool<T> extends Named {
-	
+public interface Pool<T> extends Named, Lifecycle {
+
 	/**
-	 * 
+	 *
 	 */
 	PoolConfig<T> getConfig();
-	
+
 	T acquire(); void release(T t);
-	
+
 	T acquire(long timeout, TimeUnit unit);
-	
+
 	/**
-	 * 
+	 *
 	 */
-	void publish(PoolEvent<T> event);
-	
+	void notify(PoolEvent<T> event);
+
 	boolean addListener(PoolListener<T> listener);
-	
+
 	boolean delListener(PoolListener<T> listener);
 }
