@@ -41,9 +41,9 @@ maven-3.2.3+
 | local      | true               |  specify `ThreadAllocator` as L1 cache                               |
 | verbose    | false              |  print verbose log                                                   |
 | allocator  | DefaultAllocator   |  pool allocator, can be customized by extending `AbstractAllocator`) |
-| supplier   |                    |  required callback for creating the pool object                      |
-| consumer   |                    |  optional callback after destroying the pool object                  |
-| validator  |                    |  optional callback for validating the pool object                    |
+| supplier   |                    |  required callback for creating pool objects                         |
+| consumer   |                    |  optional callback after destroying pool objects                     |
+| validator  |                    |  optional callback for validating pool objects                       |
   
 
 ## 2.2. Usage  
