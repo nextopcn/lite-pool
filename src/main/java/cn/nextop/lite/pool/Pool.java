@@ -30,6 +30,8 @@ public interface Pool<T> extends Named, Lifecycle {
 	/**
 	 *
 	 */
+	boolean isVerbose();
+
 	PoolConfig<T> getConfig();
 
 	T acquire(); void release(T t);

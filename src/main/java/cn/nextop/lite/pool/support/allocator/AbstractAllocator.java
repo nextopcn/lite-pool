@@ -62,7 +62,7 @@ public abstract class AbstractAllocator<T> extends Lifecyclet implements PoolAll
      *
      */
     public AbstractAllocator(final Pool<T> pool, String name) {
-        this.verbose = true; this.name = name;
+        this.verbose = pool.isVerbose(); this.name = name;
         this.pool = pool; this.sequence = new PaddedAtomicLong(1L);
         listeners = new PoolAllocatorListeners<>(name + ".listeners");
     }

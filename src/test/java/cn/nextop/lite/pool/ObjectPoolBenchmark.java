@@ -30,7 +30,6 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Baoyi Chen
@@ -64,7 +63,7 @@ public class ObjectPoolBenchmark {
             .warmupIterations(10)
             .measurementIterations(10)
             .forks(1)
-            .threads(20)
+            .threads(1)
             .build();
 
         new Runner(opt).run();
@@ -72,28 +71,13 @@ public class ObjectPoolBenchmark {
 
     public static Pool<TestObject> create(int minimum, int maximum, long timeout, long interval, long ttl, long tti) {
         PoolBuilder<TestObject> builder = new PoolBuilder<>();
-        Pool<TestObject> pool = builder.local(true).consumer(v -> {
-            System.out.println("deleted object:" + v);
-        }).supplier(() -> {
-            TestObject t =new TestObject();
-            System.out.println("created object:" + t);
-            return t;
-        }).interval(interval).minimum(minimum).maximum(maximum).timeout(timeout).ttl(ttl).tti(tti).verbose(true).build("object pool");
-
+        Pool<TestObject> pool = builder.local(true).supplier(() -> new TestObject()).
+                interval(interval).minimum(minimum).
+                maximum(maximum).timeout(timeout).
+                ttl(ttl).tti(tti).verbose(false).build("object pool");
         return pool;
     }
 
     public static class TestObject {
-        private static AtomicInteger acc = new AtomicInteger();
-        private final int id;
-
-        private TestObject() {
-            this.id = acc.getAndIncrement();
-        }
-
-        @Override
-        public String toString() {
-            return "TestObject:" + id;
-        }
     }
 }
