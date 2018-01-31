@@ -45,13 +45,13 @@ public interface PoolAllocator<T> extends Lifecycle {
 	 * 
 	 */
 	interface Slot<T> {
-		
-		boolean isExpired(); boolean isRetired(); boolean isLeaked(long tenancy);
-		
+
 		boolean isBusy(); boolean isIdle(); boolean isAlive(); boolean isValid();
-		
+
+		boolean isExpired(long now); boolean isRetired(long now); boolean isLeaked(long tenancy);
+
 		T get(); long getId(); <V> V getCookie(Object key); Object setCookie(Object k, Object v);
-		
+
 		void touch(); boolean acquire(); boolean release(); boolean abandon(); boolean destroy();
 	}
 }

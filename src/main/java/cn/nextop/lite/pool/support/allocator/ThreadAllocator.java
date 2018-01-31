@@ -82,10 +82,9 @@ public class ThreadAllocator<T> extends AbstractAllocator<T> {
 		public Factory(final PoolAllocatorFactory<T> parent) { this.parent = parent; }
 		
 		//
-		@Override
-		public PoolAllocator<T> create(Pool<T> pool) {
+		@Override public PoolAllocator<T> create(Pool<T> pool) {
 			final ThreadAllocator<T> r; String n = pool.getName(); n += ".allocator.thread";
-			r = new ThreadAllocator<>(pool, n); r.setParent(this.parent.create(pool)); return r;
+			r = new ThreadAllocator<T>(pool, n); r.setParent(parent.create(pool)); return r;
 		}
 	}
 }

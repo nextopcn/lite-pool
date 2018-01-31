@@ -45,7 +45,7 @@ public class ObjectPoolBenchmark {
 
     @Setup(Level.Trial)
     public void doSetup() {
-        pool = create(2, 10, 5000, 15000, 0, 0);
+        pool = create(10, 10, 5000, 15000, 0, 0);
         pool.start();
     }
     @TearDown(Level.Trial)
@@ -59,8 +59,6 @@ public class ObjectPoolBenchmark {
     public void test() {
         TestObject object = pool.acquire();
         if (object != null) pool.release(object);
-        else
-            System.out.println("error");
     }
 
     public static void main(String[] args) throws RunnerException {
@@ -87,7 +85,6 @@ public class ObjectPoolBenchmark {
             System.out.println("created object:" + t);
             return t;
         });
-        config.setValidator(v -> true);
         config.setInterval(interval);
         config.setMinimum(minimum);
         config.setMaximum(maximum);

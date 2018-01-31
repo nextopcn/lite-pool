@@ -31,19 +31,24 @@ maven-3.2.3+
 
 ```java  
     PoolConfig<YourPoolObject> config = new PoolConfig<>();
+    config.setSupplier(() -> new YourPoolObject());
     config.setMinimum(4);
     ...
 ```
   
-|**config**  | **default value**  |  **details**                |
-| ---------- | ------------------ | ----------------------------|
-| minimum    | 0                  |  min objects in pool        |
-| maximum    | 16                 |  max objects in pool        |
-| tti        | 15 minutes         |  object max expired time    |
-| ttl        | 60 minutes         |  object max life time       |
-| tenancy    | 1  minutes         |  max leak detection time    |
-| timeout    | 8  seconds         |  default acquire timeout    |
-| interval   | 15 seconds         |  default pulse interval     |
+| **config** | **default value**  |  **details**                                                         |
+| ---------- | ------------------ | ---------------------------------------------------------------------|
+| minimum    | 0                  |  minimum objects is allowed in pool                                  |
+| maximum    | 16                 |  maximum objects is allowed in pool                                  |
+| tti        | 15 minutes         |  maximum object expired time                                         |
+| ttl        | 60 minutes         |  maximum object lifetime                                             |
+| tenancy    | 1  minutes         |  maximum leak detection time(greater than `interval`)                |
+| timeout    | 8  seconds         |  default acquire timeout                                             |
+| interval   | 15 seconds         |  default pulse interval                                              |
+| supplier   |                    |  invoke this callback when create the pool object                    |
+| consumer   |                    |  invoke this callback when destroy the pool object                   |
+| validator  |                    |  invoke this callback when check the pool object is legal or illegal |
+
   
 
 ## 2.2. Create your own pool  
@@ -54,6 +59,7 @@ maven-3.2.3+
     
     ObjectPool<YourPoolObject> pool = new ObjectPool<>("object.pool");
     PoolConfig<YourPoolObject> config = new PoolConfig<>();
+    config.setSupplier(() -> new YourPoolObject());
     config.setMinimum(4);
     ...
     pool.setConfig(config); // see 2.1 Pool config.
@@ -84,6 +90,8 @@ Test env:
 OS : Windows 7 Home(64bit)
 CPU: Intel(R) Core(TM) i3-4710 CPU @ 3.70GHz  3.70GHz
 RAM: 8.00 GB
+JDK: java version "1.8.0_151"
+
 ```
 
 Test case:  

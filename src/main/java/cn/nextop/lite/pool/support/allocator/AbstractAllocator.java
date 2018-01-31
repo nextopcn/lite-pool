@@ -54,7 +54,7 @@ public abstract class AbstractAllocator<T> extends Lifecyclet implements PoolAll
 	protected final Pool<T> pool;
 	protected final PaddedAtomicLong sequence;
 	protected PoolAllocatorListeners<T> listeners;
-	protected AllocationPolicy policy = AllocationPolicy.FIFO;
+	protected AllocationPolicy policy = AllocationPolicy.LIFO;
 	
 	//
 	protected abstract PoolAllocator.Slot<T> doRelease(T t);
@@ -153,7 +153,11 @@ public abstract class AbstractAllocator<T> extends Lifecyclet implements PoolAll
 	 * 
 	 */
 	protected static boolean isTimeout(final long time, long timeout) {
-		return (timeout > 0L && time + timeout < System.currentTimeMillis());
+		return ((timeout > 0) && (time + timeout < System.currentTimeMillis()));
+	}
+
+	protected static boolean isTimeout(long time, long timeout, long now) {
+		if(timeout <= 0) { return false; } else { return time + timeout < now; }
 	}
 	
 	protected static boolean isEquals(final Slot<?> a, final Object b) {
@@ -170,18 +174,21 @@ public abstract class AbstractAllocator<T> extends Lifecyclet implements PoolAll
 	 * 
 	 */
 	protected boolean isPulsable(final Slot<T> r) {
-		if(r == null || r.isExpired() || r.isRetired() || !r.isAlive()) return false;
-		return ((getConfig().getValidation().isPulseEnabled()) ? r.isValid() : true);
+		if(r == null) { return false; } long now = System.currentTimeMillis();
+		if(!r.isAlive() || r.isExpired(now) || r.isRetired(now)) return false;
+		return (getConfig().getValidation().isPulseEnabled()) ? r.isValid() : true;
 	}
-	
+
 	protected boolean isAcquirable(final Slot<T> r) {
-		if(r == null || r.isExpired() || r.isRetired() || !r.isAlive()) return false;
-		return (getConfig().getValidation().isAcquireEnabled() ? r.isValid() : true);
+		if(r == null) { return false; } long now = System.currentTimeMillis();
+		if(!r.isAlive() || r.isExpired(now) || r.isRetired(now)) return false;
+		return getConfig().getValidation().isAcquireEnabled() ? r.isValid() : true;
 	}
-	
+
 	protected boolean isReleasable(final Slot<T> r) {
-		if(r == null || r.isExpired() || r.isRetired() || !r.isAlive()) return false;
-		return (getConfig().getValidation().isReleaseEnabled() ? r.isValid() : true);
+		if(r == null) { return false; } long now = System.currentTimeMillis();
+		if(!r.isAlive() || r.isExpired(now) || r.isRetired(now)) return false;
+		return getConfig().getValidation().isReleaseEnabled() ? r.isValid() : true;
 	}
 	
 	/**
@@ -220,8 +227,8 @@ public abstract class AbstractAllocator<T> extends Lifecyclet implements PoolAll
 		@Override public boolean isBusy () { return this.status.get() == BUSY; }
 		@Override public boolean isIdle () { return this.status.get() == IDLE; }
 		@Override public boolean isAlive() { return this.status.get() != GONE; }
-		@Override public boolean isRetired() { return isTimeout(create, getConfig().getTtl()); }
-		@Override public boolean isExpired() { return isTimeout(access, getConfig().getTti()); }
+		@Override public boolean isRetired(long v) { return isTimeout(create, getConfig().getTtl(), v); }
+		@Override public boolean isExpired(long v) { return isTimeout(access, getConfig().getTti(), v); }
 		@Override public boolean isLeaked(long v) { return this.status.get() == BUSY && isTimeout(access, v); }
 
 		//
