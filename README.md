@@ -29,13 +29,6 @@ maven-3.2.3+
 # 2. Simple usage  
 ## 2.1. Pool config  
 
-```java  
-    PoolConfig<YourPoolObject> config = new PoolConfig<>();
-    config.setSupplier(() -> new YourPoolObject());
-    config.setMinimum(4);
-    ...
-```
-  
 | **config** | **default value**  |  **details**                                                         |
 | ---------- | ------------------ | ---------------------------------------------------------------------|
 | minimum    | 0                  |  minimum objects is allowed in pool                                  |
@@ -48,7 +41,6 @@ maven-3.2.3+
 | supplier   |                    |  invoke this callback when create the pool object                    |
 | consumer   |                    |  invoke this callback when destroy the pool object                   |
 | validator  |                    |  invoke this callback when check the pool object is legal or illegal |
-
   
 
 ## 2.2. Usage  
@@ -57,13 +49,18 @@ maven-3.2.3+
     public class YourPoolObject {
     }
     
-    ObjectPool<YourPoolObject> pool = new ObjectPool<>("object.pool");
-    PoolConfig<YourPoolObject> config = new PoolConfig<>();
-    config.setSupplier(() -> new YourPoolObject());
-    config.setMinimum(4);
-    ...
-    pool.setConfig(config); // see 2.1 Pool config.
-    pool.setFactory(new ThreadAllocator.Factory<>(new DefaultAllocator.Factory<>()));
+    Pool<YourPoolObject> pool = new PoolBuilder<YourPoolObject>()
+                    .local(true) // using thread local
+                    .supplier(() -> new YourPoolObject())
+                    .interval(interval)
+                    .minimum(minimum)
+                    .maximum(maximum)
+                    .timeout(timeout)
+                    .ttl(ttl)
+                    .tti(tti)
+                    .verbose(true)
+                    ...
+                    .build("object pool");
     pool.start();
     try {
         for(int i = 0; i < 1000; i++) {
