@@ -105,8 +105,7 @@ Result:
 
 ```java  
 Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt    8  9308.518 ± 176.994  ops/ms
-
+ObjectPoolBenchmark.test  thrpt   10  9491.206 ± 108.402  ops/ms
 ```
   
 Case 2: 10 minimum, 10 maximum, 2 thread polling from pool  
@@ -114,35 +113,31 @@ Result:
 
 ```java  
 Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt    8  8462.191 ± 456.501  ops/ms
-
+ObjectPoolBenchmark.test  thrpt   10  8327.384 ± 368.566  ops/ms
 ```
   
 Case 3: 10 minimum, 10 maximum, 5 thread polling from pool  
 Result:  
 
 ```java  
-Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt    8  7677.757 ± 103.614  ops/ms
-
+Benchmark                  Mode  Cnt     Score    Error   Units
+ObjectPoolBenchmark.test  thrpt   10  8150.062 ± 30.242  ops/ms
 ```
   
 Case 4: 10 minimum, 10 maximum, 10 thread polling from pool  
 Result:  
 
 ```java  
-Benchmark                  Mode  Cnt     Score    Error   Units
-ObjectPoolBenchmark.test  thrpt    8  7203.302 ± 87.559  ops/ms
-
+Benchmark                  Mode  Cnt     Score     Error   Units
+ObjectPoolBenchmark.test  thrpt   10  9486.971 ± 200.483  ops/ms
 ```
   
 Case 5: 10 minimum, 10 maximum, 20 thread polling from pool  
 Result:  
 
 ```java  
-Benchmark                  Mode  Cnt     Score    Error   Units
-ObjectPoolBenchmark.test  thrpt    8  6986.709 ± 59.621  ops/ms
-
+Benchmark                  Mode  Cnt     Score     Error   Units
+ObjectPoolBenchmark.test  thrpt   10  7691.710 ± 530.855  ops/ms
 ```
   
 Case 6: 10 minimum, 10 maximum, 50 thread polling from pool  
@@ -150,6 +145,5 @@ Result:
 
 ```java  
 Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt    8  6302.552 ± 367.058  ops/ms
-
+ObjectPoolBenchmark.test  thrpt   10  7858.702 ± 584.944  ops/ms
 ```
