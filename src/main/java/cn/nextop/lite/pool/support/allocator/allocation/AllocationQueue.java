@@ -28,10 +28,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static cn.nextop.lite.pool.support.allocator.allocation.AllocationPolicy.LIFO;
 import static cn.nextop.lite.pool.util.Assertion.assertTrue;
 import static cn.nextop.lite.pool.util.Comparators.cmp;
 
@@ -40,12 +40,13 @@ import static cn.nextop.lite.pool.util.Comparators.cmp;
  */
 public class AllocationQueue<E> {
 	//
+	protected long sequence = 0L;
 	protected final ReentrantLock lock;
 	protected final List<Entry<E>> values;
+	protected final AllocationPolicy policy;
 	protected final Condition notFull, notEmpty;
 	protected final LongHashMap<Entry<E>> index;
 	protected final Comparator<Entry<E>> comparator;
-	protected final AtomicLong sequence = new AtomicLong(0L);
 
 	/**
 	 *
@@ -60,7 +61,7 @@ public class AllocationQueue<E> {
 
 	public AllocationQueue(int initial, boolean fair, AllocationPolicy policy) {
 		this.lock = new ReentrantLock(fair);
-		this.comparator = new PolicyComparator(policy);
+		this.policy = policy; this.comparator = new PolicyComparator();
 		this.notFull = lock.newCondition(); this.notEmpty = lock.newCondition();
 		values = new ArrayList<>(initial); index = Maps.newLongHashMap(initial);
 	}
@@ -92,13 +93,12 @@ public class AllocationQueue<E> {
 		final ReentrantLock lock = this.lock; lock.lock();
 		try {
 			//
-			long id = slot.getId(); if((this.index.containsKey(id))) return false;
-			final Entry<E> n = new Entry<>(slot, this.sequence.incrementAndGet());
-			int index = Collections.binarySearch(this.values, n, this.comparator);
+			long id = slot.getId(); if(this.index.get(id) != null) return false;
+			final long seq = ++this.sequence; Entry<E> n = new Entry<>(slot, seq);
 
-			// Unbounded
-			Assertion.assertTrue(index < 0);
-			this.index.put(id, n); values.add((-index - 1), n); notEmpty.signal();
+			//
+			if(this.policy == LIFO) this.values.add(n); else this.values.add(0,n);
+			this.index.put(id, n); /* unique, unbounded */ this.notEmpty.signal();
 			Assertion.assertTrue(this.index.size() == values.size()); return true;
 		} finally {
 			lock.unlock();
@@ -146,13 +146,8 @@ public class AllocationQueue<E> {
 	 *
 	 */
 	protected class PolicyComparator implements Comparator<Entry<E>> {
-		//
-		protected final AllocationPolicy policy;
-		protected PolicyComparator(AllocationPolicy v) { policy = v; }
-
-		//
-		@Override public int compare(Entry<E> v1, Entry<E> v2) {
-			final boolean asc = (this.policy == AllocationPolicy.LIFO);
+		@Override public final int compare(Entry<E> v1, Entry<E> v2) {
+			final boolean asc = (policy == LIFO);
 			int r = Comparators.cmp(v1.sequence, v2.sequence, asc); if((r != 0)) return r;
 			return cmp(v1.slot.getId(), v2.slot.getId(), asc); /* should not reach here */
 		}

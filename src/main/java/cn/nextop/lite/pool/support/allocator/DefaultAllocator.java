@@ -70,13 +70,14 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 		super(pool, name); this.executor = create(name + ".executor", 1);
 		start(scheduler = new ExecutorScheduler(name + ".scheduler", 1));
 	}
-	
-	@Override
-	protected void doStart() throws Exception {
-		super.doStart(); this.queue = new AllocationQueue<>(this.policy);
-		scheduler.schedule(new ExecutorJob(name + ".pulse", this::pulse,
-		fixDelay(0L, getConfig().getInterval(), TimeUnit.MILLISECONDS)));
-	}
+
+    @Override
+    protected void doStart() throws Exception {
+        super.doStart();
+        queue = new AllocationQueue<>(getConfig().getMaximum(), policy);
+        scheduler.schedule(new ExecutorJob(name + ".pulse", this::pulse,
+        fixDelay(0L, getConfig().getInterval(), TimeUnit.MILLISECONDS)));
+    }
 	
 	@Override
 	protected long doStop(long timeout, TimeUnit unit) throws Exception {
