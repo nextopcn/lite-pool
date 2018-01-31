@@ -58,16 +58,17 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 	protected AllocationQueue<T> queue;
 	protected final XExecutorService executor;
 	protected final ExecutorScheduler scheduler;
+	protected final Map<Identity<T>, Slot<T>> slots;
 	protected final AtomicInteger size = new AtomicInteger(0);
 	protected final AtomicInteger idle = new AtomicInteger(0);
 	protected final AtomicInteger wait = new AtomicInteger(0);
-	protected final Map<Identity<T>, Slot<T>> slots = new ConcurrentHashMap<>();
-	
+
 	/**
 	 * 
 	 */
 	public DefaultAllocator(Pool<T> pool, String name) {
-		super(pool, name); this.executor = create(name + ".executor", 1);
+		super(pool, name); executor = create(name + ".executor", 1);
+		slots = new ConcurrentHashMap<>(getConfig().getMaximum() * 4);
 		start(scheduler = new ExecutorScheduler(name + ".scheduler", 1));
 	}
 

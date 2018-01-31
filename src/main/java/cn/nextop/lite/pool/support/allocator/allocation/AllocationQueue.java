@@ -55,15 +55,15 @@ public class AllocationQueue<E> {
 		this(16, policy);
 	}
 
-	public AllocationQueue(int initial, AllocationPolicy policy) {
-		this(initial, false, policy);
+	public AllocationQueue(int init, AllocationPolicy policy) {
+		this(init, false, policy);
 	}
 
-	public AllocationQueue(int initial, boolean fair, AllocationPolicy policy) {
+	public AllocationQueue(int init, boolean fair, AllocationPolicy policy) {
 		this.lock = new ReentrantLock(fair);
 		this.policy = policy; this.comparator = new PolicyComparator();
+		values = new ArrayList<>(init); index = Maps.newLongHashMap(init * 4);
 		this.notFull = lock.newCondition(); this.notEmpty = lock.newCondition();
-		values = new ArrayList<>(initial); index = Maps.newLongHashMap(initial);
 	}
 
 	/**
