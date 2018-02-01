@@ -8,7 +8,9 @@ Table of Contents
    * [2. Simple usage](#2-simple-usage)
       * [2.1. PoolBuilder](#21-poolbuilder)
       * [2.2. Usage](#22-usage)
-   * [3. Benchmark](#3-benchmark)
+   * [3. PoolListener](#3-poollistener)
+   * [4. Write your own PoolAllocator](#4-write-your-own-poolallocator)
+   * [5. Benchmark](#5-benchmark)
 
 
 # 1. Install  
@@ -83,7 +85,96 @@ maven-3.2.3+
     }
 ```
 
-# 3. Benchmark
+# 3. PoolListener
+
+```java  
+    Pool<YourPoolObject> pool = new PoolBuilder<YourPoolObject>()
+                    .local(true) // using thread local
+                    .supplier(() -> new YourPoolObject())
+                    ...
+                    .build("object pool");
+    pool.addListener(event -> {
+        YourPoolObject item = event.getItem();
+        switch (event.getType()) {
+            case ACQUIRE:
+                // your code goes here
+                break;
+            case RELEASE:
+                // your code goes here
+                break;
+            case LEAKAGE:
+                // your code goes here
+                break;
+            default:
+                throw new AssertionError();
+        }
+    });
+    pool.start();
+```
+
+# 4. Write your own PoolAllocator
+
+```java  
+
+public class YourPoolAllocator<T> extends AbstractAllocator<T> {
+
+    public YourPoolAllocator(Pool<T> pool, String name) {
+        super(pool, name);
+    }
+
+    @Override
+    protected Slot<T> doRelease(T t) {
+        // requite the object to pool
+        //
+        // notice that:
+        //
+        // if your are using thread local as L1 cache.
+        // that may requite the object t more than once.
+        // so you need to implement a data structure
+        // which is thread safe and avoid to requite the same object multi times.(refer to AllocationQueue)
+        //
+        // if the object t is invalid at that time.
+        // you should permanently delete that object from your data structure and trigger consume(t) callback.
+        // after the delete operation. you should expand the pool at an appropriate time.
+        //
+        // more details please refer to DefaultAllocator and AllocationQueue
+        return null;
+    }
+
+    @Override
+    protected Slot<T> doAcquire(long timeout, TimeUnit unit) {
+        // acquire the object from pool
+        //
+        // notice that:
+        // if acquire timeout or interrupted. return null.
+        // if the acquired object is invalid and do not reach out timeout, do following steps
+        // step1 : permanently delete that object from your data structure and trigger consume(t) callback.
+        //         after the delete operation. you should expand the pool at an appropriate time.
+        // step2 : acquire again until reach out timeout
+        // more details please refer to DefaultAllocator and AllocationQueue
+        return null;
+    }
+
+    public static class Factory<T> implements PoolAllocatorFactory<T> {
+        @Override public final PoolAllocator<T> create(final Pool<T> v) {
+            String n = v.getName() + ".allocator.your.name"; return new YourPoolAllocator<>(v, n);
+        }
+    }
+}
+
+```
+  
+Register `YourPoolAllocator` to Pool  
+  
+```java  
+
+Pool<YourPoolObject> pool = new PoolBuilder<YourPoolObject>()
+                    .allocator(new YourPoolAllocator.Factory<>())
+                    ...
+                    .build("object pool");
+```
+ 
+# 5. Benchmark
 
 Test env:  
 
