@@ -97,7 +97,7 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 		
 		//
 		r.setCookie(LEAKAGE, Boolean.FALSE);
-		if(isReleasable(r)) { if(r.release() && enqueue(r)) return r; }
+        if(isReleasable(r)) { if(r.release()){ enqueue(r); return r; }}
 		else if(r.abandon() && del(r)) { consume(r.get()); expand(1); }
 		return null;
 	}
