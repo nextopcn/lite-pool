@@ -106,7 +106,7 @@ public class AllocationQueue<T> {
 			final long seq = ++this.sequence; Entry<T> n = new Entry<>(slot, seq);
 
 			//
-			if (this.fifo) { this.values.add(0, n); } else { this.values.add(n); }
+			if((fifo)) values.add(0, n); /* head */ else values.add(n); /* tail */
 			this.index.put(id, n); /* unique, unbounded */ this.notEmpty.signal();
 			Assertion.assertTrue(this.index.size() == values.size()); return true;
 		} finally {
