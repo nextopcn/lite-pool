@@ -93,7 +93,6 @@ public class AllocationQueue<T> {
 	public boolean offer(final Slot<T> slot) {
 		//
 		Objects.requireNonNull(slot);
-
 		// Fast path to remove duplication for thread allocator
 		final boolean thread = this.pool.getConfig().isLocal();
 		if(thread && exists(slot)) return false; // ReadLock, @see ThreadAllocator
