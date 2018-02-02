@@ -25,7 +25,7 @@ maven-3.2.3+
 
 ## 1.3. Maven dependency
 
-```java  
+```xml  
     <dependency>
         <groupId>cn.nextop</groupId>
         <artifactId>lite-pool</artifactId>
