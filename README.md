@@ -4,7 +4,8 @@ Table of Contents
    * [1. Install](#1-install)
       * [1.1. Brief introduction](#11-brief-introduction)
       * [1.2. Requirements](#12-requirements)
-      * [1.3. Install from source code](#13-install-from-source-code)
+      * [1.3. Maven dependency](#13-maven-dependency)
+      * [1.4. Install from source code](#14-install-from-source-code)
    * [2. Simple usage](#2-simple-usage)
       * [2.1. PoolBuilder](#21-poolbuilder)
       * [2.2. Usage](#22-usage)
@@ -22,7 +23,17 @@ A lite fast object pool written by Java.
 jdk 1.8+  
 maven-3.2.3+  
 
-## 1.3. Install from source code  
+## 1.3. Maven dependency
+
+```java  
+    <dependency>
+        <groupId>cn.nextop</groupId>
+        <artifactId>lite-pool</artifactId>
+        <version>1.0.0-beta</version>
+    </dependency>
+```
+
+## 1.4. Install from source code  
 
 ``` 
     $mvn clean install -Dmaven.test.skip=true
