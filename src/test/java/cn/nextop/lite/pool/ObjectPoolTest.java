@@ -156,7 +156,7 @@ public class ObjectPoolTest {
         }
         latch1.await();
         System.out.println("done");
-        TimeUnit.SECONDS.sleep(30);
+        TimeUnit.SECONDS.sleep(20);
         s.shutdown();
         pool.stop();
     }
