@@ -1,7 +1,7 @@
 Table of Contents
 =================
 
-   * [1. Install](#1-install)
+   * [1. Lite-pool](#1-lite-pool)
       * [1.1. Brief introduction](#11-brief-introduction)
       * [1.2. Requirements](#12-requirements)
       * [1.3. Maven dependency](#13-maven-dependency)
@@ -14,9 +14,13 @@ Table of Contents
    * [5. Benchmark](#5-benchmark)
 
 
-# 1. Install  
+# 1. Lite-pool  
 ## 1.1. Brief introduction  
-
+[![Build Status](https://travis-ci.org/nextopcn/lite-pool.svg?branch=master)](https://travis-ci.org/nextopcn/lite-pool)
+[![Coverage Status](https://coveralls.io/repos/github/nextopcn/lite-pool/badge.svg?branch=master)](https://coveralls.io/github/nextopcn/lite-pool?branch=master)[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.moilioncircle/redis-replicator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.moilioncircle/redis-replicator)
+[![Javadocs](http://www.javadoc.io/badge/cn.nextop/lite-pool.svg)](http://www.javadoc.io/doc/cn.nextop/lite-pool)
+[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/nextopcn/lite-pool/blob/master/LICENSE)  
+  
 A lite fast object pool written by Java.  
 
 ## 1.2. Requirements  
