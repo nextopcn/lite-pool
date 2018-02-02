@@ -147,7 +147,7 @@ public class YourPoolAllocator<T> extends AbstractAllocator<T> {
         //
         // notice that:
         //
-        // if acquire timeout or interrupted. return null.
+        // if acquire timeout or thread interrupted. return null.
         // if the acquired object is invalid and do not reach out timeout, do following steps:
         // step1 : permanently delete that object from your data structure and trigger consume(t) callback.
         //         after the delete operation. you should expand the pool at an appropriate time.
