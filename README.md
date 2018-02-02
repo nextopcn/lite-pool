@@ -128,16 +128,15 @@ public class YourPoolAllocator<T> extends AbstractAllocator<T> {
         //
         // notice that:
         //
-        // if your are using thread local as L1 cache.
-        // that may requite the object t more than once.
-        // so you need to implement a data structure
-        // which is thread safe and avoid to requite the same object multi times.(refer to AllocationQueue)
-        //
+        // if uses thread local as L1 cache, thread allocator will try to aquire without delegating to 
+        // parent allocator but always delegate to parent to release. that requires your allocator is 
+        // able to remove duplication on release.
+        //
         // if the object t is invalid at that time.
         // you should permanently delete that object from your data structure and trigger consume(t) callback.
         // after the delete operation. you should expand the pool at an appropriate time.
         //
-        // more details please refer to DefaultAllocator and AllocationQueue
+        // please refer to DefaultAllocator and AllocationQueue for more details.
         return null;
     }
 
