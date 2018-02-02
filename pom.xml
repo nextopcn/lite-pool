@@ -22,7 +22,7 @@
 
     <groupId>cn.nextop</groupId>
     <artifactId>lite-pool</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-beta</version>
 
     <name>lite-pool</name>
     <description>lite object pool</description>
@@ -191,7 +191,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <keyname>7032CC04</keyname>
+                            <keyname>6B980C1EDE3EA0F38AD2AF83C3BDD7B9EDEC2512</keyname>
                         </configuration>
                     </plugin>
                 </plugins>
