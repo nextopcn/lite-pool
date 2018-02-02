@@ -124,17 +124,11 @@ public class YourPoolAllocator<T> extends AbstractAllocator<T> {
 
     @Override
     protected Slot<T> doRelease(T t) {
-        // requite the object to pool
-        //
-        // notice that:
-        //
         // if uses thread local as L1 cache, thread allocator will try to aquire without delegating to 
-        // parent allocator but always delegate to parent to release. that requires your allocator is 
+        // parent allocator, but always delegate to parent to release. that requires your allocator is 
         // able to remove duplication on release.
         //
-        // if the object t is invalid at that time.
-        // you should permanently delete that object from your data structure and trigger consume(t) callback.
-        // after the delete operation. you should expand the pool at an appropriate time.
+        // if pool object is invalidated, your allocator should delete it and invoke super.consume(t).
         //
         // please refer to DefaultAllocator and AllocationQueue for more details.
         return null;
@@ -142,17 +136,12 @@ public class YourPoolAllocator<T> extends AbstractAllocator<T> {
 
     @Override
     protected Slot<T> doAcquire(long timeout, TimeUnit unit) {
-        // acquire the object from pool
-        //
-        // notice that:
-        //
-        // if acquire timeout or thread interrupted. return null.
+        // returns null if timeout or thread is interrupted.
         // if the acquired object is invalid and do not reach out timeout, do following steps:
-        // step1 : permanently delete that object from your data structure and trigger consume(t) callback.
-        //         after the delete operation. you should expand the pool at an appropriate time.
-        // step2 : acquire again until reach out timeout.
+        // step1 : permanently delete it and invoke super.consume(t).
+        // step2 : acquire again until timeout.
         //
-        // more details please refer to DefaultAllocator and AllocationQueue
+        // please refer to DefaultAllocator and AllocationQueue for more details.
         return null;
     }
 
