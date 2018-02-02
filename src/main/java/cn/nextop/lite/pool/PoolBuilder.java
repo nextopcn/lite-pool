@@ -19,7 +19,6 @@ package cn.nextop.lite.pool;
 import cn.nextop.lite.pool.impl.ObjectPool;
 import cn.nextop.lite.pool.support.PoolAllocatorFactory;
 import cn.nextop.lite.pool.support.allocator.DefaultAllocator;
-import cn.nextop.lite.pool.support.allocator.ThreadAllocator;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -58,7 +57,6 @@ public class PoolBuilder<T> {
      *
      */
     public Pool<T> build(String name) {
-        PoolAllocatorFactory<T> v = this.factory; if(this.config.isLocal()) v = new ThreadAllocator.Factory<>(v);
-        ObjectPool<T> r = new ObjectPool<>(name); r.setConfig(config); r.setFactory(v); r.setVerbose(verbose); return r;
+        ObjectPool<T> r = new ObjectPool<>(name); r.setConfig(config); r.setFactory(factory); r.setVerbose(verbose); return r;
     }
 }

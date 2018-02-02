@@ -24,6 +24,8 @@ import cn.nextop.lite.pool.PoolListeners;
 import cn.nextop.lite.pool.glossary.Lifecyclet;
 import cn.nextop.lite.pool.support.PoolAllocator;
 import cn.nextop.lite.pool.support.PoolAllocatorFactory;
+import cn.nextop.lite.pool.support.allocator.DefaultAllocator;
+import cn.nextop.lite.pool.support.allocator.ThreadAllocator.Factory;
 import cn.nextop.lite.pool.util.Strings;
 
 import java.util.concurrent.TimeUnit;
@@ -47,11 +49,13 @@ public abstract class AbstractPool<T> extends Lifecyclet implements Pool<T> {
 	 */
 	protected AbstractPool(String name) {
 		this.name = name;
+		this.factory = new DefaultAllocator.Factory<T>();
 		this.listeners = new PoolListeners<>(name + ".listeners");
 	}
 
 	@Override
 	protected void doStart() throws Exception {
+		if (this.config.isLocal()) factory = new Factory<T>(factory);
 		Lifecyclet.start(this.allocator = this.factory.create(this));
 	}
 
