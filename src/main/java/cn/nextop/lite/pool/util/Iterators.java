@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * 
  * @author Jingqi Xu
  */
 @SuppressWarnings("unchecked")

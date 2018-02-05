@@ -17,7 +17,6 @@
 package cn.nextop.lite.pool.util;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public class AssertionException extends RuntimeException {

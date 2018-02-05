@@ -37,7 +37,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public abstract class AbstractScheduler<T> extends Lifecyclet implements Scheduler<T> {

@@ -32,7 +32,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public class XThreadPoolExecutor extends ThreadPoolExecutor implements XExecutorService {

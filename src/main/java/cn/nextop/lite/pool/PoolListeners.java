@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public class PoolListeners<T> implements PoolListener<T> {

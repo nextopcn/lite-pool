@@ -19,7 +19,6 @@ package cn.nextop.lite.pool;
 import cn.nextop.lite.pool.util.Strings;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public class PoolEvent<T> {

@@ -20,7 +20,6 @@ import cn.nextop.lite.pool.util.Strings;
 import cn.nextop.lite.pool.util.scheduler.Job;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public class AbstractJob<T> implements Job<T> {

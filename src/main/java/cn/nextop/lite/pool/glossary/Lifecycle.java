@@ -19,7 +19,6 @@ package cn.nextop.lite.pool.glossary;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public interface Lifecycle {

@@ -19,7 +19,6 @@ package cn.nextop.lite.pool.util.concurrent.future;
 import java.util.concurrent.Future;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public interface FutureEx<T> extends Future<T> {

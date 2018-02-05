@@ -20,7 +20,6 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public final class DateTimes {

@@ -17,7 +17,6 @@
 package cn.nextop.lite.pool;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public interface PoolListener<T> {

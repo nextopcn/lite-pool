@@ -19,7 +19,6 @@ package cn.nextop.lite.pool.util.concurrent;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public final class PaddedAtomicLong extends AtomicLong {

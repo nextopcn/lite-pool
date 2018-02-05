@@ -19,7 +19,6 @@ package cn.nextop.lite.pool.util.concurrent;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public final class XSync extends AbstractQueuedSynchronizer {

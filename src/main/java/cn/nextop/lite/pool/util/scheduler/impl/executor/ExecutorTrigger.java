@@ -22,7 +22,6 @@ import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public class ExecutorTrigger implements Serializable {

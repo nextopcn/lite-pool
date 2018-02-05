@@ -19,7 +19,6 @@ package cn.nextop.lite.pool;
 import cn.nextop.lite.pool.glossary.Copyable;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public class PoolValidation implements Copyable<PoolValidation> {

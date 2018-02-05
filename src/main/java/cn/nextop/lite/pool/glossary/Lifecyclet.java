@@ -32,7 +32,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import static cn.nextop.lite.pool.util.Iterators.iterable;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public abstract class Lifecyclet implements Lifecycle {

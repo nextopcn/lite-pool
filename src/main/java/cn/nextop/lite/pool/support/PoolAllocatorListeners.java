@@ -25,7 +25,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static cn.nextop.lite.pool.support.PoolAllocator.Slot;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public class PoolAllocatorListeners<T> implements PoolAllocatorListener<T> {

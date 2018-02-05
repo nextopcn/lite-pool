@@ -23,7 +23,6 @@ import cn.nextop.lite.pool.util.concurrent.XSync;
 import java.util.concurrent.Future;
 
 /**
- * 
  * @author Jingqi Xu
  * @param <T>
  */

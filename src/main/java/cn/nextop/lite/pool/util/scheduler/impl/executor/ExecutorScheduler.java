@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public class ExecutorScheduler extends AbstractScheduler<ExecutorTrigger> {

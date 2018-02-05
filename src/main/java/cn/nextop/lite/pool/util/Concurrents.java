@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 import static java.lang.Math.max;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public final class Concurrents {

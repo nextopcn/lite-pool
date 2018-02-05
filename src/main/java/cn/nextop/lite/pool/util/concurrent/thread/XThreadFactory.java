@@ -33,7 +33,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public final class XThreadFactory implements ThreadFactory {

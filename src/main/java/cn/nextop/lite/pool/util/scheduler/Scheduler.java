@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public interface Scheduler<T> extends Lifecycle {

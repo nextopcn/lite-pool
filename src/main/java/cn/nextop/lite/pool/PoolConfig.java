@@ -27,7 +27,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public class PoolConfig<T> {

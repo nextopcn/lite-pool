@@ -17,7 +17,6 @@
 package cn.nextop.lite.pool.util.concurrent;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public class RuntimeInterruptedException extends RuntimeException {

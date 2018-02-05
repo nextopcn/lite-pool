@@ -24,7 +24,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public final class XExecutors {

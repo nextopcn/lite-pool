@@ -40,7 +40,6 @@ import static cn.nextop.lite.pool.support.allocator.AbstractAllocator.Status.GON
 import static cn.nextop.lite.pool.support.allocator.AbstractAllocator.Status.IDLE;
 
 /**
- * 
  * @author Baoyi Chen
  * @param <T>
  */

@@ -19,7 +19,6 @@ package cn.nextop.lite.pool.util.scheduler.impl;
 import cn.nextop.lite.pool.util.scheduler.SchedulingException;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public class NotScheduledException extends SchedulingException {

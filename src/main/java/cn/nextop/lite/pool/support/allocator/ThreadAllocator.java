@@ -26,7 +26,6 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 
  * @author Jingqi Xu
  * @param <T>
  */

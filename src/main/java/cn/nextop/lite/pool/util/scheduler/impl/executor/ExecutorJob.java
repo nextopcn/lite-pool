@@ -19,7 +19,6 @@ package cn.nextop.lite.pool.util.scheduler.impl.executor;
 import cn.nextop.lite.pool.util.scheduler.impl.AbstractJob;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public class ExecutorJob extends AbstractJob<ExecutorTrigger> {

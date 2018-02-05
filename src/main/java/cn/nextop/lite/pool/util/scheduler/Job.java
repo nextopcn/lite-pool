@@ -17,7 +17,6 @@
 package cn.nextop.lite.pool.util.scheduler;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public interface Job<T> {

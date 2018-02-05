@@ -21,7 +21,6 @@ import cn.nextop.lite.pool.glossary.Lifecycle;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 
  * @author Jingqi Xu
  * @param <T>
  */

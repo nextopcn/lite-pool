@@ -17,7 +17,6 @@
 package cn.nextop.lite.pool.glossary;
 
 /**
- * 
  * @author Jingqi Xu
  */
 public interface Copyable<T> {

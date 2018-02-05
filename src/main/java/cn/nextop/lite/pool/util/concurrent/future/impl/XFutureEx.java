@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * 
  * @author Jingqi Xu
  */
 @SuppressWarnings("unchecked")

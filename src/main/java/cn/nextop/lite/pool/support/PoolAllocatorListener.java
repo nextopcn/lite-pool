@@ -19,7 +19,6 @@ package cn.nextop.lite.pool.support;
 import cn.nextop.lite.pool.support.PoolAllocator.Slot;
 
 /**
- * 
  * @author Jingqi Xu
  * @param <T>
  */
