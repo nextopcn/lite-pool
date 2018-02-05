@@ -121,10 +121,6 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 	/**
 	 *
 	 */
-	protected Slot<T> newSlot(T t) {
-		return new SlotImpl(t);
-	}
-
 	protected boolean isExpandable() {
 		final int min = getConfig().getMinimum();
 		final int max = getConfig().getMaximum();
@@ -146,7 +142,7 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 			if (isExpandable()) this.executor.execute(() -> {
 				try {
 					if(!isExpandable()) return; final T t = supply();
-					Slot<T> slot = newSlot(t); add(slot); enqueue(slot);
+					Slot<T> slot = wrap(t); add(slot); enqueue(slot);
 				} catch (Throwable root) {
 					LOGGER.error("[" + name + "]failed to expand pool", root);
 				}

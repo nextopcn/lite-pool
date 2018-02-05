@@ -55,6 +55,7 @@ public abstract class AbstractAllocator<T> extends Lifecyclet implements PoolAll
 
     //
     protected abstract Slot<T> doRelease(T t);
+    protected Slot<T> wrap(T t) { return new SlotImpl(t); }
     protected abstract Slot<T> doAcquire(long timeout, TimeUnit unit);
 
     /**
