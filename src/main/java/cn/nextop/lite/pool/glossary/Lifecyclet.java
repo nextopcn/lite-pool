@@ -41,8 +41,8 @@ public abstract class Lifecyclet implements Lifecycle {
 	
 	//
 	protected boolean verbose;
-	private final AtomicInteger references;
 	private final XFutureEx started;
+	private final AtomicInteger references;
 	private final AtomicReference<Status> status;
 	
 	//

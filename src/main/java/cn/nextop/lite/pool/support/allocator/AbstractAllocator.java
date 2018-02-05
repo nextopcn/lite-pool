@@ -210,9 +210,9 @@ public abstract class AbstractAllocator<T> extends Lifecyclet implements PoolAll
         @Override public boolean isBusy () { return this.status.get() == Status.BUSY; }
         @Override public boolean isIdle () { return this.status.get() == Status.IDLE; }
         @Override public boolean isAlive() { return this.status.get() != Status.GONE; }
+        @Override public boolean isLeaked(long v) { return isBusy() && isTimeout(access, v); }
         @Override public boolean isRetired() { return isTimeout(create, getConfig().getTtl()); }
         @Override public boolean isExpired() { return isTimeout(access, getConfig().getTti()); }
-        @Override public boolean isLeaked(long v) { return this.status.get() == Status.BUSY && isTimeout(access, v); }
 
         //
         @Override public void touch() { this.access = System.currentTimeMillis(); }
