@@ -39,8 +39,8 @@ public abstract class Lifecyclet implements Lifecycle {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Lifecyclet.class);
 	
 	//
-	protected boolean verbose;
 	private final XFutureEx started;
+	protected volatile boolean verbose;
 	private final AtomicInteger references;
 	private final AtomicReference<Status> status;
 	
