@@ -156,7 +156,7 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 	protected void pulse() {
 		//
 		final long mark = System.nanoTime();
-		final boolean verbose = isVerbose();
+		final boolean verbose = pool.isVerbose();
 		try {
 			expand(shrink());
 		} catch (Throwable root) {
