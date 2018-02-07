@@ -129,7 +129,7 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 	}
 	
 	protected int shrink() {
-        int r = getConfig().getMinimum();
+		int r = getConfig().getMinimum();
 		for (Slot<T> v : this.slots.values()) {
 			if(isPulsable(v)) continue;
 			if(v.destroy() && del(v)) { dequeue(v); consume(v.get()); r++; }
