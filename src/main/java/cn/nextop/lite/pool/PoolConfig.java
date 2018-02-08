@@ -36,12 +36,13 @@ public class PoolConfig<T> {
 	protected Consumer<T> consumer;
 	protected Supplier<T> supplier;
 	protected Predicate<T> validator;
-	protected int minimum = 0, maximum = 16;
-	protected long tti = TimeUnit.MINUTES.toMillis(15);
-	protected long ttl = TimeUnit.MINUTES.toMillis(60);
-	protected long tenancy = TimeUnit.MINUTES.toMillis(1);
-	protected long timeout = TimeUnit.SECONDS.toMillis(8);
+    protected volatile int minimum = 0;
+    protected volatile int maximum = 16;
 	protected long interval = TimeUnit.SECONDS.toMillis(15);
+    protected volatile long tti = TimeUnit.MINUTES.toMillis(15);
+    protected volatile long ttl = TimeUnit.MINUTES.toMillis(60);
+    protected volatile long tenancy = TimeUnit.MINUTES.toMillis(1);
+    protected volatile long timeout = TimeUnit.SECONDS.toMillis(8);
 	protected PoolValidation validation = new PoolValidation((byte)1); // PULSE
 	protected final ConcurrentMap<Object, Object> cookies = new ConcurrentHashMap<>();
 
