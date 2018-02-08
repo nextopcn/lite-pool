@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @author Jingqi Xu
  * @param <T>
  */
-public interface PoolAllocator<T> extends Lifecycle {
+public interface PoolAllocator<T> extends Lifecycle, PoolAllocatorMXBean {
 
 	/**
 	 *

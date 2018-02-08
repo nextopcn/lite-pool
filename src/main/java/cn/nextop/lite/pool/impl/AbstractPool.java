@@ -28,6 +28,9 @@ import cn.nextop.lite.pool.support.allocator.DefaultAllocator;
 import cn.nextop.lite.pool.support.allocator.ThreadAllocator.Factory;
 import cn.nextop.lite.pool.util.Strings;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import java.lang.management.ManagementFactory;
 import java.util.concurrent.TimeUnit;
 
 import static cn.nextop.lite.pool.support.PoolAllocator.Slot;
@@ -54,14 +57,22 @@ public abstract class AbstractPool<T> extends Lifecyclet implements Pool<T> {
 	}
 
 	@Override
-	protected void doStart() throws Exception {
-		if (this.config.isLocal()) factory = new Factory<T>(factory);
-		Lifecyclet.start(this.allocator = this.factory.create(this));
+	protected long doStop(long timeout, TimeUnit unit) throws Exception {
+		final String p = "cn.nextop.lite.pool:type=PoolConfig ";
+		MBeanServer s = ManagementFactory.getPlatformMBeanServer();
+		ObjectName objectName = new ObjectName(p + "(" + name + ")");
+		if(s.isRegistered(objectName)) s.unregisterMBean(objectName);
+		return Lifecyclet.stopQuietly(this.allocator, timeout, unit);
 	}
 
 	@Override
-	protected long doStop(long timeout, TimeUnit unit) throws Exception {
-		return Lifecyclet.stopQuietly(this.allocator, timeout, unit);
+	protected void doStart() throws Exception {
+		if (this.config.isLocal()) factory = new Factory<T>(factory);
+		Lifecyclet.start(this.allocator = this.factory.create(this));
+		final MBeanServer s = ManagementFactory.getPlatformMBeanServer();
+		final String prefixName = "cn.nextop.lite.pool:type=PoolConfig ";
+		final ObjectName n = new ObjectName(prefixName + "(" + this.name + ")");
+		if (s.isRegistered(n)) s.unregisterMBean(n); s.registerMBean(config, n);
 	}
 
 	/**

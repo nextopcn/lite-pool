@@ -27,6 +27,9 @@ import cn.nextop.lite.pool.util.Objects;
 import cn.nextop.lite.pool.util.Strings;
 import cn.nextop.lite.pool.util.concurrent.PaddedAtomicLong;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import java.lang.management.ManagementFactory;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
@@ -68,13 +71,19 @@ public abstract class AbstractAllocator<T> extends Lifecyclet implements PoolAll
     }
 
     @Override
-    protected void doStart() throws Exception {
-        // NOP
+    protected long doStop(long timeout, TimeUnit unit) throws Exception {
+        MBeanServer s = ManagementFactory.getPlatformMBeanServer();
+        String strName = "cn.nextop.lite.pool:type=PoolAllocator ";
+        ObjectName n = new ObjectName(strName + "(" + name + ")" );
+        if(s.isRegistered(n)) s.unregisterMBean(n); return timeout;
     }
 
     @Override
-    protected long doStop(long timeout, TimeUnit unit) throws Exception {
-        return timeout;
+    protected void doStart() throws Exception {
+        final MBeanServer s = ManagementFactory.getPlatformMBeanServer();
+        final String strName = "cn.nextop.lite.pool:type=PoolAllocator ";
+        final ObjectName n = new ObjectName(strName + "(" + this.name + ")");
+        if(s.isRegistered(n)) s.unregisterMBean(n); s.registerMBean(this, n);
     }
 
     /**

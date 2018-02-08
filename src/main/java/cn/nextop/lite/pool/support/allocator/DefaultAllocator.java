@@ -63,6 +63,14 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 	protected final AtomicInteger wait = new AtomicInteger(0);
 
 	/**
+	 *
+	 */
+	@Override public int getIdleObjects() { return idle.get(); }
+	@Override public int getTotalObjects() { return size.get(); }
+	@Override public int getAwaitingObjects() { return wait.get(); }
+	@Override public int getActiveObjects() { return size.get() - idle.get(); }
+
+	/**
 	 * 
 	 */
 	public DefaultAllocator(Pool<T> pool, String name) {
@@ -202,7 +210,7 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 	protected Slot<T> dequeue(long t, TimeUnit unit) throws InterruptedException {
 		final Slot<T> r = queue.poll(t, unit); if (r != null) idle.decrementAndGet(); return r;
 	}
-	
+
 	/**
 	 * 
 	 */

@@ -16,7 +16,6 @@
 
 package cn.nextop.lite.pool.support.allocator;
 
-
 import cn.nextop.lite.pool.Pool;
 import cn.nextop.lite.pool.glossary.Lifecyclet;
 import cn.nextop.lite.pool.support.PoolAllocator;
@@ -37,7 +36,15 @@ public class ThreadAllocator<T> extends AbstractAllocator<T> {
 	//
 	public PoolAllocator<T> getParent() { return parent; }
 	public void setParent (PoolAllocator<T> v) { parent = v; }
-	
+
+	/**
+	 *
+	 */
+	@Override public int getIdleObjects() { return parent.getIdleObjects(); }
+	@Override public int getTotalObjects() { return parent.getTotalObjects(); }
+	@Override public int getActiveObjects() { return parent.getActiveObjects(); }
+	@Override public int getAwaitingObjects() { return parent.getAwaitingObjects(); }
+
 	/**
 	 * 
 	 */
