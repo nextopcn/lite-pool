@@ -16,9 +16,7 @@
 
 package cn.nextop.lite.pool;
 
-import cn.nextop.lite.pool.impl.ObjectPool;
 import cn.nextop.lite.pool.support.allocator.DefaultAllocator;
-import cn.nextop.lite.pool.support.allocator.ThreadAllocator;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -33,34 +31,23 @@ import static junit.framework.TestCase.assertEquals;
  * @author Baoyi Chen
  */
 public class ObjectPoolTest {
-    public static ObjectPool<TestObject> create(int minimum, int maximum, long timeout, long interval, long ttl,
-                                                long tti) {
-        ObjectPool<TestObject> pool = new ObjectPool<>("object.pool");
-        pool.setVerbose(true);
-        PoolConfig<TestObject> config = new PoolConfig<>();
-        config.setConsumer(v -> {
-            System.out.println("deleted object:" + v);
-        });
-        config.setSupplier(() -> {
+    public static Pool<TestObject> create(int minimum, int maximum, long timeout, long interval, long ttl, long tti) {
+        PoolBuilder<TestObject> builder = new PoolBuilder<>();
+        Pool<TestObject> pool = builder.local(true).supplier(() -> {
             TestObject t =new TestObject();
             System.out.println("created object:" + t);
             return t;
-        });
-        config.setValidator(v -> true);
-        config.setInterval(interval);
-        config.setMinimum(minimum);
-        config.setMaximum(maximum);
-        config.setTimeout(timeout);
-        config.setTtl(ttl);
-        config.setTti(tti);
-        pool.setConfig(config);
-        pool.setFactory(new ThreadAllocator.Factory<>(new DefaultAllocator.Factory<>()));
+        }).consumer(v -> {
+            System.out.println("deleted object:" + v);
+        }).validator(v -> true).interval(interval).minimum(minimum).
+                maximum(maximum).timeout(timeout).
+                ttl(ttl).tti(tti).verbose(true).local(true).fifo(false).allocator(new DefaultAllocator.Factory<>()).build("object pool");
         return pool;
     }
 
     @Test
     public void testLeak() throws InterruptedException {
-        ObjectPool<TestObject> pool = create(2, 10, 5000, 15000, 0, 5000);
+        Pool<TestObject> pool = create(2, 10, 5000, 15000, 0, 5000);
         pool.start();
         ExecutorService s = Executors.newFixedThreadPool(50);
         int count = 100;
@@ -85,7 +72,7 @@ public class ObjectPoolTest {
 
     @Test
     public void testNoShrink() {
-        ObjectPool<TestObject> pool = create(4, 10, 500, 15000, 0, 1000);
+        Pool<TestObject> pool = create(4, 10, 500, 15000, 0, 1000);
         pool.start();
         for (int i = 0; i < 1000; i++) {
             TestObject t = null;
@@ -105,7 +92,7 @@ public class ObjectPoolTest {
 
     @Test
     public void test() throws Exception {
-        ObjectPool<TestObject> pool = create(2, 10, 2000, 5000, 0, 10000);
+        Pool<TestObject> pool = create(2, 10, 2000, 5000, 0, 10000);
         pool.start();
         ExecutorService s = Executors.newFixedThreadPool(50);
         final AtomicInteger sucess = new AtomicInteger();
