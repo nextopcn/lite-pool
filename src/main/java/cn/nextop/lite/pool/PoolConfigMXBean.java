@@ -33,6 +33,8 @@ public interface PoolConfigMXBean {
 
     long getTimeout();
 
+    boolean isVerbose();
+
     void setTti(long ms);
 
     void setTtl(long ms);
@@ -44,4 +46,6 @@ public interface PoolConfigMXBean {
     void setTenancy(long ms);
 
     void setTimeout(long ms);
+
+    void setVerbose(boolean v);
 }

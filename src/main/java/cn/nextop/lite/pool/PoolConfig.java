@@ -38,6 +38,7 @@ public class PoolConfig<T> implements PoolConfigMXBean {
 	protected Predicate<T> validator;
 	protected volatile int minimum = 0;
 	protected volatile int maximum = 16;
+	protected volatile boolean verbose = false;
 	protected long interval = TimeUnit.SECONDS.toMillis(15);
 	protected volatile long tti = TimeUnit.MINUTES.toMillis(15);
 	protected volatile long ttl = TimeUnit.MINUTES.toMillis(60);
@@ -57,10 +58,12 @@ public class PoolConfig<T> implements PoolConfigMXBean {
 	@Override public int getMaximum() { return this.maximum; }
 	@Override public long getTenancy() { return this.tenancy; }
 	@Override public long getTimeout() { return this.timeout; }
+	@Override public boolean isVerbose() { return this.verbose; }
 	@Override public void setMinimum(int v) { this.minimum = v; }
 	@Override public void setMaximum(int v) { this.maximum = v; }
 	@Override public void setTenancy(long v) { this.tenancy = v; }
 	@Override public void setTimeout(long v) { this.timeout = v; }
+	@Override public void setVerbose(boolean v) { this.verbose = v; }
 	@Override public String toString() { return Strings.buildEx(this); }
 
 	/**

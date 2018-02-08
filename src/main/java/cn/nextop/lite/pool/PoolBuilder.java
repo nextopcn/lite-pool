@@ -29,7 +29,6 @@ import java.util.function.Supplier;
  */
 public class PoolBuilder<T> {
     //
-    private boolean verbose = false;
     private PoolConfig<T> config = new PoolConfig<>();
     private PoolAllocatorFactory<T> factory = new DefaultAllocator.Factory<>();
 
@@ -42,9 +41,9 @@ public class PoolBuilder<T> {
     public PoolBuilder<T> local(boolean v) { config.setLocal(v); return this; }
     public PoolBuilder<T> minimum(int v) { config.setMinimum(v); return this; }
     public PoolBuilder<T> maximum(int v) { config.setMaximum(v); return this; }
-    public PoolBuilder<T> verbose(boolean v) { this.verbose = v; return this; }
     public PoolBuilder<T> tenancy(long ms) { config.setTenancy(ms); return this; }
     public PoolBuilder<T> timeout(long ms) { config.setTimeout(ms); return this; }
+    public PoolBuilder<T> verbose(boolean v) { config.setVerbose(v); return this; }
     public PoolBuilder<T> interval(long ms) { config.setInterval(ms); return this; }
     public PoolBuilder<T> supplier(Supplier<T> v) { config.setSupplier(v); return this; }
     public PoolBuilder<T> consumer(Consumer<T> v) { config.setConsumer(v); return this; }
@@ -56,6 +55,6 @@ public class PoolBuilder<T> {
      *
      */
     public Pool<T> build(String name) {
-        ObjectPool<T> r = new ObjectPool<>(name); r.setConfig(config); r.setFactory(factory); r.setVerbose(verbose); return r;
+        ObjectPool<T> r = new ObjectPool<>(name); r.setConfig(config); r.setFactory(factory); return r;
     }
 }
