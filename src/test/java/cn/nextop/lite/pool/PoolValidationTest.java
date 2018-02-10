@@ -55,4 +55,21 @@ public class PoolValidationTest extends BaseTest {
         assertEquals(1, acc.get());
     }
 
+    @Test
+    public void test1() throws InterruptedException {
+        Pool<TestObject2> pool = create(2, 10, 1000, 5000, 0, 10000, 4000, () -> {
+            TestObject2 o = new TestObject2();
+            o.valid = false;
+            return o;
+        }, null);
+        pool.getConfig().setValidation(new PoolValidation((byte)(RELEASE | ACQUIRE | PULSE)));
+        pool.getConfig().setValidator(v -> v.valid);
+        pool.start();
+        Thread.sleep(500);
+        TestObject2 o = pool.acquire();
+        assertNull(o);
+        Thread.sleep(500);
+        pool.stop();
+    }
+
 }
