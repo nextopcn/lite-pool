@@ -17,7 +17,8 @@
 package cn.nextop.lite.pool.util;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
 /**
  * @author Jingqi Xu
@@ -28,10 +29,10 @@ public final class Strings {
 	 * 
 	 */
 	public static ToStringBuilder build(Object obj) {
-		return new ToStringBuilder(obj, ToStringStyle.SHORT_PREFIX_STYLE);
+		return new ToStringBuilder(obj, SHORT_PREFIX_STYLE);
 	}
 
 	public static String buildEx(final Object obj) {
-		return ToStringBuilder.reflectionToString(obj, ToStringStyle.SHORT_PREFIX_STYLE).toString();
+		return ToStringBuilder.reflectionToString(obj, SHORT_PREFIX_STYLE);
 	}
 }
