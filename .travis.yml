@@ -4,6 +4,6 @@ jdk:
 branches:
   only:
     - master
-script: "mvn clean package -P travis -Dmaven.test.skip=true"
+script: "mvn clean package -P travis"
 after_success:
   - mvn clean test jacoco:report coveralls:report

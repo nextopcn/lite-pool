@@ -35,13 +35,13 @@ import java.util.concurrent.TimeUnit;
  * @author Baoyi Chen
  */
 @State(Scope.Benchmark)
-public class ObjectPoolBenchmark {
+public class ObjectPoolBenchmark extends BaseTest {
 
     public Pool<TestObject> pool;
 
     @Setup(Level.Trial)
     public void doSetup() {
-        pool = create(10, 10, 5000, 15000, 0, 0);
+        pool = create(10, 10, 5000, 15000, 0, 0, 30000, () -> new TestObject(), null);
         pool.start();
     }
     @TearDown(Level.Trial)
@@ -67,17 +67,5 @@ public class ObjectPoolBenchmark {
             .build();
 
         new Runner(opt).run();
-    }
-
-    public static Pool<TestObject> create(int minimum, int maximum, long timeout, long interval, long ttl, long tti) {
-        PoolBuilder<TestObject> builder = new PoolBuilder<>();
-        Pool<TestObject> pool = builder.local(true).supplier(() -> new TestObject()).
-                interval(interval).minimum(minimum).
-                maximum(maximum).timeout(timeout).
-                ttl(ttl).tti(tti).verbose(false).build("object pool");
-        return pool;
-    }
-
-    public static class TestObject {
     }
 }

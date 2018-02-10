@@ -16,7 +16,6 @@
 
 package cn.nextop.lite.pool;
 
-import cn.nextop.lite.pool.support.allocator.DefaultAllocator;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -30,24 +29,17 @@ import static junit.framework.TestCase.assertEquals;
 /**
  * @author Baoyi Chen
  */
-public class ObjectPoolTest {
-    public static Pool<TestObject> create(int minimum, int maximum, long timeout, long interval, long ttl, long tti) {
-        PoolBuilder<TestObject> builder = new PoolBuilder<>();
-        Pool<TestObject> pool = builder.local(true).supplier(() -> {
-            TestObject t =new TestObject();
-            System.out.println("created object:" + t);
-            return t;
-        }).consumer(v -> {
-            System.out.println("deleted object:" + v);
-        }).validator(v -> true).interval(interval).minimum(minimum).
-                maximum(maximum).timeout(timeout).
-                ttl(ttl).tti(tti).verbose(true).local(true).fifo(false).allocator(new DefaultAllocator.Factory<>()).build("object pool");
-        return pool;
-    }
+public class ObjectPoolTest extends BaseTest {
 
     @Test
     public void testLeak() throws InterruptedException {
-        Pool<TestObject> pool = create(2, 10, 5000, 15000, 0, 5000);
+        Pool<TestObject1> pool = create(2, 10, 5000, 15000, 0, 5000, 30000, () -> {
+            TestObject1 t =new TestObject1();
+            System.out.println("created object:" + t);
+            return t;
+        }, v -> {
+            System.out.println("deleted object:" + v);
+        });
         pool.start();
         ExecutorService s = Executors.newFixedThreadPool(50);
         int count = 100;
@@ -56,7 +48,7 @@ public class ObjectPoolTest {
         for (int i = 0; i < count; i++) {
             s.submit(new Runnable() {
                 @Override public void run() {
-                    TestObject to = pool.acquire();
+                    TestObject1 to = pool.acquire();
                     if (to == null) {
                         acc.incrementAndGet();
                     }
@@ -72,10 +64,16 @@ public class ObjectPoolTest {
 
     @Test
     public void testNoShrink() {
-        Pool<TestObject> pool = create(4, 10, 500, 15000, 0, 1000);
+        Pool<TestObject1> pool = create(4, 10, 500, 15000, 0, 1000, 30000, () -> {
+            TestObject1 t =new TestObject1();
+            System.out.println("created object:" + t);
+            return t;
+        }, v -> {
+            System.out.println("deleted object:" + v);
+        });
         pool.start();
         for (int i = 0; i < 1000; i++) {
-            TestObject t = null;
+            TestObject1 t = null;
             try {
                 t = pool.acquire();
                 if (t != null)
@@ -92,7 +90,13 @@ public class ObjectPoolTest {
 
     @Test
     public void test() throws Exception {
-        Pool<TestObject> pool = create(2, 10, 2000, 5000, 0, 10000);
+        Pool<TestObject1> pool = create(2, 10, 2000, 5000, 0, 10000, 30000, () -> {
+            TestObject1 t =new TestObject1();
+            System.out.println("created object:" + t);
+            return t;
+        }, v -> {
+            System.out.println("deleted object:" + v);
+        });
         pool.start();
         ExecutorService s = Executors.newFixedThreadPool(50);
         final AtomicInteger sucess = new AtomicInteger();
@@ -102,7 +106,7 @@ public class ObjectPoolTest {
         for (int i = 0; i < count; i++) {
             s.submit(() -> {
                 for (int j = 0; j < 1000; j++) {
-                    TestObject t = null;
+                    TestObject1 t = null;
                     try {
                         t = pool.acquire();
                         Thread.sleep(10);
@@ -127,7 +131,7 @@ public class ObjectPoolTest {
         for (int i = 0; i < count; i++) {
             s.submit(() -> {
                 for (int j = 0; j < 1000; j++) {
-                    TestObject t = null;
+                    TestObject1 t = null;
                     try {
                         t = pool.acquire();
                         if (t != null)
@@ -146,24 +150,5 @@ public class ObjectPoolTest {
         TimeUnit.SECONDS.sleep(20);
         s.shutdown();
         pool.stop();
-    }
-
-    public static class TestObject {
-        private static AtomicInteger acc = new AtomicInteger();
-        private final int id;
-
-        private TestObject() {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            this.id = acc.getAndIncrement();
-        }
-
-        @Override
-        public String toString() {
-            return "TestObject:" + id;
-        }
     }
 }
