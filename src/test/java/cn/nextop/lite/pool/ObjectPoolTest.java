@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * @author Baoyi Chen
@@ -62,13 +63,17 @@ public class ObjectPoolTest extends BaseTest {
 
     @Test
     public void testNoShrink() {
-        Pool<TestObject1> pool = create(4, 10, 500, 15000, 0, 1000, 30000, () -> {
+        AtomicInteger acc = new AtomicInteger(0);
+        Pool<TestObject1> pool = create(4, 10, 500, 1000, 0, 1000, 30000, () -> {
             TestObject1 t =new TestObject1();
             System.out.println("created object:" + t);
             return t;
         }, v -> {
+            acc.incrementAndGet();
             System.out.println("deleted object:" + v);
         });
+        pool.getConfig().setLocal(false);
+        pool.getConfig().setFifo(true);
         pool.start();
         for (int i = 0; i < 1000; i++) {
             TestObject1 t = null;
@@ -83,13 +88,47 @@ public class ObjectPoolTest extends BaseTest {
                     pool.release(t);
             }
         }
+        assertEquals(0, acc.get());
+        pool.stop();
+    }
+
+    @Test
+    public void testShrink() {
+        AtomicInteger acc = new AtomicInteger(0);
+        Pool<TestObject1> pool = create(4, 10, 500, 1000, 0, 1000, 30000, () -> {
+            TestObject1 t =new TestObject1();
+            System.out.println("created object:" + t);
+            return t;
+        }, v -> {
+            acc.incrementAndGet();
+            System.out.println("deleted object:" + v);
+        });
+        pool.getConfig().setLocal(false);
+        pool.getConfig().setFifo(false);
+        pool.start();
+        for (int i = 0; i < 1000; i++) {
+            TestObject1 t = null;
+            try {
+                t = pool.acquire();
+                if (t != null)
+                    Thread.sleep(5);
+            } catch (Throwable cause) {
+                cause.printStackTrace();
+            } finally {
+                if (t != null)
+                    pool.release(t);
+            }
+        }
+        assertNotEquals(0, acc.get());
         pool.stop();
     }
 
     @Test
     public void test() throws Exception {
+        AtomicInteger acc = new AtomicInteger(0);
         Pool<TestObject1> pool = create(2, 10, 2000, 4000, 0, 8000, 30000, () -> {
             TestObject1 t =new TestObject1();
+            acc.set(t.id);
             System.out.println("created object:" + t);
             return t;
         }, v -> {
@@ -123,6 +162,9 @@ public class ObjectPoolTest extends BaseTest {
             });
         }
         latch.await();
+        assertEquals(9, acc.get());
+        assertEquals(10000, success.get());
+        assertEquals(0, failed.get());
         System.out.println("sleep 20 seconds, success:" + success.get() + ", failed:" + failed.get());
         TimeUnit.SECONDS.sleep(16);
         CountDownLatch latch1 = new CountDownLatch(count);
@@ -145,6 +187,7 @@ public class ObjectPoolTest extends BaseTest {
         }
         latch1.await();
         System.out.println("done");
+        assertEquals(19, acc.get());
         TimeUnit.SECONDS.sleep(16);
         s.shutdown();
         pool.stop();

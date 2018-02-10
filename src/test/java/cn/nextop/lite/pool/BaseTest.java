@@ -39,7 +39,7 @@ public abstract class BaseTest {
 
     public static class TestObject1 {
         private static AtomicInteger acc = new AtomicInteger();
-        private final int id;
+        public final int id;
 
         protected TestObject1() {
             try {
