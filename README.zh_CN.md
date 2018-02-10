@@ -22,7 +22,7 @@
 [![Javadocs](http://www.javadoc.io/badge/cn.nextop/lite-pool.svg)](http://www.javadoc.io/doc/cn.nextop/lite-pool)
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/nextopcn/lite-pool/blob/master/LICENSE)  
   
-Lite-pool : 轻量级快速的对象池  
+Lite-pool : 轻量快速的对象池  
 
 ## 1.2. 安装前置条件  
 jdk 1.8+  
@@ -141,8 +141,8 @@ public class YourPoolAllocator<T> extends AbstractAllocator<T> {
     @Override
     protected Slot<T> doRelease(T t) {
         // 如果应用ThrealAllocator作为L1缓存, ThrealAllocator将会尝试在TheadLocal内获得pool中的对象, 如果没
-        // 获取到合法的对象，会尝试调用父分配器的acquire方法获得pool中对象, 但是在release的过程中, 会一直调用
-        // 父分配器的release方法, 这样要求你自己实现的分配器在release的时候能够去除重复的对象.
+        // 获取到合法的对象，会尝试调用父分配器的acquire方法获得对象, 但是在release的过程中, 会一直调用
+        // 父分配器的release方法释放对象, 这样要求你自己实现的分配器在release的时候能够去除重复的对象.
         //
         // 如果pool中对象不合法, 你的分配器应该删除这个对象并调用 super.consume(t).
         //
