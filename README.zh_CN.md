@@ -1,34 +1,34 @@
-Table of Contents([中文说明](./README.zh_CN.md))
+内容索引([Table of Contents](./README.md))  
 =================
 
    * [1. Lite-pool](#1-lite-pool)
-      * [1.1. Brief introduction](#11-brief-introduction)
-      * [1.2. Requirements](#12-requirements)
-      * [1.3. Maven dependency](#13-maven-dependency)
-      * [1.4. Install from source code](#14-install-from-source-code)
-   * [2. Simple usage](#2-simple-usage)
+      * [1.1. 简介](#11-简介)
+      * [1.2. 安装前置条件](#12-安装前置条件)
+      * [1.3. Maven依赖](#13-maven依赖)
+      * [1.4. 安装源码到本地Maven仓库](#14-安装源码到本地maven仓库)
+   * [2. 简要用法](#2-简要用法)
       * [2.1. PoolBuilder](#21-poolbuilder)
-      * [2.2. Usage](#22-usage)
+      * [2.2. 使用](#22-使用)
    * [3. PoolListener](#3-poollistener)
-   * [4. Write your own PoolAllocator](#4-write-your-own-poolallocator)
-   * [5. Benchmark](#5-benchmark)
+   * [4. 扩展自己的PoolAllocator](#4-扩展自己的poolallocator)
+   * [5. 基准测试](#5-基准测试)
 
 
 # 1. Lite-pool  
-## 1.1. Brief introduction  
+## 1.1. 简介  
 [![Build Status](https://travis-ci.org/nextopcn/lite-pool.svg?branch=master)](https://travis-ci.org/nextopcn/lite-pool)
 [![Coverage Status](https://coveralls.io/repos/github/nextopcn/lite-pool/badge.svg?branch=master)](https://coveralls.io/github/nextopcn/lite-pool?branch=master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.nextop/lite-pool/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.nextop/lite-pool)
 [![Javadocs](http://www.javadoc.io/badge/cn.nextop/lite-pool.svg)](http://www.javadoc.io/doc/cn.nextop/lite-pool)
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/nextopcn/lite-pool/blob/master/LICENSE)  
   
-A lite fast object pool written by Java.  
+Lite-pool : 轻量级快速的对象池  
 
-## 1.2. Requirements  
+## 1.2. 安装前置条件  
 jdk 1.8+  
 maven-3.2.3+  
 
-## 1.3. Maven dependency
+## 1.3. Maven依赖
 
 ```xml  
     <dependency>
@@ -38,41 +38,41 @@ maven-3.2.3+
     </dependency>
 ```
 
-## 1.4. Install from source code  
+## 1.4. 安装源码到本地Maven仓库  
 
 ``` 
     $mvn clean install -Dmaven.test.skip=true
 ```  
 
-# 2. Simple usage  
+# 2. 简要用法  
 ## 2.1. PoolBuilder  
 
-| **config** | **default value**  |  **details**                                                         |
-| ---------- | ------------------ | ---------------------------------------------------------------------|
-| minimum    | 0                  |  minimum allowed objects in pool                                     |
-| maximum    | 16                 |  maximum allowed objects in pool                                     |
-| tti        | 15 minutes         |  time to idle, optional maximum pool objects' idle time, unit ms     |
-| ttl        | 60 minutes         |  time to live, optional maximum pool objects' life time, unit ms     |
-| tenancy    | 1  minutes         |  optional leak detection timeout, unit ms, (**MUST** >= `interval`)  |
-| timeout    | 8  seconds         |  default acquire timeout, unit ms                                    |
-| interval   | 15 seconds         |  default house keeping scheduler's interval, unit ms                 |
-| local      | true               |  use `ThreadAllocator` as L1 cache or not                            |
-| verbose    | false              |  print log or not                                                    |
-| fifo       | false              |  pool allocation policy, `false` has better performance              |
-| allocator  | DefaultAllocator   |  pool allocator, can be customized by extending `AbstractAllocator`  |
-| supplier   |                    |  required callback for creating pool objects                         |
-| consumer   |                    |  optional callback for destroying pool objects                       |
-| validator  |                    |  optional callback for validating pool objects                       |
+| **配置项** | **默认值**          |  **详解**                                                                     |
+| ---------- | ------------------ | ------------------------------------------------------------------------------|
+| minimum    | 0                  |  pool中所维持的最小对象数量                                                     |
+| maximum    | 16                 |  pool中所维持的最大对象数量                                                     |
+| tti        | 15 分钟            |  pool中对象的最大空闲时间, 可选项(0表示不过期), 单位: ms                         |
+| ttl        | 60 分钟            |  pool中对象的最大生存时间, 可选项(0表示不过期), 单位: ms                         |
+| tenancy    | 1  分钟            |  对象泄露检测的超时时间, 可选项(0表示不过期), 单位: ms, (**必须** >= `interval`) |
+| timeout    | 8  秒              |  默认的请求超时时间, 单位: ms                                                   |
+| interval   | 15 秒              |  默认的定时检测任务时间间隔, 单位: ms                                           |
+| local      | true               |  是否应用 `ThreadAllocator` 作为 L1 缓存                                       |
+| verbose    | false              |  是否打印日志                                                                  |
+| fifo       | false              |  对象池分配策略, 设置为`false`有更好的性能                                      |
+| allocator  | DefaultAllocator   |  对象池分配器, 继承 `AbstractAllocator`可以定制自己的对象池分配器                |
+| supplier   |                    |  创建pool对象的回调方法, 必选项                                                 |
+| consumer   |                    |  销毁pool对象的回调方法, 可选项                                                 |
+| validator  |                    |  验证pool对象的回调方法, 可选项                                                 |
   
 
-## 2.2. Usage  
+## 2.2. 使用  
 
 ```java  
     public class YourPoolObject {
     }
     
     Pool<YourPoolObject> pool = new PoolBuilder<YourPoolObject>()
-                    .local(true) // using thread local
+                    .local(true) // 使用ThreadAllocator作为L1缓存
                     .supplier(() -> new YourPoolObject())
                     .interval(interval)
                     .minimum(minimum)
@@ -90,7 +90,7 @@ maven-3.2.3+
             try {
                 object = pool.acquire();
                 if (object != null) {
-                    // your code goes here. 
+                    // 你的业务代码 
                 }
             } finally {
                 if (object != null) pool.release(object);
@@ -113,13 +113,13 @@ maven-3.2.3+
         YourPoolObject item = event.getItem();
         switch (event.getType()) {
             case ACQUIRE:
-                // your code goes here
+                // 你的业务代码
                 break;
             case RELEASE:
-                // your code goes here
+                // 你的业务代码
                 break;
             case LEAKAGE:
-                // your code goes here
+                // 你的业务代码
                 break;
             default:
                 throw new AssertionError();
@@ -128,7 +128,7 @@ maven-3.2.3+
     pool.start();
 ```
 
-# 4. Write your own PoolAllocator
+# 4. 扩展自己的PoolAllocator
 
 ```java  
 
@@ -140,24 +140,24 @@ public class YourPoolAllocator<T> extends AbstractAllocator<T> {
 
     @Override
     protected Slot<T> doRelease(T t) {
-        // if uses thread local as L1 cache, thread allocator will try to acquire without delegating to 
-        // parent allocator, but always delegate to parent to release. that requires your allocator is 
-        // able to remove duplication on release.
+        // 如果应用ThrealAllocator作为L1缓存, ThrealAllocator将会尝试在TheadLocal内获得pool中的对象, 如果没
+        // 获取到合法的对象，会尝试调用父分配器的acquire方法获得pool中对象, 但是在release的过程中, 会一直调用
+        // 父分配器的release方法, 这样要求你自己实现的分配器在release的时候能够去除重复的对象.
         //
-        // if pool object is invalidated, your allocator should delete it and invoke super.consume(t).
+        // 如果pool中对象不合法, 你的分配器应该删除这个对象并调用 super.consume(t).
         //
-        // please refer to DefaultAllocator and AllocationQueue for more details.
+        // 详细实现请参照DefaultAllocator 和 AllocationQueue.
         return null;
     }
 
     @Override
     protected Slot<T> doAcquire(long timeout, TimeUnit unit) {
-        // returns null if timeout or thread is interrupted.
-        // if the acquired object is invalid and do not reach out timeout, do following steps:
-        // step1 : permanently delete it and invoke super.consume(t).
-        // step2 : acquire again until timeout.
+        // 在超时或者线程被中断的情况下返回 null.
+        // 如果请求的对象不合法, 并且此时没有超时, 采用如下步骤实现分配器:
+        // 步骤1 : 永久删除这个对象并调用 super.consume(t).
+        // 步骤2 : 再次从pool中请求对象直到超时.
         //
-        // please refer to DefaultAllocator and AllocationQueue for more details.
+        // 详细实现请参照DefaultAllocator 和 AllocationQueue.
         return null;
     }
 
@@ -170,7 +170,7 @@ public class YourPoolAllocator<T> extends AbstractAllocator<T> {
 
 ```
   
-Register `YourPoolAllocator` to Pool  
+将 `YourPoolAllocator` 注册到 Pool  
   
 ```java  
 
@@ -180,9 +180,9 @@ Pool<YourPoolObject> pool = new PoolBuilder<YourPoolObject>()
                     .build("object pool");
 ```
  
-# 5. Benchmark
+# 5. 基准测试
 
-Test env:  
+测试环境 :  
 
 ```xml  
     OS : Windows 7 Home(64bit)
@@ -192,57 +192,57 @@ Test env:
 
 ```
 
-Test case:  
+测试用例 :  
   
 ```java  
     TestObject object = pool.acquire();
     if (object != null) pool.release(object);
 ```
   
-(unit: ops/ms)  
+(单位: ops/ms)  
   
-Case 1: 10 minimum, 10 maximum, 1 thread polling from pool  
-Result:  
+用例 1: 10 minimum, 10 maximum, 1 个线程acquire, release  
+结果 :  
 
 ```java  
 Benchmark                  Mode  Cnt     Score     Error   Units
 ObjectPoolBenchmark.test  thrpt   10  9491.206 ± 108.402  ops/ms
 ```
   
-Case 2: 10 minimum, 10 maximum, 2 thread polling from pool  
-Result:  
+用例 2: 10 minimum, 10 maximum, 2 个线程acquire, release  
+结果 :  
 
 ```java  
 Benchmark                  Mode  Cnt     Score     Error   Units
 ObjectPoolBenchmark.test  thrpt   10  8327.384 ± 368.566  ops/ms
 ```
   
-Case 3: 10 minimum, 10 maximum, 5 thread polling from pool  
-Result:  
+用例 3: 10 minimum, 10 maximum, 5 个线程acquire, release  
+结果 :  
 
 ```java  
 Benchmark                  Mode  Cnt     Score    Error   Units
 ObjectPoolBenchmark.test  thrpt   10  8150.062 ± 30.242  ops/ms
 ```
   
-Case 4: 10 minimum, 10 maximum, 10 thread polling from pool  
-Result:  
+用例 4: 10 minimum, 10 maximum, 10 个线程acquire, release  
+结果 :  
 
 ```java  
 Benchmark                  Mode  Cnt     Score     Error   Units
 ObjectPoolBenchmark.test  thrpt   10  9486.971 ± 200.483  ops/ms
 ```
   
-Case 5: 10 minimum, 10 maximum, 20 thread polling from pool  
-Result:  
+用例 5: 10 minimum, 10 maximum, 20 个线程acquire, release  
+结果 :  
 
 ```java  
 Benchmark                  Mode  Cnt     Score     Error   Units
 ObjectPoolBenchmark.test  thrpt   10  7691.710 ± 530.855  ops/ms
 ```
   
-Case 6: 10 minimum, 10 maximum, 50 thread polling from pool  
-Result:  
+用例 6: 10 minimum, 10 maximum, 50 个线程acquire, release  
+结果 :  
 
 ```java  
 Benchmark                  Mode  Cnt     Score     Error   Units
