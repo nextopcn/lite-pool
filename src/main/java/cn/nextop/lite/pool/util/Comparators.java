@@ -25,24 +25,15 @@ public final class Comparators {
 	 * 
 	 */
 	public static int cmp(int v1, int v2, boolean asc) {
-		int r = 0;
-		if(v1 < v2) r = -1;
-		else if(v1 > v2) r = 1;
-		return asc ? r : -r;
+		int r = 0; if(v1 < v2) r = -1; else if(v1 > v2) r = 1; return asc ? r : -r;
 	}
 	
 	public static int cmp(long v1, long v2, boolean asc) {
-		int r = 0;
-		if(v1 < v2) r = -1;
-		else if(v1 > v2) r = 1;
-		return asc ? r : -r;
+		int r = 0; if(v1 < v2) r = -1; else if(v1 > v2) r = 1; return asc ? r : -r;
 	}
 	
 	public static int cmp(short v1, short v2, boolean asc) {
-		int r = 0;
-		if(v1 < v2) r = -1;
-		else if(v1 > v2) r = 1;
-		return asc ? r : -r;
+		int r = 0; if(v1 < v2) r = -1; else if(v1 > v2) r = 1; return asc ? r : -r;
 	}
 
 	public static final <T extends Comparable<? super T>> int cmp(T v1, T v2, boolean asc) {
@@ -50,11 +41,7 @@ public final class Comparators {
 	}
 	
 	public static final <T extends Comparable<? super T>> int cmp(T v1, T v2, boolean asc, boolean nullIsGreater) {
-		int r = 0;
-		if(v1 == null && v2 == null) r = 0;
-		else if(v1 == null) r = nullIsGreater ? 1 : -1;
-		else if(v2 == null) r = nullIsGreater ? -1 : 1;
-		else r = v1.compareTo(v2);
-		return asc ? r : -r;
+		int r = 0; if (v1 == null && v2 == null) r = 0; else if(v1 == null) r = nullIsGreater ? 1 : -1;
+		else if(v2 == null) r = nullIsGreater ? -1 : 1; else r = v1.compareTo(v2); return asc ? r : -r;
 	}
 }

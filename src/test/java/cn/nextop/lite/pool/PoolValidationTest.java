@@ -44,8 +44,10 @@ public class PoolValidationTest extends BaseTest {
         Thread.sleep(500);
         assertEquals(2, acc1.get());
         TestObject2 o = pool.acquire();
-        o.valid = false;
-        if (o != null) pool.release(o);
+        if (o != null) {
+            o.valid = false;
+            pool.release(o);
+        }
         System.out.println("released");
         Thread.sleep(500);
         assertEquals(3, acc1.get());

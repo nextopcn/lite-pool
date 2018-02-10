@@ -22,10 +22,10 @@
 
     <groupId>cn.nextop</groupId>
     <artifactId>lite-pool</artifactId>
-    <version>1.0.0-beta</version>
+    <version>1.0.0-RC1</version>
 
     <name>lite-pool</name>
-    <description>lite object pool</description>
+    <description>A lite fast object pool written by java</description>
     <url>https://github.com/nextopcn/lite-pool</url>
 
     <licenses>
@@ -65,7 +65,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <!-- log api -->
         <slf4j.api.version>1.7.25</slf4j.api.version>
         <commons.lang3.version>3.4</commons.lang3.version>
     </properties>
