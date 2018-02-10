@@ -40,10 +40,10 @@ public class ThreadAllocator<T> extends AbstractAllocator<T> {
 	/**
 	 *
 	 */
-	@Override public int getIdleObjects() { return parent.getIdleObjects(); }
-	@Override public int getTotalObjects() { return parent.getTotalObjects(); }
-	@Override public int getActiveObjects() { return parent.getActiveObjects(); }
-	@Override public int getAwaitingObjects() { return parent.getAwaitingObjects(); }
+	@Override public int getIdleCount() { return parent.getIdleCount(); }
+	@Override public int getBusyCount() { return parent.getBusyCount(); }
+	@Override public int getTotalCount() { return parent.getTotalCount(); }
+	@Override public int getPendingCount() { return parent.getPendingCount(); }
 
 	/**
 	 * 
