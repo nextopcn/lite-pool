@@ -34,8 +34,9 @@ public class ObjectPoolTest extends BaseTest {
 
     @Test
     public void testLeak() throws InterruptedException {
+        AtomicInteger id = new AtomicInteger(0);
         Pool<TestObject1> pool = create(2, 10, 5000, 15000, 0, 5000, 30000, () -> {
-            TestObject1 t =new TestObject1();
+            TestObject1 t =new TestObject1(id);
             System.out.println("created object:" + t);
             return t;
         }, v -> {
@@ -63,9 +64,10 @@ public class ObjectPoolTest extends BaseTest {
 
     @Test
     public void testNoShrink() {
+        AtomicInteger id = new AtomicInteger(0);
         AtomicInteger acc = new AtomicInteger(0);
         Pool<TestObject1> pool = create(4, 10, 500, 1000, 0, 1000, 30000, () -> {
-            TestObject1 t =new TestObject1();
+            TestObject1 t =new TestObject1(id);
             System.out.println("created object:" + t);
             return t;
         }, v -> {
@@ -94,9 +96,10 @@ public class ObjectPoolTest extends BaseTest {
 
     @Test
     public void testShrink() {
+        AtomicInteger id = new AtomicInteger(0);
         AtomicInteger acc = new AtomicInteger(0);
         Pool<TestObject1> pool = create(4, 10, 500, 1000, 0, 1000, 30000, () -> {
-            TestObject1 t =new TestObject1();
+            TestObject1 t =new TestObject1(id);
             System.out.println("created object:" + t);
             return t;
         }, v -> {
@@ -125,9 +128,10 @@ public class ObjectPoolTest extends BaseTest {
 
     @Test
     public void test() throws Exception {
+        AtomicInteger id = new AtomicInteger(0);
         AtomicInteger acc = new AtomicInteger(0);
         Pool<TestObject1> pool = create(2, 10, 2000, 4000, 0, 8000, 30000, () -> {
-            TestObject1 t =new TestObject1();
+            TestObject1 t =new TestObject1(id);
             acc.set(t.id);
             System.out.println("created object:" + t);
             return t;

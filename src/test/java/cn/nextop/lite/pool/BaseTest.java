@@ -38,10 +38,9 @@ public abstract class BaseTest {
     }
 
     public static class TestObject1 {
-        private static AtomicInteger acc = new AtomicInteger();
         public final int id;
 
-        protected TestObject1() {
+        protected TestObject1(AtomicInteger acc) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
