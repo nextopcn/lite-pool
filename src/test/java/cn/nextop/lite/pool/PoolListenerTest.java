@@ -73,7 +73,6 @@ public class PoolListenerTest extends BaseTest {
                     latch.countDown();
                 });
             }
-
         }
         latch.await();
         s.shutdown();

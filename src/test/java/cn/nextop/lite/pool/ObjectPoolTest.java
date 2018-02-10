@@ -46,14 +46,12 @@ public class ObjectPoolTest extends BaseTest {
         CountDownLatch latch = new CountDownLatch(count);
         AtomicInteger acc = new AtomicInteger();
         for (int i = 0; i < count; i++) {
-            s.submit(new Runnable() {
-                @Override public void run() {
-                    TestObject1 to = pool.acquire();
-                    if (to == null) {
-                        acc.incrementAndGet();
-                    }
-                    latch.countDown();
+            s.submit(() -> {
+                TestObject1 to = pool.acquire();
+                if (to == null) {
+                    acc.incrementAndGet();
                 }
+                latch.countDown();
             });
         }
         latch.await();
@@ -77,7 +75,7 @@ public class ObjectPoolTest extends BaseTest {
             try {
                 t = pool.acquire();
                 if (t != null)
-                    Thread.sleep(10);
+                    Thread.sleep(5);
             } catch (Throwable cause) {
                 cause.printStackTrace();
             } finally {
@@ -90,7 +88,7 @@ public class ObjectPoolTest extends BaseTest {
 
     @Test
     public void test() throws Exception {
-        Pool<TestObject1> pool = create(2, 10, 2000, 5000, 0, 10000, 30000, () -> {
+        Pool<TestObject1> pool = create(2, 10, 2000, 4000, 0, 8000, 30000, () -> {
             TestObject1 t =new TestObject1();
             System.out.println("created object:" + t);
             return t;
@@ -99,7 +97,7 @@ public class ObjectPoolTest extends BaseTest {
         });
         pool.start();
         ExecutorService s = Executors.newFixedThreadPool(50);
-        final AtomicInteger sucess = new AtomicInteger();
+        final AtomicInteger success = new AtomicInteger();
         final AtomicInteger failed = new AtomicInteger();
         int count = 10;
         CountDownLatch latch = new CountDownLatch(count);
@@ -109,9 +107,9 @@ public class ObjectPoolTest extends BaseTest {
                     TestObject1 t = null;
                     try {
                         t = pool.acquire();
-                        Thread.sleep(10);
+                        Thread.sleep(3);
                         if (t != null) {
-                            sucess.incrementAndGet();
+                            success.incrementAndGet();
                         } else {
                             failed.incrementAndGet();
                         }
@@ -125,8 +123,8 @@ public class ObjectPoolTest extends BaseTest {
             });
         }
         latch.await();
-        System.out.println("sleep 20 seconds, success:" + sucess.get() + ", failed:" + failed.get());
-        TimeUnit.SECONDS.sleep(20);
+        System.out.println("sleep 20 seconds, success:" + success.get() + ", failed:" + failed.get());
+        TimeUnit.SECONDS.sleep(16);
         CountDownLatch latch1 = new CountDownLatch(count);
         for (int i = 0; i < count; i++) {
             s.submit(() -> {
@@ -135,7 +133,7 @@ public class ObjectPoolTest extends BaseTest {
                     try {
                         t = pool.acquire();
                         if (t != null)
-                            Thread.sleep(10);
+                            Thread.sleep(3);
                     } catch (Throwable cause) {
                     } finally {
                         if (t != null)
@@ -147,7 +145,7 @@ public class ObjectPoolTest extends BaseTest {
         }
         latch1.await();
         System.out.println("done");
-        TimeUnit.SECONDS.sleep(20);
+        TimeUnit.SECONDS.sleep(16);
         s.shutdown();
         pool.stop();
     }

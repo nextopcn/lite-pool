@@ -55,4 +55,8 @@ public abstract class BaseTest {
             return "TestObject1:" + id;
         }
     }
+
+    public static class TestObject2 {
+        public volatile boolean valid = true;
+    }
 }
