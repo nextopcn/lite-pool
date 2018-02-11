@@ -222,6 +222,8 @@ MXBean : `cn.nextop.lite.pool:type=PoolAllocator`
 
 测试用例 :  
   
+基本参数: 10 minimum, 10 maximum  
+  
 ```java  
     TestObject object = pool.acquire();
     if (object != null) pool.release(object);
@@ -237,5 +239,5 @@ MXBean : `cn.nextop.lite.pool:type=PoolAllocator`
   
 结果:  
   
-<img src="./benchmark.png" width="70%" height="70%">  
+<img src="./benchmark.png" width="80%" height="80%">  
   

@@ -222,6 +222,8 @@ Test env:
 
 Test case:  
   
+Basic Parameters: 10 minimum, 10 maximum  
+  
 ```java  
     TestObject object = pool.acquire();
     if (object != null) pool.release(object);
@@ -237,5 +239,5 @@ Run [Benchmark.java](./src/test/java/cn/nextop/lite/pool/benchmark/Benchmark.jav
   
 Result:  
   
-<img src="./benchmark.png" width="70%" height="70%">  
+<img src="./benchmark.png" width="80%" height="80%">  
   
