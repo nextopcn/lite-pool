@@ -11,7 +11,8 @@
       * [2.2. 使用](#22-使用)
    * [3. PoolListener](#3-poollistener)
    * [4. 扩展自己的PoolAllocator](#4-扩展自己的poolallocator)
-   * [5. 基准测试](#5-基准测试)
+   * [5. JMX](#5-jmx)
+   * [6. 基准测试](#6-基准测试)
 
 
 # 1. Lite-pool  
@@ -63,7 +64,7 @@ maven-3.2.3+
 | supplier   |                    |  创建pool对象的回调方法, 必选项                                                 |
 | consumer   |                    |  销毁pool对象的回调方法, 可选项                                                 |
 | validator  |                    |  验证pool对象的回调方法, 可选项                                                 |
-| validation | PULSE              |  验证pool对象的的前置条件, 例如:`new PoolValidation(PULSE\|ACQUIRE\| RELEASE)`  |  
+| validation | PULSE              |  验证pool对象的的前置条件, 例如:`new PoolValidation(PULSE\|ACQUIRE\|RELEASE)`   |  
   
 
 ## 2.2. 使用  
@@ -181,7 +182,33 @@ Pool<YourPoolObject> pool = new PoolBuilder<YourPoolObject>()
                     .build("object pool");
 ```
  
-# 5. 基准测试
+# 5. JMX
+
+MXBean : `cn.nextop.lite.pool:type=PoolConfig`  
+  
+| **属性**      | **可变更**      | **详解**                                 |
+|---------------|----------------|-----------------------------------------|
+| Maximum       | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
+| Minimum       | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
+| Tenancy       | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
+| Timeout       | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
+| Tti           | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
+| Ttl           | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
+| Verbose       | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
+| Maximum       | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
+| Maximum       | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
+  
+MXBean : `cn.nextop.lite.pool:type=PoolAllocator`  
+  
+| **属性**      | **可变更**      | **详解**                                                   |
+|---------------|----------------|-----------------------------------------------------------|
+| BusyCount     | 否             | pool中处于繁忙状态的对象数量, 等价于 `TotalCount - IdleCount` |
+| IdleCount     | 否             | pool中处于空闲状态的对象数量.                                |
+| TotalCount    | 否             | pool中总的对象数量.                                         |
+| PendingCount  | 否             | pool中处于等待请求的对象数量.                                |
+  
+
+# 6. 基准测试
 
 测试环境 :  
 

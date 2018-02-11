@@ -48,7 +48,7 @@ maven-3.2.3+
 # 2. Simple usage  
 ## 2.1. PoolBuilder  
 
-| **config** | **default value**  |  **details**                                                                        |
+| **Config** | **Default value**  |  **Details**                                                                        |
 | ---------- | ------------------ | ------------------------------------------------------------------------------------|
 | minimum    | 0                  |  minimum allowed objects in pool                                                    |
 | maximum    | 16                 |  maximum allowed objects in pool                                                    |
@@ -64,7 +64,7 @@ maven-3.2.3+
 | supplier   |                    |  required callback for creating pool objects                                        |
 | consumer   |                    |  optional callback for destroying pool objects                                      |
 | validator  |                    |  optional callback for validating pool objects                                      |
-| validation | PULSE              |  precondition for `validator`, e.g : `new PoolValidation(PULSE\|ACQUIRE\| RELEASE)` |
+| validation | PULSE              |  precondition for `validator`, e.g : `new PoolValidation(PULSE\|ACQUIRE\|RELEASE)`  |
   
 
 ## 2.2. Usage  
@@ -182,7 +182,33 @@ Pool<YourPoolObject> pool = new PoolBuilder<YourPoolObject>()
                     .build("object pool");
 ```
  
-# 5. Benchmark
+# 5. JMX
+
+MXBean : `cn.nextop.lite.pool:type=PoolConfig`  
+  
+| **Attribute** | **Modifiable** | **Details**                             |
+|---------------|----------------|-----------------------------------------|
+| Maximum       | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
+| Minimum       | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
+| Tenancy       | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
+| Timeout       | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
+| Tti           | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
+| Ttl           | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
+| Verbose       | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
+| Maximum       | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
+| Maximum       | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
+  
+MXBean : `cn.nextop.lite.pool:type=PoolAllocator`  
+  
+| **Attribute** | **Modifiable** | **Details**                                                       |
+|---------------|----------------|-------------------------------------------------------------------|
+| BusyCount     | No             | pool's busy object count, equivalent to `TotalCount - IdleCount`. |
+| IdleCount     | No             | pool's idle object count.                                         |
+| TotalCount    | No             | pool's total object count.                                        |
+| PendingCount  | No             | pool's pending request object count.                              |
+  
+
+# 6. Benchmark
 
 Test env:  
 
