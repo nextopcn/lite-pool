@@ -235,5 +235,5 @@ MXBean : `cn.nextop.lite.pool:type=PoolAllocator`
   
 结果:  
   
-![benchmark](./benchmark.png)  
+<img src="./benchmark.png" width="50%" height="50%">  
   
