@@ -55,6 +55,7 @@ public abstract class AbstractAllocator<T> extends Lifecyclet implements PoolAll
     protected final Pool<T> pool;
     protected final PaddedAtomicLong sequence;
     protected PoolAllocatorListeners<T> listeners;
+    protected static final String PREFIX = "cn.nextop.lite.pool:type=PoolAllocator";
 
     //
     protected abstract Slot<T> doRelease(T t);
@@ -72,18 +73,16 @@ public abstract class AbstractAllocator<T> extends Lifecyclet implements PoolAll
 
     @Override
     protected long doStop(long timeout, TimeUnit unit) throws Exception {
-        MBeanServer s = ManagementFactory.getPlatformMBeanServer();
-        String strName = "cn.nextop.lite.pool:type=PoolAllocator ";
-        ObjectName n = new ObjectName(strName + "(" + name + ")" );
-        if(s.isRegistered(n)) s.unregisterMBean(n); return timeout;
+        ObjectName n = new ObjectName(PREFIX + "(" + name + ")");
+        MBeanServer m = ManagementFactory.getPlatformMBeanServer();
+        if(m.isRegistered(n)) m.unregisterMBean(n); return timeout;
     }
 
     @Override
     protected void doStart() throws Exception {
-        final MBeanServer s = ManagementFactory.getPlatformMBeanServer();
-        final String strName = "cn.nextop.lite.pool:type=PoolAllocator ";
-        final ObjectName n = new ObjectName(strName + "(" + this.name + ")");
-        if(s.isRegistered(n)) s.unregisterMBean(n); s.registerMBean(this, n);
+        final MBeanServer m = ManagementFactory.getPlatformMBeanServer();
+        final ObjectName n = new ObjectName(PREFIX + "(" + this.name + ")");
+        if(m.isRegistered(n)) m.unregisterMBean(n); m.registerMBean(this, n);
     }
 
     /**
