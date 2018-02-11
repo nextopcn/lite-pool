@@ -71,9 +71,9 @@ public abstract class AbstractPool<T> extends Lifecyclet implements Pool<T> {
 	protected void doStart() throws Exception {
 		if (this.config.isLocal()) factory = new Factory<T>(factory);
 		Lifecyclet.start(this.allocator = this.factory.create(this));
-		final MBeanServer s = ManagementFactory.getPlatformMBeanServer();
+		final MBeanServer m = ManagementFactory.getPlatformMBeanServer();
 		final ObjectName n = new ObjectName(PREFIX + "(" + this.name + ")");
-		if (s.isRegistered(n)) s.unregisterMBean(n); s.registerMBean(config, n);
+		if(m.isRegistered(n)) m.unregisterMBean(n); m.registerMBean(config, n);
 	}
 
 	/**
