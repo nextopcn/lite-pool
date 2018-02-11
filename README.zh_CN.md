@@ -229,50 +229,11 @@ MXBean : `cn.nextop.lite.pool:type=PoolAllocator`
   
 (单位: ops/ms)  
   
-用例 1: 10 minimum, 10 maximum, 1 个线程acquire, release  
-结果 :  
-
-```java  
-Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt   10  9491.206 ± 108.402  ops/ms
-```
+测试参数: 参照 [BaseTest](./src/test/java/cn/nextop/lite/pool/BaseTest.java)  
   
-用例 2: 10 minimum, 10 maximum, 2 个线程acquire, release  
-结果 :  
-
-```java  
-Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt   10  8327.384 ± 368.566  ops/ms
-```
+测试类: 参照 [LitePoolBenchmark](./src/test/java/cn/nextop/lite/pool/benchmark/LitePoolBenchmark.java) 和 [CommonsPool2Benchmark](./src/test/java/cn/nextop/lite/pool/benchmark/CommonsPool2Benchmark.java)  
   
-用例 3: 10 minimum, 10 maximum, 5 个线程acquire, release  
-结果 :  
-
-```java  
-Benchmark                  Mode  Cnt     Score    Error   Units
-ObjectPoolBenchmark.test  thrpt   10  8150.062 ± 30.242  ops/ms
-```
+结果:  
   
-用例 4: 10 minimum, 10 maximum, 10 个线程acquire, release  
-结果 :  
-
-```java  
-Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt   10  9486.971 ± 200.483  ops/ms
-```
+![benchmark](./benchmark.png)  
   
-用例 5: 10 minimum, 10 maximum, 20 个线程acquire, release  
-结果 :  
-
-```java  
-Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt   10  7691.710 ± 530.855  ops/ms
-```
-  
-用例 6: 10 minimum, 10 maximum, 50 个线程acquire, release  
-结果 :  
-
-```java  
-Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt   10  7858.702 ± 584.944  ops/ms
-```

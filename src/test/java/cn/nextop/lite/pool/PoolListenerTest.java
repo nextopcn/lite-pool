@@ -32,7 +32,7 @@ public class PoolListenerTest extends BaseTest {
 
     @Test
     public void test() throws InterruptedException {
-        Pool<TestObject> pool = create(2, 10, 3000, 5000, 0, 10000, 4000, () -> new TestObject(), null);
+        Pool<TestObject> pool = createLitePool(2, 10, 3000, 5000, 0, 10000, 4000, () -> new TestObject(), null);
         AtomicInteger acquire = new AtomicInteger(0);
         AtomicInteger release = new AtomicInteger(0);
         AtomicInteger leakage = new AtomicInteger(0);

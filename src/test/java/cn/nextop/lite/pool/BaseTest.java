@@ -16,6 +16,12 @@
 
 package cn.nextop.lite.pool;
 
+import org.apache.commons.pool2.BasePooledObjectFactory;
+import org.apache.commons.pool2.PooledObject;
+import org.apache.commons.pool2.impl.DefaultPooledObject;
+import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -25,13 +31,29 @@ import java.util.function.Supplier;
  */
 public abstract class BaseTest {
 
-    public <T> Pool<T> create(int minimum, int maximum, long timeout, long interval, long ttl, long tti, long tenancy, Supplier<T> supplier, Consumer<T> consumer) {
+    public <T> Pool<T> createLitePool(int minimum, int maximum, long timeout, long interval, long ttl, long tti, long tenancy, Supplier<T> supplier, Consumer<T> consumer) {
         PoolBuilder<T> builder = new PoolBuilder<>();
         Pool<T> pool = builder.local(true).supplier(supplier).consumer(consumer).
                 interval(interval).minimum(minimum).
                 maximum(maximum).timeout(timeout).tenancy(tenancy).
                 ttl(ttl).tti(tti).verbose(false).build("object pool");
         return pool;
+    }
+
+    public GenericObjectPool<TestObject> createCommonsPool2(int minimum, int maximum, long timeout) {
+        GenericObjectPoolConfig config = new GenericObjectPoolConfig();
+        config.setMaxTotal(maximum);
+        config.setMinIdle(minimum);
+        config.setMaxIdle(minimum);
+        config.setFairness(false);
+        config.setJmxEnabled(false);
+        config.setBlockWhenExhausted(true);
+        config.setTestOnBorrow(false);
+        config.setMaxWaitMillis(timeout);
+        config.setTestOnCreate(false);
+        config.setTestOnReturn(false);
+        config.setTestWhileIdle(false);
+        return new GenericObjectPool<>( new CommonsPool2Factory(), config);
     }
 
     public static class TestObject {
@@ -57,5 +79,23 @@ public abstract class BaseTest {
 
     public static class TestObject2 {
         public volatile boolean valid = true;
+    }
+
+    public static class CommonsPool2Factory extends BasePooledObjectFactory<TestObject> {
+        @Override
+        public TestObject create() throws Exception {
+            return new TestObject();
+        }
+        @Override
+        public PooledObject<TestObject> wrap(TestObject obj) {
+            return new DefaultPooledObject<>(obj);
+        }
+        @Override
+        public boolean validateObject(PooledObject<TestObject> p) {
+            return true;
+        }
+        @Override
+        public void destroyObject(PooledObject<TestObject> p) throws Exception {
+        }
     }
 }

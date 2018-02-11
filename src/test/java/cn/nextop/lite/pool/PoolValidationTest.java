@@ -20,10 +20,11 @@ import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static cn.nextop.lite.pool.PoolValidation.RELEASE;
 import static cn.nextop.lite.pool.PoolValidation.ACQUIRE;
 import static cn.nextop.lite.pool.PoolValidation.PULSE;
-import static org.junit.Assert.*;
+import static cn.nextop.lite.pool.PoolValidation.RELEASE;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Baoyi Chen
@@ -33,7 +34,7 @@ public class PoolValidationTest extends BaseTest {
     public void test() throws InterruptedException {
         AtomicInteger acc = new AtomicInteger(0);
         AtomicInteger acc1 = new AtomicInteger(0);
-        Pool<TestObject2> pool = create(2, 10, 3000, 5000, 0, 10000, 4000, () -> {
+        Pool<TestObject2> pool = createLitePool(2, 10, 3000, 5000, 0, 10000, 4000, () -> {
             TestObject2 o = new TestObject2();
             acc1.incrementAndGet();
             return o;
@@ -57,7 +58,7 @@ public class PoolValidationTest extends BaseTest {
 
     @Test
     public void test1() throws InterruptedException {
-        Pool<TestObject2> pool = create(2, 10, 1000, 5000, 0, 10000, 4000, () -> {
+        Pool<TestObject2> pool = createLitePool(2, 10, 1000, 5000, 0, 10000, 4000, () -> {
             TestObject2 o = new TestObject2();
             o.valid = false;
             return o;

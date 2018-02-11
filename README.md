@@ -229,50 +229,11 @@ Test case:
   
 (unit: ops/ms)  
   
-Case 1: 10 minimum, 10 maximum, 1 thread polling from pool  
-Result:  
-
-```java  
-Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt   10  9491.206 ± 108.402  ops/ms
-```
+Parameters: see [BaseTest](./src/test/java/cn/nextop/lite/pool/BaseTest.java)  
   
-Case 2: 10 minimum, 10 maximum, 2 thread polling from pool  
-Result:  
-
-```java  
-Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt   10  8327.384 ± 368.566  ops/ms
-```
+Benchmark Classes: see [LitePoolBenchmark](./src/test/java/cn/nextop/lite/pool/benchmark/LitePoolBenchmark.java) and [CommonsPool2Benchmark](./src/test/java/cn/nextop/lite/pool/benchmark/CommonsPool2Benchmark.java)  
   
-Case 3: 10 minimum, 10 maximum, 5 thread polling from pool  
 Result:  
-
-```java  
-Benchmark                  Mode  Cnt     Score    Error   Units
-ObjectPoolBenchmark.test  thrpt   10  8150.062 ± 30.242  ops/ms
-```
   
-Case 4: 10 minimum, 10 maximum, 10 thread polling from pool  
-Result:  
-
-```java  
-Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt   10  9486.971 ± 200.483  ops/ms
-```
+![benchmark](./benchmark.png)  
   
-Case 5: 10 minimum, 10 maximum, 20 thread polling from pool  
-Result:  
-
-```java  
-Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt   10  7691.710 ± 530.855  ops/ms
-```
-  
-Case 6: 10 minimum, 10 maximum, 50 thread polling from pool  
-Result:  
-
-```java  
-Benchmark                  Mode  Cnt     Score     Error   Units
-ObjectPoolBenchmark.test  thrpt   10  7858.702 ± 584.944  ops/ms
-```
