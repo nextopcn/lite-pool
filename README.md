@@ -11,7 +11,8 @@ Table of Contents([中文说明](./README.zh_CN.md))
       * [2.2. Usage](#22-usage)
    * [3. PoolListener](#3-poollistener)
    * [4. Write your own PoolAllocator](#4-write-your-own-poolallocator)
-   * [5. Benchmark](#5-benchmark)
+   * [5. JMX](#5-jmx)
+   * [6. Benchmark](#6-benchmark)
 
 
 # 1. Lite-pool  
@@ -34,7 +35,7 @@ maven-3.2.3+
     <dependency>
         <groupId>cn.nextop</groupId>
         <artifactId>lite-pool</artifactId>
-        <version>1.0.0-beta</version>
+        <version>1.0.0-RC1</version>
     </dependency>
 ```
 
@@ -47,22 +48,23 @@ maven-3.2.3+
 # 2. Simple usage  
 ## 2.1. PoolBuilder  
 
-| **config** | **default value**  |  **details**                                                         |
-| ---------- | ------------------ | ---------------------------------------------------------------------|
-| minimum    | 0                  |  minimum allowed objects in pool                                     |
-| maximum    | 16                 |  maximum allowed objects in pool                                     |
-| tti        | 15 minutes         |  time to idle, optional maximum pool objects' idle time, unit ms     |
-| ttl        | 60 minutes         |  time to live, optional maximum pool objects' life time, unit ms     |
-| tenancy    | 1  minutes         |  optional leak detection timeout, unit ms, (**MUST** >= `interval`)  |
-| timeout    | 8  seconds         |  default acquire timeout, unit ms                                    |
-| interval   | 15 seconds         |  default house keeping scheduler's interval, unit ms                 |
-| local      | true               |  use `ThreadAllocator` as L1 cache or not                            |
-| verbose    | false              |  print log or not                                                    |
-| fifo       | false              |  pool allocation policy, `false` has better performance              |
-| allocator  | DefaultAllocator   |  pool allocator, can be customized by extending `AbstractAllocator`  |
-| supplier   |                    |  required callback for creating pool objects                         |
-| consumer   |                    |  optional callback for destroying pool objects                       |
-| validator  |                    |  optional callback for validating pool objects                       |
+| **config** | **default value**  |  **details**                                                                                    |
+| ---------- | ------------------ | ------------------------------------------------------------------------------------------------|
+| minimum    | 0                  |  minimum allowed objects in pool                                                                |
+| maximum    | 16                 |  maximum allowed objects in pool                                                                |
+| tti        | 15 minutes         |  time to idle, optional maximum pool objects' idle time, unit ms                                |
+| ttl        | 60 minutes         |  time to live, optional maximum pool objects' life time, unit ms                                |
+| tenancy    | 1  minutes         |  optional leak detection timeout, unit ms, (**MUST** >= `interval`)                             |
+| timeout    | 8  seconds         |  default acquire timeout, unit ms                                                               |
+| interval   | 15 seconds         |  default house keeping scheduler's interval, unit ms                                            |
+| local      | true               |  use `ThreadAllocator` as L1 cache or not                                                       |
+| verbose    | false              |  print log or not                                                                               |
+| fifo       | false              |  pool allocation policy, `false` has better performance                                         |
+| allocator  | DefaultAllocator   |  pool allocator, can be customized by extending `AbstractAllocator`                             |
+| supplier   |                    |  required callback for creating pool objects                                                    |
+| consumer   |                    |  optional callback for destroying pool objects                                                  |
+| validator  |                    |  optional callback for validating pool objects                                                  |
+| validation | PULSE              |  precondition for validating pool objects, e.g.: `new PoolValidation(PULSE\|ACQUIRE\| RELEASE)` |
   
 
 ## 2.2. Usage  

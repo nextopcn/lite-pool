@@ -34,7 +34,7 @@ maven-3.2.3+
     <dependency>
         <groupId>cn.nextop</groupId>
         <artifactId>lite-pool</artifactId>
-        <version>1.0.0-beta</version>
+        <version>1.0.0-RC1</version>
     </dependency>
 ```
 
@@ -63,6 +63,7 @@ maven-3.2.3+
 | supplier   |                    |  创建pool对象的回调方法, 必选项                                                 |
 | consumer   |                    |  销毁pool对象的回调方法, 可选项                                                 |
 | validator  |                    |  验证pool对象的回调方法, 可选项                                                 |
+| validation | PULSE              |  验证pool对象的的前置条件, 例如:`new PoolValidation(PULSE\|ACQUIRE\| RELEASE)`  |  
   
 
 ## 2.2. 使用  

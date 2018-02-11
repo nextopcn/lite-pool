@@ -26,6 +26,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import static cn.nextop.lite.pool.PoolValidation.PULSE;
+
 /**
  * @author Jingqi Xu
  */
@@ -44,7 +46,7 @@ public class PoolConfig<T> implements PoolConfigMXBean {
 	protected volatile long ttl = TimeUnit.MINUTES.toMillis(60);
 	protected volatile long tenancy = TimeUnit.MINUTES.toMillis(1);
 	protected volatile long timeout = TimeUnit.SECONDS.toMillis(8);
-	protected PoolValidation validation = new PoolValidation((byte)1); // PULSE
+	protected PoolValidation validation = new PoolValidation(PULSE);
 	protected final ConcurrentMap<Object, Object> cookies = new ConcurrentHashMap<>();
 
 	/**
