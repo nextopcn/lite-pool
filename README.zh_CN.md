@@ -48,23 +48,23 @@ maven-3.2.3+
 # 2. 简要用法  
 ## 2.1. PoolBuilder  
 
-| **配置项** | **默认值**          |  **详解**                                                                     |
-| ---------- | ------------------ | ------------------------------------------------------------------------------|
-| minimum    | 0                  |  pool中所维持的最小对象数量                                                     |
-| maximum    | 16                 |  pool中所维持的最大对象数量                                                     |
-| tti        | 15 分钟            |  pool中对象的最大空闲时间, 可选项(0表示不过期), 单位: ms                         |
-| ttl        | 60 分钟            |  pool中对象的最大生存时间, 可选项(0表示不过期), 单位: ms                         |
-| tenancy    | 1  分钟            |  对象泄露检测的超时时间, 可选项(0表示不过期), 单位: ms, (**必须** >= `interval`) |
-| timeout    | 8  秒              |  默认的请求超时时间, 单位: ms                                                   |
-| interval   | 15 秒              |  默认的定时检测任务时间间隔, 单位: ms                                           |
-| local      | true               |  是否应用 `ThreadAllocator` 作为 L1 缓存                                       |
-| verbose    | false              |  是否打印日志                                                                  |
-| fifo       | false              |  对象池分配策略, 设置为`false`有更好的性能                                      |
-| allocator  | DefaultAllocator   |  对象池分配器, 继承 `AbstractAllocator`可以定制自己的对象池分配器                |
-| supplier   |                    |  创建pool对象的回调方法, 必选项                                                 |
-| consumer   |                    |  销毁pool对象的回调方法, 可选项                                                 |
-| validator  |                    |  验证pool对象的回调方法, 可选项                                                 |
-| validation | PULSE              |  验证pool对象的的前置条件, 例如:`new PoolValidation(PULSE\|ACQUIRE\|RELEASE)`   |  
+| **配置项** | **默认值**          |  **详解**                                                                         |
+| ---------- | ------------------ | ---------------------------------------------------------------------------------|
+| minimum    | 0                  |  pool中所维持的最小对象数量                                                         |
+| maximum    | 16                 |  pool中所维持的最大对象数量                                                         |
+| tti        | 15 分钟            |  pool中对象的最大空闲时间, 可选项(0表示不过期), 单位: ms                              |
+| ttl        | 60 分钟            |  pool中对象的最大生存时间, 可选项(0表示不过期), 单位: ms                              |
+| tenancy    | 1  分钟            |  对象泄露检测的超时时间, 可选项(0表示不过期), 单位: ms, (**必须** >= `interval`)       |
+| timeout    | 8  秒              |  默认的请求超时时间, 单位: ms                                                       |
+| interval   | 15 秒              |  默认的定时检测任务时间间隔, 单位: ms                                                |
+| local      | true               |  是否应用 `ThreadAllocator` 作为 L1 缓存                                           |
+| verbose    | false              |  是否打印日志                                                                      |
+| fifo       | false              |  对象池分配策略, 设置为`false`有更好的性能                                           |
+| allocator  | DefaultAllocator   |  对象池分配器, 继承 `AbstractAllocator`可以定制自己的对象池分配器                      |
+| supplier   |                    |  创建pool对象的回调方法, 必选项                                                      |
+| consumer   |                    |  销毁pool对象的回调方法, 可选项                                                      |
+| validator  |                    |  验证pool对象的回调方法, 可选项                                                      |
+| validation | PULSE              |  验证pool对象的的前置条件, 例如:`new PoolValidation((byte)(PULSE\|ACQUIRE\|RELEASE))`|  
   
 
 ## 2.2. 使用  
