@@ -229,11 +229,13 @@ MXBean : `cn.nextop.lite.pool:type=PoolAllocator`
   
 (单位: ops/ms)  
   
-测试参数: 参照 [BaseTest](./src/test/java/cn/nextop/lite/pool/BaseTest.java)  
+测试参数: 参照 [BaseTest.java](./src/test/java/cn/nextop/lite/pool/BaseTest.java)  
   
-测试类: 参照 [LitePoolBenchmark](./src/test/java/cn/nextop/lite/pool/benchmark/LitePoolBenchmark.java) 和 [CommonsPool2Benchmark](./src/test/java/cn/nextop/lite/pool/benchmark/CommonsPool2Benchmark.java)  
+测试类: 参照 [LitePoolBenchmark.java](./src/test/java/cn/nextop/lite/pool/benchmark/LitePoolBenchmark.java) 和 [CommonsPool2Benchmark.java](./src/test/java/cn/nextop/lite/pool/benchmark/CommonsPool2Benchmark.java)  
+  
+运行 [Benchmark.java](./src/test/java/cn/nextop/lite/pool/benchmark/Benchmark.java)  
   
 结果:  
   
-<img src="./benchmark.png" width="50%" height="50%">  
+<img src="./benchmark.png" width="70%" height="70%">  
   

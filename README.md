@@ -229,11 +229,13 @@ Test case:
   
 (unit: ops/ms)  
   
-Parameters: see [BaseTest](./src/test/java/cn/nextop/lite/pool/BaseTest.java)  
+Parameters: see [BaseTest.java](./src/test/java/cn/nextop/lite/pool/BaseTest.java)  
   
-Benchmark Classes: see [LitePoolBenchmark](./src/test/java/cn/nextop/lite/pool/benchmark/LitePoolBenchmark.java) and [CommonsPool2Benchmark](./src/test/java/cn/nextop/lite/pool/benchmark/CommonsPool2Benchmark.java)  
+Benchmark Classes: see [LitePoolBenchmark.java](./src/test/java/cn/nextop/lite/pool/benchmark/LitePoolBenchmark.java) and [CommonsPool2Benchmark.java](./src/test/java/cn/nextop/lite/pool/benchmark/CommonsPool2Benchmark.java)  
+  
+Run [Benchmark.java](./src/test/java/cn/nextop/lite/pool/benchmark/Benchmark.java)  
   
 Result:  
   
-![benchmark](./benchmark.png)  
+<img src="./benchmark.png" width="70%" height="70%">  
   
