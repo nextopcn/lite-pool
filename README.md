@@ -205,7 +205,7 @@ MXBean : `cn.nextop.lite.pool:type=PoolAllocator`
 | BusyCount     | No             | pool's busy object count, equivalent to `TotalCount - IdleCount`. |
 | IdleCount     | No             | pool's idle object count.                                         |
 | TotalCount    | No             | pool's total object count.                                        |
-| PendingCount  | No             | pool's pending request object count.                              |
+| PendingCount  | No             | pool's pending request count.                                     |
   
 
 # 6. Benchmark

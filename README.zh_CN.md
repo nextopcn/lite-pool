@@ -200,12 +200,12 @@ MXBean : `cn.nextop.lite.pool:type=PoolConfig`
   
 MXBean : `cn.nextop.lite.pool:type=PoolAllocator`  
   
-| **属性**      | **可变更**      | **详解**                                                   |
-|---------------|----------------|-----------------------------------------------------------|
-| BusyCount     | 否             | pool中处于繁忙状态的对象数量, 等价于 `TotalCount - IdleCount` |
-| IdleCount     | 否             | pool中处于空闲状态的对象数量.                                |
-| TotalCount    | 否             | pool中总的对象数量.                                         |
-| PendingCount  | 否             | pool中处于等待请求的对象数量.                                |
+| **属性**      | **可变更**      | **详解**                                                    |
+|---------------|----------------|-------------------------------------------------------------|
+| BusyCount     | 否             | pool中处于繁忙状态的对象数量, 等价于 `TotalCount - IdleCount`. |
+| IdleCount     | 否             | pool中处于空闲状态的对象数量.                                 |
+| TotalCount    | 否             | pool中总的对象数量.                                          |
+| PendingCount  | 否             | pool中处于等待的请求数量.                                     |
   
 
 # 6. 基准测试
