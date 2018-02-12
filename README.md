@@ -237,11 +237,11 @@ Benchmark Classes: see [LitePoolBenchmark.java](./src/test/java/cn/nextop/lite/p
   
 Run [Benchmark.java](./src/test/java/cn/nextop/lite/pool/benchmark/Benchmark.java)  
   
-Use ThreadAllocator as L1 cache result:  
+Use `ThreadAllocator` as L1 cache result:  
   
 <img src="./benchmark/benchmark-local-true.png" width="80%" height="80%">  
   
-Unused ThreadAllocator as L1 cache result:  
+Unused `ThreadAllocator` as L1 cache result:  
   
 <img src="./benchmark/benchmark-local-false.png" width="80%" height="80%">  
   
