@@ -37,10 +37,10 @@ public class ObjectPoolTest extends BaseTest {
         AtomicInteger id = new AtomicInteger(0);
         Pool<TestObject1> pool = createLitePool(2, 10, 5000, 15000, 0, 5000, 30000, () -> {
             TestObject1 t =new TestObject1(id);
-            System.out.println("created object:" + t);
+            System.out.println("testLeak() created object:" + t);
             return t;
         }, v -> {
-            System.out.println("deleted object:" + v);
+            System.out.println("testLeak() deleted object:" + v);
         });
         pool.start();
         ExecutorService s = Executors.newFixedThreadPool(50);
@@ -68,11 +68,11 @@ public class ObjectPoolTest extends BaseTest {
         AtomicInteger acc = new AtomicInteger(0);
         Pool<TestObject1> pool = createLitePool(4, 10, 500, 1000, 0, 1000, 30000, () -> {
             TestObject1 t =new TestObject1(id);
-            System.out.println("created object:" + t);
+            System.out.println("testNoShrink() created object:" + t);
             return t;
         }, v -> {
             acc.incrementAndGet();
-            System.out.println("deleted object:" + v);
+            System.out.println("testNoShrink() deleted object:" + v);
         });
         pool.getConfig().setLocal(false);
         pool.getConfig().setFifo(true);
@@ -100,11 +100,11 @@ public class ObjectPoolTest extends BaseTest {
         AtomicInteger acc = new AtomicInteger(0);
         Pool<TestObject1> pool = createLitePool(4, 10, 500, 1000, 0, 1000, 30000, () -> {
             TestObject1 t =new TestObject1(id);
-            System.out.println("created object:" + t);
+            System.out.println("testShrink() created object:" + t);
             return t;
         }, v -> {
             acc.incrementAndGet();
-            System.out.println("deleted object:" + v);
+            System.out.println("testShrink() deleted object:" + v);
         });
         pool.getConfig().setLocal(false);
         pool.getConfig().setFifo(false);
@@ -133,10 +133,10 @@ public class ObjectPoolTest extends BaseTest {
         Pool<TestObject1> pool = createLitePool(2, 10, 2000, 4000, 0, 8000, 30000, () -> {
             TestObject1 t =new TestObject1(id);
             acc.set(t.id);
-            System.out.println("created object:" + t);
+            System.out.println("test() created object:" + t);
             return t;
         }, v -> {
-            System.out.println("deleted object:" + v);
+            System.out.println("test() deleted object:" + v);
         });
         pool.start();
         ExecutorService s = Executors.newFixedThreadPool(50);
