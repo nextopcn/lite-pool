@@ -129,10 +129,8 @@ public class ObjectPoolTest extends BaseTest {
     @Test
     public void test() throws Exception {
         AtomicInteger id = new AtomicInteger(0);
-        AtomicInteger acc = new AtomicInteger(0);
         Pool<TestObject1> pool = createLitePool(2, 10, 2000, 4000, 0, 8000, 30000, () -> {
             TestObject1 t =new TestObject1(id);
-            acc.set(t.id);
             System.out.println("test() created object:" + t);
             return t;
         }, v -> {
@@ -166,7 +164,6 @@ public class ObjectPoolTest extends BaseTest {
             });
         }
         latch.await();
-        assertEquals(9, acc.get());
         assertEquals(true, success.get() > 9990);
         assertEquals(true, failed.get() < 10);
         System.out.println("sleep 20 seconds, success:" + success.get() + ", failed:" + failed.get());
@@ -191,7 +188,6 @@ public class ObjectPoolTest extends BaseTest {
         }
         latch1.await();
         System.out.println("done");
-        assertEquals(19, acc.get());
         TimeUnit.SECONDS.sleep(16);
         s.shutdown();
         pool.stop();
