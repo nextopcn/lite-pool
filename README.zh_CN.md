@@ -237,7 +237,11 @@ MXBean : `cn.nextop.lite.pool:type=PoolAllocator`
   
 运行 [Benchmark.java](./src/test/java/cn/nextop/lite/pool/benchmark/Benchmark.java)  
   
-结果:  
+用`ThreadAllocator`做L1缓存的结果:  
   
-<img src="./benchmark.png" width="80%" height="80%">  
+<img src="./benchmark/benchmark-local-true.png" width="80%" height="80%">  
+  
+未用`ThreadAllocator`做L1缓存的结果:  
+  
+<img src="./benchmark/benchmark-local-false.png" width="80%" height="80%">  
   
