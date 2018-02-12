@@ -30,3 +30,6 @@ hs_err_pid*
 /lite-pool.iml
 /.idea
 /bin/
+
+# Benchmark
+*.json
