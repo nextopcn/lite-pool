@@ -41,7 +41,6 @@ public class LitePoolBenchmark extends BaseTest {
     @Setup(Level.Trial)
     public void doSetup() {
         pool = createLitePool(10, 10, 5000, 15000, 0, 0, 30000, () -> new TestObject(), null);
-        pool.getConfig().setLocal(false);
         pool.start();
     }
 
