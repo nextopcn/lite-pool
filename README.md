@@ -126,18 +126,20 @@ Spring configuration:
 
     <bean id="your.object.pool" class="cn.nextop.lite.pool.impl.ObjectPool" 
         init-method="start" destroy-method="stop">
+        
         <constructor-arg index="0" value="your.object.pool"/>
-        <property name="config" ref="your.object.pool.config"/>
-    </bean>
         
-    <bean id="your.object.pool.config" class="cn.nextop.lite.pool.PoolConfig" 
-        scope="prototype">
-        <property name="minimum" value="10"/>
-        ...
-        <property name="supplier" ref="your.object.pool.factory"/>
+        <property name="config">
+            <bean class="cn.nextop.lite.pool.PoolConfig">
+                <property name="minimum" value="10"/>
+                ... 
+                <property name="supplier">
+                    <bean class="your.package.Factory"/>
+                </property>
+            </bean>
+        </property>
     </bean>
-        
-    <bean id="your.object.pool.factory" class="your.package.Factory"/>
+
 ```
 
 # 3. PoolListener
