@@ -111,6 +111,8 @@ maven-3.2.3+
     public class YourPoolObject {
     }
     
+    package your.package;
+    
     public class Factory implements Supplier<YourPoolObject> {
         @Override
         public YourPoolObject get() {
