@@ -6,9 +6,10 @@
       * [1.2. 安装前置条件](#12-安装前置条件)
       * [1.3. Maven依赖](#13-maven依赖)
       * [1.4. 安装源码到本地Maven仓库](#14-安装源码到本地maven仓库)
-   * [2. 简要用法](#2-简要用法)
+   * [2. 用法](#2-用法)
       * [2.1. PoolBuilder](#21-poolbuilder)
-      * [2.2. 使用](#22-使用)
+      * [2.2. 单独使用](#22-单独使用)
+      * [2.3. 与Spring集成](#23-与spring集成)
    * [3. PoolListener](#3-poollistener)
    * [4. 扩展自己的PoolAllocator](#4-扩展自己的poolallocator)
    * [5. JMX](#5-jmx)
@@ -45,7 +46,7 @@ maven-3.2.3+
     $mvn clean install -Dmaven.test.skip=true
 ```  
 
-# 2. 简要用法  
+# 2. 用法  
 ## 2.1. PoolBuilder  
 
 | **配置项** | **默认值**          |  **详解**                                                                          |
@@ -67,7 +68,7 @@ maven-3.2.3+
 | validation | PULSE              |  验证pool对象的的前置条件, 例如:`new PoolValidation((byte)(PULSE\|ACQUIRE\|RELEASE))`|  
   
 
-## 2.2. 使用  
+## 2.2. 单独使用  
 
 ```java  
     public class YourPoolObject {
@@ -102,6 +103,43 @@ maven-3.2.3+
         pool.stop();
     }
 ```
+
+## 2.3. 与Spring集成  
+  
+
+```java  
+    public class YourPoolObject {
+    }
+    
+    public class Factory implements Supplier<YourPoolObject> {
+        @Override
+        public YourPoolObject get() {
+            return new YourPoolObject();
+        }
+    }
+
+```
+  
+Spring配置:  
+  
+```xml  
+
+    <bean id="your.object.pool" class="cn.nextop.lite.pool.impl.ObjectPool" 
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="your.object.pool"/>
+        <property name="config" ref="your.object.pool.config"/>
+    </bean>
+        
+    <bean id="your.object.pool.config" class="cn.nextop.lite.pool.PoolConfig" 
+        scope="prototype">
+        <property name="minimum" value="10"/>
+        ...
+        <property name="supplier" ref="your.object.pool.factory"/>
+    </bean>
+        
+    <bean id="your.object.pool.factory" class="your.package.Factory"/>
+```
+
 
 # 3. PoolListener
 

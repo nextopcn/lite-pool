@@ -6,9 +6,10 @@ Table of Contents([中文说明](./README.zh_CN.md))
       * [1.2. Requirements](#12-requirements)
       * [1.3. Maven dependency](#13-maven-dependency)
       * [1.4. Install from source code](#14-install-from-source-code)
-   * [2. Simple usage](#2-simple-usage)
+   * [2. Usage](#2-usage)
       * [2.1. PoolBuilder](#21-poolbuilder)
-      * [2.2. Usage](#22-usage)
+      * [2.2. Standalone usage](#22-standalone-usage)
+      * [2.3. Spring integration](#23-spring-integration)
    * [3. PoolListener](#3-poollistener)
    * [4. Write your own PoolAllocator](#4-write-your-own-poolallocator)
    * [5. JMX](#5-jmx)
@@ -45,7 +46,7 @@ maven-3.2.3+
     $mvn clean install -Dmaven.test.skip=true
 ```  
 
-# 2. Simple usage  
+# 2. Usage  
 ## 2.1. PoolBuilder  
 
 | **Config** | **Default value** | **Details**                                                                              |
@@ -67,7 +68,7 @@ maven-3.2.3+
 | validation | PULSE             | precondition for `validator`, e.g : `new PoolValidation((byte)(PULSE\|ACQUIRE\|RELEASE))`|
   
 
-## 2.2. Usage  
+## 2.2. Standalone usage  
 
 ```java  
     public class YourPoolObject {
@@ -101,6 +102,42 @@ maven-3.2.3+
     } finally {
         pool.stop();
     }
+```
+
+## 2.3. Spring integration  
+  
+
+```java  
+    public class YourPoolObject {
+    }
+    
+    public class Factory implements Supplier<YourPoolObject> {
+        @Override
+        public YourPoolObject get() {
+            return new YourPoolObject();
+        }
+    }
+
+```
+  
+Spring configuration:  
+  
+```xml  
+
+    <bean id="your.object.pool" class="cn.nextop.lite.pool.impl.ObjectPool" 
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="your.object.pool"/>
+        <property name="config" ref="your.object.pool.config"/>
+    </bean>
+        
+    <bean id="your.object.pool.config" class="cn.nextop.lite.pool.PoolConfig" 
+        scope="prototype">
+        <property name="minimum" value="10"/>
+        ...
+        <property name="supplier" ref="your.object.pool.factory"/>
+    </bean>
+        
+    <bean id="your.object.pool.factory" class="your.package.Factory"/>
 ```
 
 # 3. PoolListener
