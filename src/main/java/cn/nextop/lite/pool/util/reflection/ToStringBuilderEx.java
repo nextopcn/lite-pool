@@ -19,9 +19,13 @@ package cn.nextop.lite.pool.util.reflection;
 
 import cn.nextop.lite.pool.util.Objects;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
 import static cn.nextop.lite.pool.util.Objects.getFieldValue;
+import static cn.nextop.lite.pool.util.reflection.ToStringBuilderStyle.ARRAY_ED;
+import static cn.nextop.lite.pool.util.reflection.ToStringBuilderStyle.ARRAY_SEPARATOR;
+import static cn.nextop.lite.pool.util.reflection.ToStringBuilderStyle.ARRAY_ST;
 import static cn.nextop.lite.pool.util.reflection.ToStringBuilderStyle.NULL_TEXT;
 import static java.lang.reflect.AccessibleObject.setAccessible;
 import static java.lang.reflect.Modifier.isStatic;
@@ -46,15 +50,23 @@ public class ToStringBuilderEx extends ToStringBuilder {
     }
 
     protected void appendField(Class<?> clazz) {
-        if (clazz.isArray()) {
-            style.reflectionAppendArrayDetail(builder, object); return;
-        }
+        if (clazz.isArray()) { appendArray(this.builder, this.object); return; }
         Field[] fields = clazz.getDeclaredFields(); setAccessible(fields, true);
         for (Field field : fields) {
             if (!this.accept(field)) continue;
             String n = field.getName(); Object v = getFieldValue(field, object);
             append(n, v);
         }
+    }
+
+    protected void appendArray(StringBuilder b, Object v) {
+        b.append(ARRAY_ST);
+        for (int len = Array.getLength(v), i = 0; i < len; i++) {
+            Object item = Array.get(v, i); if (i > 0) b.append(ARRAY_SEPARATOR);
+            if (item == null) this.style.appendNull(b, null);
+            else this.style.appendInternal(b, null, item, true);
+        }
+        b.append(ARRAY_ED);
     }
 
     @Override

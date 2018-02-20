@@ -19,7 +19,6 @@ package cn.nextop.lite.pool.util.reflection;
 
 import cn.nextop.lite.pool.util.Objects;
 
-import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -51,38 +50,77 @@ public class ToStringBuilderStyle {
     protected static final String SIZE_TEXT_ST = "<size=";
 
     /**
-     * 
+     *
      */
-    static boolean isRegistered(Object v) {
-        Map<Object, Object> m = REGISTRY.get();
-        return m != null && m.containsKey(v);
+    public void appendSt(StringBuilder b, Object o) {
+        if (o == null) return;
+        appendClassName(b, o); appendContentSt(b);
     }
 
+    public void appendEd(StringBuilder b, Object o) {
+        final int i = b.length() - 1;
+        delete(b, i, FIELD_SEPARATOR);
+        appendContentEd(b); unregister(o);
+    }
+
+    protected void appendContentSt(StringBuilder b) {
+        b.append(CONTENT_ST);
+    }
+
+    protected void appendContentEd(StringBuilder b) {
+        b.append(CONTENT_ED);
+    }
+
+    protected void appendFieldSt(StringBuilder b, String f) {
+        if (f != null) b.append(f).append(ATTR_SEPARATOR);
+    }
+
+    protected void appendFieldEd(StringBuilder b, String f) {
+        b.append(FIELD_SEPARATOR);
+    }
+
+    protected void appendNull(StringBuilder builder, String field) {
+        builder.append(NULL_TEXT);
+    }
+
+    protected void appendClassName(StringBuilder b, Object object) {
+        if (object == null) return; register(object);
+        b.append(getShortClassName(object.getClass()));
+    }
+
+    protected void appendCycleObject(StringBuilder b, String f, Object v) {
+        Objects.identityToString(b, v);
+    }
+
+    protected void appendSummarySize(StringBuilder b, String f, int size) {
+        b.append(SIZE_TEXT_ST).append(size).append(SIZE_TEXT_ED);
+    }
+
+    /**
+     * 
+     */
     static void register(Object v) {
-        if (v == null) return;
-        Map<Object, Object> m = REGISTRY.get();
-        if (m == null) REGISTRY.set(new WeakHashMap<>());
-        REGISTRY.get().put(v, null);
+        if (v == null) return; WeakHashMap<Object, Object> m = REGISTRY.get();
+        if (m == null) REGISTRY.set((m = new WeakHashMap<>())); m.put(v, null);
     }
 
     static void unregister(Object v) {
-        if (v == null) return;
-        Map<Object, Object> m = REGISTRY.get();
-        if (m == null) return; m.remove(v);
-        if (m.isEmpty()) REGISTRY.remove();
+        if (v == null) return; WeakHashMap<Object, Object> m = REGISTRY.get();
+        if (m == null) return; m.remove(v); if (m.isEmpty()) REGISTRY.remove();
+    }
+
+    static boolean isRegistered(Object v) {
+        Map<Object, Object> m = REGISTRY.get(); return m != null && m.containsKey(v);
     }
 
     /**
      * 
      */
     protected void appendInternal(StringBuilder b, String f, Object v, boolean detail) {
-        if (isRegistered(v) &&
-                !(v instanceof Number || v instanceof Boolean || v instanceof Character)) {
-            appendCycleObject(b, f, v); return;
-        }
-
+        boolean r = v instanceof Number || v instanceof Boolean || v instanceof Character;
+        if (isRegistered(v) && !r) { appendCycleObject(b, f, v); return; }
+        //
         register(v);
-
         try {
             if (v instanceof int[]) {
                 if (detail) {
@@ -440,63 +478,5 @@ public class ToStringBuilderStyle {
         appendFieldEd(b, f);
     }
 
-    /**
-     *
-     */
-    protected void appendContentSt(StringBuilder b) {
-        b.append(CONTENT_ST);
-    }
-
-    protected void appendContentEd(StringBuilder b) {
-        b.append(CONTENT_ED);
-    }
-
-    public void appendSt(StringBuilder b, Object object) {
-        if (object == null) return;
-        appendClassName(b, object); appendContentSt(b);
-    }
-
-    public void appendEd(StringBuilder b, Object object) {
-        final int i = b.length() - 1;
-        delete(b, i, FIELD_SEPARATOR); appendContentEd(b);
-        unregister(object);
-    }
-
-    protected void appendFieldSt(StringBuilder b, String f) {
-        if (f != null) b.append(f).append(ATTR_SEPARATOR);
-    }
-
-    protected void appendFieldEd(StringBuilder b, String f) {
-        b.append(FIELD_SEPARATOR);
-    }
-
-    /**
-     *
-     */
-    protected void appendNull(StringBuilder builder, String field) {
-        builder.append(NULL_TEXT);
-    }
-
-    protected void appendClassName(StringBuilder b, Object object) {
-        if (object == null) return;
-        register(object); b.append(getShortClassName(object.getClass()));
-    }
-
-    protected void appendSummarySize(StringBuilder b, String f, int size) {
-        b.append(SIZE_TEXT_ST).append(size).append(SIZE_TEXT_ED);
-    }
-
-    protected void appendCycleObject(StringBuilder b, String f, Object v) {
-        Objects.identityToString(b, v);
-    }
-
-    protected void reflectionAppendArrayDetail(StringBuilder b, Object v) {
-        b.append(ARRAY_ST);
-        for (int len = Array.getLength(v), i = 0; i < len; i++) {
-            final Object item = Array.get(v, i); if (i > 0) b.append(ARRAY_SEPARATOR);
-            if (item == null) appendNull(b, null); else appendInternal(b, null, item, true);
-        }
-        b.append(ARRAY_ED);
-    }
 }
 
