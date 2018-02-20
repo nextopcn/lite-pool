@@ -22,7 +22,7 @@
 
     <groupId>cn.nextop</groupId>
     <artifactId>lite-pool</artifactId>
-    <version>1.0.0-RC1</version>
+    <version>1.0.0-RC2</version>
 
     <name>lite-pool</name>
     <description>A lite fast object pool written by java</description>
@@ -53,7 +53,7 @@
         <connection>scm:git:git@github.com:nextopcn/lite-pool.git</connection>
         <url>scm:git:git@github.com:nextopcn/lite-pool.git</url>
         <developerConnection>scm:git:git@github.com:nextopcn/lite-pool.git</developerConnection>
-        <tag>1.0.0</tag>
+        <tag>1.0.0-RC2</tag>
     </scm>
 
     <issueManagement>
@@ -66,7 +66,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <slf4j.api.version>1.7.25</slf4j.api.version>
-        <commons.lang3.version>3.4</commons.lang3.version>
     </properties>
 
     <dependencies>
@@ -74,11 +73,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.api.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons.lang3.version}</version>
         </dependency>
         <!-- test -->
         <dependency>

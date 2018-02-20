@@ -16,8 +16,8 @@
 
 package cn.nextop.lite.pool.util.concurrent.thread;
 
+import cn.nextop.lite.pool.util.Classes;
 import cn.nextop.lite.pool.util.Objects;
-import org.apache.commons.lang3.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -140,7 +140,7 @@ public final class XThreadFactory implements ThreadFactory {
 		if(stes.length <= depth) {
 			return getClass().getSimpleName();
 		} else {
-			return ClassUtils.getShortClassName(stes[depth].getClassName());
+			return Classes.getShortClassName(stes[depth].getClassName());
 		}
 	}
 	

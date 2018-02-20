@@ -16,23 +16,32 @@
 
 package cn.nextop.lite.pool.util;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
+import cn.nextop.lite.pool.util.reflection.ToStringBuilder;
+import cn.nextop.lite.pool.util.reflection.ToStringBuilderEx;
 
 /**
  * @author Jingqi Xu
  */
 public final class Strings {
 
+	public static final String EMPTY = "";
+
 	/**
 	 * 
 	 */
+	public static boolean isEmpty(CharSequence c) {
+		return c == null || c.length() == 0;
+	}
+
 	public static ToStringBuilder build(Object obj) {
-		return new ToStringBuilder(obj, SHORT_PREFIX_STYLE);
+		return new ToStringBuilder(obj);
 	}
 
 	public static String buildEx(final Object obj) {
-		return ToStringBuilder.reflectionToString(obj, SHORT_PREFIX_STYLE);
+		return ToStringBuilderEx.toString(obj);
+	}
+
+	public static void delete(StringBuilder builder, int idx, char ch) {
+		if (idx >= 0 && builder.charAt(idx) == ch) builder.deleteCharAt(idx);
 	}
 }

@@ -16,6 +16,12 @@
 
 package cn.nextop.lite.pool.util;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.System.identityHashCode;
+
 /**
  * @author Jingqi Xu
  */
@@ -29,4 +35,17 @@ public final class Objects {
 		return (T)obj;
 	}
 
+	public static List<Class<?>> getSuperClasses(Class<?> clazz) {
+		final List<Class<?>> r = new ArrayList<>();
+		do r.add(clazz); while ((clazz = clazz.getSuperclass()) != null); return r;
+	}
+
+	public static void identityToString(StringBuilder b, Object obj) {
+		java.util.Objects.requireNonNull(obj); String name = obj.getClass().getName();
+		b.append(name).append('@').append(Integer.toHexString(identityHashCode(obj)));
+	}
+
+	public static <T> T getFieldValue(Field f, Object o) {
+		try { return cast(f.get(o)); } catch (Throwable e) { throw new RuntimeException(e); }
+	}
 }
