@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.nextop.lite.pool.util.reflection;
+package cn.nextop.lite.pool.util.builder;
 
 import cn.nextop.lite.pool.util.Objects;
 
@@ -23,10 +23,10 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
 import static cn.nextop.lite.pool.util.Objects.getFieldValue;
-import static cn.nextop.lite.pool.util.reflection.ToStringBuilderStyle.ARRAY_ED;
-import static cn.nextop.lite.pool.util.reflection.ToStringBuilderStyle.ARRAY_SEPARATOR;
-import static cn.nextop.lite.pool.util.reflection.ToStringBuilderStyle.ARRAY_ST;
-import static cn.nextop.lite.pool.util.reflection.ToStringBuilderStyle.NULL_TEXT;
+import static cn.nextop.lite.pool.util.builder.ToStringBuilderStyle.ARRAY_ED;
+import static cn.nextop.lite.pool.util.builder.ToStringBuilderStyle.ARRAY_SEPARATOR;
+import static cn.nextop.lite.pool.util.builder.ToStringBuilderStyle.ARRAY_ST;
+import static cn.nextop.lite.pool.util.builder.ToStringBuilderStyle.NULL_TEXT;
 import static java.lang.reflect.AccessibleObject.setAccessible;
 import static java.lang.reflect.Modifier.isStatic;
 import static java.lang.reflect.Modifier.isTransient;

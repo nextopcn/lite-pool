@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.nextop.lite.pool.util.reflection;
+package cn.nextop.lite.pool.util.builder;
 
 import cn.nextop.lite.pool.util.Objects;
 

@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package cn.nextop.lite.pool.util.reflection;
+package cn.nextop.lite.pool.util.builder;
 
-import static cn.nextop.lite.pool.util.reflection.ToStringBuilderStyle.INSTANCE;
-import static cn.nextop.lite.pool.util.reflection.ToStringBuilderStyle.NULL_TEXT;
+import static cn.nextop.lite.pool.util.builder.ToStringBuilderStyle.INSTANCE;
+import static cn.nextop.lite.pool.util.builder.ToStringBuilderStyle.NULL_TEXT;
 
 /**
  * @author apache commons-lang3 team

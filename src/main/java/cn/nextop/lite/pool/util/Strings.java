@@ -16,8 +16,8 @@
 
 package cn.nextop.lite.pool.util;
 
-import cn.nextop.lite.pool.util.reflection.ToStringBuilder;
-import cn.nextop.lite.pool.util.reflection.ToStringBuilderEx;
+import cn.nextop.lite.pool.util.builder.ToStringBuilder;
+import cn.nextop.lite.pool.util.builder.ToStringBuilderEx;
 
 /**
  * @author Jingqi Xu
