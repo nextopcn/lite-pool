@@ -25,7 +25,7 @@ import static java.lang.System.identityHashCode;
 /**
  * @author Jingqi Xu
  */
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({"unchecked"})
 public final class Objects {
 
 	/**

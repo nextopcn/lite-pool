@@ -22,7 +22,6 @@ import java.util.Iterator;
 /**
  * @author Jingqi Xu
  */
-@SuppressWarnings("unchecked")
 public final class Iterators {
 	//
 	private static final Iterable<?> EMPTY = new IterableImpl<>(new IteratorImpl<>());
