@@ -36,7 +36,7 @@ maven-3.2.3+
     <dependency>
         <groupId>cn.nextop</groupId>
         <artifactId>lite-pool</artifactId>
-        <version>1.0.0-RC1</version>
+        <version>1.0.0-RC2</version>
     </dependency>
 ```
 
