@@ -90,7 +90,7 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 	protected long doStop(long timeout, TimeUnit unit) throws Exception {
 		timeout = Lifecyclet.stopQuietly(this.scheduler, timeout, unit);
 		timeout = Concurrents.terminateQuietly(this.executor, timeout, unit);
-		for(Slot<T> v : slots.values()) {del(v);dequeue(v);consume(v.get());}
+		for(Slot<T> v : slots.values()) { del(v); dequeue(v); consume(v.get()); }
 		return super.doStop(timeout, unit);
 	}
 	

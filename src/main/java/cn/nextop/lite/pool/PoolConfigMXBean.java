@@ -21,31 +21,18 @@ package cn.nextop.lite.pool;
  */
 public interface PoolConfigMXBean {
 
-    long getTti();
+    long getTti(); void setTti(long ms);
 
-    long getTtl();
+    long getTtl(); void setTtl(long ms);
 
-    int getMinimum();
+    int getMinimum(); void setMinimum(int ms);
 
-    int getMaximum();
+    int getMaximum(); void setMaximum(int ms);
 
-    long getTenancy();
+    long getTenancy(); void setTenancy(long ms);
 
-    long getTimeout();
+    long getTimeout(); void setTimeout(long ms);
 
-    boolean isVerbose();
+    boolean isVerbose(); void setVerbose(boolean v);
 
-    void setTti(long ms);
-
-    void setTtl(long ms);
-
-    void setMinimum(int ms);
-
-    void setMaximum(int ms);
-
-    void setTenancy(long ms);
-
-    void setTimeout(long ms);
-
-    void setVerbose(boolean v);
 }
