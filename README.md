@@ -186,7 +186,7 @@ public class YourPoolAllocator<T> extends AbstractAllocator<T> {
         // if uses thread local as L1 cache, thread allocator will try to acquire without delegating to 
         // parent allocator, but always delegate to parent to release. that requires your allocator is 
         // able to remove duplication on release.
-        //
+        //
         // if pool object is invalidated, your allocator should delete it and invoke super.consume(t).
         //
         // please refer to DefaultAllocator and AllocationQueue for more details.
