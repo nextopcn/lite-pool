@@ -22,7 +22,7 @@
 
     <groupId>cn.nextop</groupId>
     <artifactId>lite-pool</artifactId>
-    <version>1.0.0-RC2</version>
+    <version>1.0.0-RC3</version>
 
     <name>lite-pool</name>
     <description>A lite fast object pool written by java</description>
@@ -53,7 +53,7 @@
         <connection>scm:git:git@github.com:nextopcn/lite-pool.git</connection>
         <url>scm:git:git@github.com:nextopcn/lite-pool.git</url>
         <developerConnection>scm:git:git@github.com:nextopcn/lite-pool.git</developerConnection>
-        <tag>1.0.0-RC2</tag>
+        <tag>1.0.0-RC3</tag>
     </scm>
 
     <issueManagement>
@@ -65,7 +65,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <slf4j.api.version>1.7.25</slf4j.api.version>
+        <slf4j.api.version>1.8.0-beta2</slf4j.api.version>
     </properties>
 
     <dependencies>
@@ -84,13 +84,13 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.6.1</version>
+            <version>2.11.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.6.1</version>
+            <version>2.11.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -132,9 +132,57 @@
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-toolchains-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <id>toolchain</id>
+                                <goals>
+                                    <goal>toolchain</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <toolchains>
+                                <jdk>
+                                    <version>9</version>
+                                </jdk>
+                                <jdk>
+                                    <version>1.8</version>
+                                </jdk>
+                            </toolchains>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>3.7.0</version>
+                        <executions>
+                            <execution>
+                                <id>base-compile</id>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                                <configuration>
+                                    <excludes>
+                                        <exclude>module-info.java</exclude>
+                                    </excludes>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>default-compile</id>
+                                <configuration>
+                                    <jdkToolchain>
+                                        <version>[9, )</version>
+                                    </jdkToolchain>
+                                    <release>9</release>
+                                </configuration>
+                            </execution>
+                        </executions>
                         <configuration>
+                            <jdkToolchain>
+                                <version>[1.8, )</version>
+                            </jdkToolchain>
                             <source>${maven.compiler.source}</source>
                             <target>${maven.compiler.target}</target>
                             <encoding>${project.build.sourceEncoding}</encoding>
@@ -154,6 +202,12 @@
                         <version>3.0.0</version>
                         <configuration>
                             <encoding>${project.build.sourceEncoding}</encoding>
+                            <sourceFileExcludes>
+                                <sourceFileExclude>**/module-info.java</sourceFileExclude>
+                            </sourceFileExcludes>
+                            <jdkToolchain>
+                                <version>[9, )</version>
+                            </jdkToolchain>
                         </configuration>
                         <executions>
                             <execution>
@@ -225,9 +279,57 @@
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-toolchains-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <id>toolchain</id>
+                                <goals>
+                                    <goal>toolchain</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <toolchains>
+                                <jdk>
+                                    <version>9</version>
+                                </jdk>
+                                <jdk>
+                                    <version>1.8</version>
+                                </jdk>
+                            </toolchains>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>3.7.0</version>
+                        <executions>
+                            <execution>
+                                <id>base-compile</id>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                                <configuration>
+                                    <excludes>
+                                        <exclude>module-info.java</exclude>
+                                    </excludes>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>default-compile</id>
+                                <configuration>
+                                    <jdkToolchain>
+                                        <version>[9, )</version>
+                                    </jdkToolchain>
+                                    <release>9</release>
+                                </configuration>
+                            </execution>
+                        </executions>
                         <configuration>
+                            <jdkToolchain>
+                                <version>[1.8, )</version>
+                            </jdkToolchain>
                             <source>${maven.compiler.source}</source>
                             <target>${maven.compiler.target}</target>
                             <encoding>${project.build.sourceEncoding}</encoding>
@@ -247,6 +349,12 @@
                         <version>3.0.0</version>
                         <configuration>
                             <encoding>${project.build.sourceEncoding}</encoding>
+                            <sourceFileExcludes>
+                                <sourceFileExclude>**/module-info.java</sourceFileExclude>
+                            </sourceFileExcludes>
+                            <jdkToolchain>
+                                <version>[9, )</version>
+                            </jdkToolchain>
                         </configuration>
                         <executions>
                             <execution>
@@ -287,6 +395,64 @@
                             <Automatic-Module-Name>cn.nextop.lite.pool</Automatic-Module-Name>
                         </manifestEntries>
                     </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-toolchains-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>toolchain</id>
+                        <goals>
+                            <goal>toolchain</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <toolchains>
+                        <jdk>
+                            <version>9</version>
+                        </jdk>
+                        <jdk>
+                            <version>1.8</version>
+                        </jdk>
+                    </toolchains>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <executions>
+                    <execution>
+                        <id>base-compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>module-info.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-compile</id>
+                        <configuration>
+                            <jdkToolchain>
+                                <version>[9, )</version>
+                            </jdkToolchain>
+                            <release>9</release>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jdkToolchain>
+                        <version>[1.8, )</version>
+                    </jdkToolchain>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
             <plugin>

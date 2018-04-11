@@ -28,7 +28,7 @@ A lite fast object pool written by Java.
 
 ## 1.2. Requirements  
 jdk 1.8+  
-maven-3.2.3+  
+maven-3.3.1+(support [toolchains](https://maven.apache.org/guides/mini/guide-using-toolchains.html))  
 
 ## 1.3. Maven dependency
 
@@ -36,14 +36,14 @@ maven-3.2.3+
     <dependency>
         <groupId>cn.nextop</groupId>
         <artifactId>lite-pool</artifactId>
-        <version>1.0.0-RC2</version>
+        <version>1.0.0-RC3</version>
     </dependency>
 ```
 
 ## 1.4. Install from source code  
 
 ``` 
-    $mvn clean install -Dmaven.test.skip=true
+    $mvn clean install -Dmaven.test.skip=true --global-toolchains ./toolchains.xml
 ```  
 
 # 2. Usage  

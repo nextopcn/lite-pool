@@ -28,7 +28,7 @@ Lite-pool : 轻量快速的对象池
 
 ## 1.2. 安装前置条件  
 jdk 1.8+  
-maven-3.2.3+  
+maven-3.3.1+(支持 [toolchains](https://maven.apache.org/guides/mini/guide-using-toolchains.html))  
 
 ## 1.3. Maven依赖
 
@@ -36,14 +36,14 @@ maven-3.2.3+
     <dependency>
         <groupId>cn.nextop</groupId>
         <artifactId>lite-pool</artifactId>
-        <version>1.0.0-RC2</version>
+        <version>1.0.0-RC3</version>
     </dependency>
 ```
 
 ## 1.4. 安装源码到本地Maven仓库  
 
 ``` 
-    $mvn clean install -Dmaven.test.skip=true
+    $mvn clean install -Dmaven.test.skip=true --global-toolchains ./toolchains.xml
 ```  
 
 # 2. 用法  
