@@ -40,7 +40,7 @@ public class ThreadAllocator<T> extends AbstractAllocator<T> {
 	/**
 	 *
 	 */
-	@Override public int getEntireCount()  { return parent.getEntireCount();  }
+	@Override public int getEntireCount () { return parent.getEntireCount (); }
 	@Override public int getRestingCount() { return parent.getRestingCount(); }
 	@Override public int getWorkingCount() { return parent.getWorkingCount(); }
 	@Override public int getPendingCount() { return parent.getPendingCount(); }
