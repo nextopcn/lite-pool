@@ -65,10 +65,10 @@ public class DefaultAllocator<T> extends AbstractAllocator<T> {
 	/**
 	 *
 	 */
-	@Override public int getIdleCount() { return idle.get(); }
-	@Override public int getTotalCount() { return size.get(); }
+	@Override public int getEntireCount () { return size.get(); }
+	@Override public int getRestingCount() { return idle.get(); }
 	@Override public int getPendingCount() { return wait.get(); }
-	@Override public int getBusyCount() { return size.get() - idle.get(); }
+	@Override public int getWorkingCount() { return size.get() - idle.get(); }
 
 	/**
 	 * 

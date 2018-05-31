@@ -237,17 +237,15 @@ MXBean : `cn.nextop.lite.pool:type=PoolConfig`
 | Tti           | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
 | Ttl           | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
 | Verbose       | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
-| Maximum       | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
-| Maximum       | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
   
 MXBean : `cn.nextop.lite.pool:type=PoolAllocator`  
   
-| **属性**      | **可变更**      | **详解**                                                    |
-|---------------|----------------|-------------------------------------------------------------|
-| BusyCount     | 否             | pool中处于繁忙状态的对象数量, 等价于 `TotalCount - IdleCount`. |
-| IdleCount     | 否             | pool中处于空闲状态的对象数量.                                 |
-| TotalCount    | 否             | pool中总的对象数量.                                          |
-| PendingCount  | 否             | pool中处于等待的请求数量.                                     |
+| **属性**      | **可变更**      | **详解**                                                         |
+|---------------|----------------|-----------------------------------------------------------------|
+| EntireCount   | 否             | pool中全部的对象数量.                                             |
+| WorkingCount  | 否             | pool中处于工作状态的对象数量, 等价于 `EntireCount - RestingCount`. |
+| RestingCount  | 否             | pool中处于空闲状态的对象数量.                                      |
+| PendingCount  | 否             | pool中处于等待的请求数量.                                          |
   
 
 # 6. 基准测试

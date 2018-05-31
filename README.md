@@ -236,17 +236,15 @@ MXBean : `cn.nextop.lite.pool:type=PoolConfig`
 | Tti           | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
 | Ttl           | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
 | Verbose       | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
-| Maximum       | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
-| Maximum       | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
   
 MXBean : `cn.nextop.lite.pool:type=PoolAllocator`  
   
-| **Attribute** | **Modifiable** | **Details**                                                       |
-|---------------|----------------|-------------------------------------------------------------------|
-| BusyCount     | No             | pool's busy object count, equivalent to `TotalCount - IdleCount`. |
-| IdleCount     | No             | pool's idle object count.                                         |
-| TotalCount    | No             | pool's total object count.                                        |
-| PendingCount  | No             | pool's pending request count.                                     |
+| **Attribute** | **Modifiable** | **Details**                                                              |
+|---------------|----------------|--------------------------------------------------------------------------|
+| EntireCount   | No             | pool's entire object count.                                              |
+| WorkingCount  | No             | pool's working object count, equivalent to `EntireCount - RestingCount`. |
+| RestingCount  | No             | pool's resting object count.                                             |
+| PendingCount  | No             | pool's pending request count.                                            |
   
 
 # 6. Benchmark
