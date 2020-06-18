@@ -19,7 +19,6 @@ package cn.nextop.lite.pool.benchmark;
 import cn.nextop.lite.pool.BaseTest;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.CompilerControl;
 import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
@@ -50,7 +49,6 @@ public class CommonsPool2Benchmark extends BaseTest {
 
     @Benchmark
     @Threads(1)
-    @CompilerControl(CompilerControl.Mode.INLINE)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void commons_pool2_01_thread() throws Exception {
         TestObject object = pool.borrowObject();
@@ -59,7 +57,6 @@ public class CommonsPool2Benchmark extends BaseTest {
 
     @Benchmark
     @Threads(2)
-    @CompilerControl(CompilerControl.Mode.INLINE)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void commons_pool2_02_thread() throws Exception  {
         TestObject object = pool.borrowObject();
@@ -68,7 +65,6 @@ public class CommonsPool2Benchmark extends BaseTest {
 
     @Benchmark
     @Threads(5)
-    @CompilerControl(CompilerControl.Mode.INLINE)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void commons_pool2_05_thread() throws Exception  {
         TestObject object = pool.borrowObject();
@@ -77,7 +73,6 @@ public class CommonsPool2Benchmark extends BaseTest {
 
     @Benchmark
     @Threads(10)
-    @CompilerControl(CompilerControl.Mode.INLINE)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void commons_pool2_10_thread() throws Exception  {
         TestObject object = pool.borrowObject();
@@ -86,7 +81,6 @@ public class CommonsPool2Benchmark extends BaseTest {
 
     @Benchmark
     @Threads(20)
-    @CompilerControl(CompilerControl.Mode.INLINE)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void commons_pool2_20_thread() throws Exception  {
         TestObject object = pool.borrowObject();
@@ -95,7 +89,6 @@ public class CommonsPool2Benchmark extends BaseTest {
 
     @Benchmark
     @Threads(50)
-    @CompilerControl(CompilerControl.Mode.INLINE)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void commons_pool2_50_thread() throws Exception  {
         TestObject object = pool.borrowObject();

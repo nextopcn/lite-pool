@@ -19,7 +19,6 @@ package cn.nextop.lite.pool.benchmark;
 import cn.nextop.lite.pool.BaseTest;
 import cn.nextop.lite.pool.Pool;
 import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.CompilerControl;
 import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
@@ -51,7 +50,6 @@ public class LitePoolBenchmark extends BaseTest {
 
     @Benchmark
     @Threads(1)
-    @CompilerControl(CompilerControl.Mode.INLINE)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void lite_pool_01_thread() {
         TestObject object = pool.acquire();
@@ -60,7 +58,6 @@ public class LitePoolBenchmark extends BaseTest {
 
     @Benchmark
     @Threads(2)
-    @CompilerControl(CompilerControl.Mode.INLINE)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void lite_pool_02_thread() {
         TestObject object = pool.acquire();
@@ -69,7 +66,6 @@ public class LitePoolBenchmark extends BaseTest {
 
     @Benchmark
     @Threads(5)
-    @CompilerControl(CompilerControl.Mode.INLINE)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void lite_pool_05_thread() {
         TestObject object = pool.acquire();
@@ -78,7 +74,6 @@ public class LitePoolBenchmark extends BaseTest {
 
     @Benchmark
     @Threads(10)
-    @CompilerControl(CompilerControl.Mode.INLINE)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void lite_pool_10_thread() {
         TestObject object = pool.acquire();
@@ -87,7 +82,6 @@ public class LitePoolBenchmark extends BaseTest {
 
     @Benchmark
     @Threads(20)
-    @CompilerControl(CompilerControl.Mode.INLINE)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void lite_pool_20_thread() {
         TestObject object = pool.acquire();
@@ -96,7 +90,6 @@ public class LitePoolBenchmark extends BaseTest {
 
     @Benchmark
     @Threads(50)
-    @CompilerControl(CompilerControl.Mode.INLINE)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void lite_pool_50_thread() {
         TestObject object = pool.acquire();
