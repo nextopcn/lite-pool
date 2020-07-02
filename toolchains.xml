@@ -85,7 +85,7 @@ under the License.
             <vendor>oracle</vendor>
         </provides>
         <configuration>
-            <jdkHome>/home/travis/build/leonchen83/redis-replicator/openjdk11</jdkHome>
+            <jdkHome>/home/travis/build/nextopcn/lite-pool/openjdk11</jdkHome>
         </configuration>
     </toolchain>
 
