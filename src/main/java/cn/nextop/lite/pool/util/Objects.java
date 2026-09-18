@@ -22,6 +22,8 @@ import java.util.List;
 
 import static java.lang.System.identityHashCode;
 
+import cn.nextop.lite.pool.glossary.Required;
+
 /**
  * @author Jingqi Xu
  */
@@ -33,6 +35,10 @@ public final class Objects {
 	 */
 	public static <T> T cast(Object obj) {
 		return (T)obj;
+	}
+	
+	public static final <T> T requireNonNull(final @Required T obj) {
+		if(obj == null) throw new NullPointerException(); return obj;
 	}
 
 	public static List<Class<?>> getSuperClasses(Class<?> clazz) {

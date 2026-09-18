@@ -24,26 +24,26 @@ import static cn.nextop.lite.pool.util.builder.ToStringBuilderStyle.NULL_TEXT;
  * @author apache commons-lang3 team
  */
 public class ToStringBuilder {
-    //
-    protected final Object object;
-    protected final StringBuilder builder;
-    protected final ToStringBuilderStyle style = INSTANCE;
+	//
+	protected final Object object;
+	protected final StringBuilder builder;
+	protected final ToStringBuilderStyle style = INSTANCE;
 
-    /**
-     *
-     */
-    public ToStringBuilder(Object object) {
-        this.object = object;
-        this.builder = new StringBuilder(512);
-        this.style.appendSt(this.builder, object);
-    }
+	/**
+	 *
+	 */
+	public ToStringBuilder(Object object) {
+		this.object = object;
+		this.builder = new StringBuilder(512);
+		this.style.appendSt(this.builder, object);
+	}
 
-    /**
-     *
-     */
-    public ToStringBuilder append(char value) {
-        style.append(builder, null, value); return this;
-    }
+	/**
+	 *
+	 */
+	public ToStringBuilder append(char value) {
+		style.append(builder, null, value); return this;
+	}
 
     public ToStringBuilder append(float value) {
         style.append(builder, null, value); return this;

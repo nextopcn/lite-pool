@@ -27,8 +27,8 @@
 Lite-pool : 轻量快速的对象池  
 
 ## 1.2. 安装前置条件  
-jdk 1.8+  
-maven-3.3.1+(支持 [toolchains](https://maven.apache.org/guides/mini/guide-using-toolchains.html))  
+jdk 25+ 
+maven-3.8.0+
 
 ## 1.3. Maven依赖
 
@@ -36,36 +36,35 @@ maven-3.3.1+(支持 [toolchains](https://maven.apache.org/guides/mini/guide-usin
     <dependency>
         <groupId>cn.nextop</groupId>
         <artifactId>lite-pool</artifactId>
-        <version>1.0.0-RC3</version>
+        <version>1.1.0</version>
     </dependency>
 ```
 
 ## 1.4. 安装源码到本地Maven仓库  
 
 ``` 
-    $mvn clean install -Dmaven.test.skip=true --global-toolchains ./toolchains.xml
+    $mvn clean install -Dmaven.test.skip=true
 ```  
 
 # 2. 用法  
 ## 2.1. PoolBuilder  
 
-| **配置项** | **默认值**          |  **详解**                                                                          |
-| ---------- | ------------------ | -----------------------------------------------------------------------------------|
-| minimum    | 0                  |  pool中所维持的最小对象数量                                                          |
-| maximum    | 16                 |  pool中所维持的最大对象数量                                                          |
-| tti        | 15 分钟            |  pool中对象的最大空闲时间, 可选项(0表示不过期), 单位: ms                              |
-| ttl        | 60 分钟            |  pool中对象的最大生存时间, 可选项(0表示不过期), 单位: ms                              |
-| tenancy    | 1  分钟            |  对象泄露检测的超时时间, 可选项(0表示不过期), 单位: ms, (**必须** >= `interval`)       |
-| timeout    | 8  秒              |  默认的请求超时时间, 单位: ms                                                        |
-| interval   | 15 秒              |  默认的定时检测任务时间间隔, 单位: ms                                                 |
-| local      | true               |  是否应用 `ThreadAllocator` 作为 L1 缓存                                             |
-| verbose    | false              |  是否打印日志                                                                       |
-| fifo       | false              |  对象池分配策略, 设置为`false`有更好的性能                                            |
-| allocator  | DefaultAllocator   |  对象池分配器, 继承 `AbstractAllocator`可以定制自己的对象池分配器                     |
-| supplier   |                    |  创建pool对象的回调方法, 必选项                                                      |
-| consumer   |                    |  销毁pool对象的回调方法, 可选项                                                      |
-| validator  |                    |  验证pool对象的回调方法, 可选项                                                      |
-| validation | PULSE              |  验证pool对象的的前置条件, 例如:`new PoolValidation((byte)(PULSE\|ACQUIRE\|RELEASE))`|  
+| **配置项** | **默认值**          | **详解**                                                                   |
+| ---------- | ------------------ |--------------------------------------------------------------------------|
+| minimum    | 0                  | pool中所维持的最小对象数量                                                          |
+| maximum    | 16                 | pool中所维持的最大对象数量                                                          |
+| tti        | 15 分钟            | pool中对象的最大空闲时间, 可选项(0表示不过期), 单位: ms                                      |
+| ttl        | 60 分钟            | pool中对象的最大生存时间, 可选项(0表示不过期), 单位: ms                                      |
+| tenancy    | 1  分钟            | 对象泄露检测的超时时间, 可选项(0表示不过期), 单位: ms, (**必须** >= `interval`)                 |
+| timeout    | 8  秒              | 默认的请求超时时间, 单位: ms                                                        |
+| interval   | 15 秒              | 默认的定时检测任务时间间隔, 单位: ms                                                    |
+| verbose    | false              | 是否打印日志                                                                   |
+| fifo       | false              | 对象池分配策略, 设置为`false`有更好的性能                                                |
+| allocator  | DefaultAllocator   | 对象池分配器, 继承 `AbstractAllocator`可以定制自己的对象池分配器                              |
+| supplier   |                    | 创建pool对象的回调方法, 必选项                                                       |
+| consumer   |                    | 销毁pool对象的回调方法, 可选项                                                       |
+| validator  |                    | 验证pool对象的回调方法, 可选项                                                       |
+| validation | PULSE              | 验证pool对象的的前置条件, 例如:`new PoolValidation((byte)(PULSE\|ACQUIRE\|RELEASE))` |  
   
 
 ## 2.2. 单独使用  
@@ -75,7 +74,6 @@ maven-3.3.1+(支持 [toolchains](https://maven.apache.org/guides/mini/guide-usin
     }
     
     Pool<YourPoolObject> pool = new PoolBuilder<YourPoolObject>()
-                    .local(true) // 使用ThreadAllocator作为L1缓存
                     .supplier(() -> new YourPoolObject())
                     .interval(interval)
                     .minimum(minimum)
@@ -153,21 +151,8 @@ Spring配置:
                     .supplier(() -> new YourPoolObject())
                     ...
                     .build("object pool");
-    pool.addListener(event -> {
-        YourPoolObject item = event.getItem();
-        switch (event.getType()) {
-            case ACQUIRE:
-                // 你的业务代码
-                break;
-            case RELEASE:
-                // 你的业务代码
-                break;
-            case LEAKAGE:
-                // 你的业务代码
-                break;
-            default:
-                throw new AssertionError();
-        }
+    pool.addListener(item -> {
+          // handle leakage item
     });
     pool.start();
 ```
@@ -236,7 +221,6 @@ MXBean : `cn.nextop.lite.pool:type=PoolConfig`
 | Timeout       | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
 | Tti           | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
 | Ttl           | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
-| Verbose       | 是             | 参照 [2.1. PoolBuilder](#21-poolbuilder) |
   
 MXBean : `cn.nextop.lite.pool:type=PoolAllocator`  
   

@@ -17,40 +17,43 @@
 package cn.nextop.lite.pool.support;
 
 import cn.nextop.lite.pool.glossary.Lifecycle;
+import cn.nextop.lite.pool.glossary.Required;
 
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 
  * @author Jingqi Xu
  * @param <T>
  */
 public interface PoolAllocator<T> extends Lifecycle, PoolAllocatorMXBean {
 
 	/**
-	 *
+	 * 
 	 */
-	Slot<T> release(T t);
-
+	Slot<T> release(@Required T t);
+	
+	enum Phase { PULSE, ACQUIRE, RELEASE }
+	
 	Slot<T> acquire(long timeout, TimeUnit unit);
-
+	
+	boolean addListener(@Required PoolAllocatorListener<T> listener);
+	
+	boolean delListener(@Required PoolAllocatorListener<T> listener);
+	
 	/**
-	 *
-	 */
-	boolean addListener(PoolAllocatorListener<T> listener);
-
-	boolean delListener(PoolAllocatorListener<T> listener);
-
-	/**
-	 *
+	 * 
 	 */
 	interface Slot<T> {
-
-		boolean isBusy(); boolean isIdle(); boolean isAlive(); boolean isValid();
-
-		boolean isExpired(); boolean isRetired(); boolean isLeaked(long tenancy);
-
-		T get(); long getId(); <V> V getCookie(Object key); Object setCookie(Object k, Object v);
-
-		void touch(); boolean acquire(); boolean release(); boolean abandon(); boolean destroy();
+		
+		boolean isBusy(); boolean isExpired(); /*** time to idle ***/
+		
+		boolean isIdle(); boolean isRetired(); /*** time to live ***/
+		
+		boolean isAlive(); boolean isLeaked(long tenancy); boolean isValid(@Required Phase phase);
+		
+		T get(); Long getId(); <V> V getCookie(Object key); Object setCookie(Object k , Object v);
+		
+		void touch (); boolean acquire(); boolean release(); boolean destroy(); boolean abandon();
 	}
 }

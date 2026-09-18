@@ -16,10 +16,12 @@
 
 package cn.nextop.lite.pool;
 
+import cn.nextop.lite.pool.glossary.Required;
+
 /**
  * @author Jingqi Xu
  */
 public interface PoolListener<T> {
 	
-	void onEvent(PoolEvent<T> event);
+	void onLeakage(@Required T t);
 }

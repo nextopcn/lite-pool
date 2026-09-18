@@ -21,12 +21,12 @@ package cn.nextop.lite.pool.support;
  */
 public interface PoolAllocatorMXBean {
 
-    int getEntireCount();
+	int getEntireCount();
 
-    int getRestingCount();
+	int getRestingCount();
 
-    int getWorkingCount();
+	int getWorkingCount();
 
-    int getPendingCount();
+	int getPendingCount();
 
 }

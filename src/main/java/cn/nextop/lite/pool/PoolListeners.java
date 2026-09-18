@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import cn.nextop.lite.pool.glossary.Required;
+
 /**
  * @author Jingqi Xu
  */
@@ -55,12 +57,12 @@ public class PoolListeners<T> implements PoolListener<T> {
 	 * 
 	 */
 	@Override
-	public void onEvent(PoolEvent<T> event) {
+	public void onLeakage(@Required T item) {
 		for(final PoolListener<T> listener : this.listeners) {
 			try {
-				listener.onEvent(event);
+				listener.onLeakage(item);
 			} catch(Throwable t) {
-				LOGGER.error("[" + name + "]failed to notify: " + event, t);
+				LOGGER.error("[" + name + "]failed to notify: " + item, t);
 			}
 		}
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2018 Nextop Co.,Ltd
+ * Copyright 2016-2017 Leon Chen
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,21 @@
  * limitations under the License.
  */
 
-package cn.nextop.lite.pool.util.scheduler;
+package cn.nextop.lite.pool.util;
+
+import cn.nextop.lite.pool.glossary.Nullable;
 
 /**
- * @author Jingqi Xu
+ * @author Baoyi Chen
  */
-public interface SchedulingListener {
+public class Exceptions {
 	
-	/**
-	 * 
-	 */
-	void onSchedule(Job<?> job);
+	public static final Throwable getRootCause(final Throwable t) {
+		if(t == null) return null; var root = root(t); return root;
+	}
 	
-	void onUnschedule(Job<?> job);
-	
-	/**
-	 * 
-	 */
-	void missFire(Job<?> job);
-	
-	void preFire(Job<?> job);
-	
-	void postFire(Job<?> job, Throwable uncaught);
+	private static Throwable root ( final @Nullable Throwable t ) {
+		if(t == null) return null; var x = t; var y = t.getCause();
+		while(y != null) { x = (y); y = y.getCause(); } return (x);
+	}
 }

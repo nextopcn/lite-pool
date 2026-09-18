@@ -36,18 +36,18 @@ import static java.lang.reflect.Modifier.isTransient;
  */
 public class ToStringBuilderEx extends ToStringBuilder {
 
-    public <T> ToStringBuilderEx(T obj) {
-        super(obj);
-    }
+	public <T> ToStringBuilderEx(T obj) {
+		super(obj);
+	}
 
-    public static String toString(Object object) {
-        return new ToStringBuilderEx(object).toString();
-    }
+	public static String toString(Object object) {
+		return new ToStringBuilderEx(object).toString();
+	}
 
-    protected boolean accept(Field field) {
-        int modifiers = field.getModifiers(),idx = field.getName().indexOf('$');
-        return ((idx == -1) && !isStatic(modifiers) && !isTransient(modifiers));
-    }
+	protected boolean accept(Field field) {
+		int modifiers = field.getModifiers(),idx = field.getName().indexOf('$');
+		return ((idx == -1) && !isStatic(modifiers) && !isTransient(modifiers));
+	}
 
     protected void appendField(Class<?> clazz) {
         if (clazz.isArray()) { appendArray(this.builder, this.object); return; }

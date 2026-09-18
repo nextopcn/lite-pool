@@ -180,7 +180,7 @@ public final class XThreadFactory implements ThreadFactory {
 	 */
 	private static final class XHandler implements UncaughtExceptionHandler {
 		public void uncaughtException(final Thread t, final Throwable tx) {
-			LOGGER.error("unhandled exception: " + t.getId() + "@" + t.getName(), tx);
+			LOGGER.error("unhandled exception: " + t.threadId() + "@" + t.getName(), tx);
 		}
 	}
 	

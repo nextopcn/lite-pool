@@ -27,8 +27,8 @@ Table of Contents([中文说明](./README.zh_CN.md))
 A lite fast object pool written by Java.  
 
 ## 1.2. Requirements  
-jdk 1.8+  
-maven-3.3.1+(support [toolchains](https://maven.apache.org/guides/mini/guide-using-toolchains.html))  
+jdk 25+  
+maven-3.8.0+
 
 ## 1.3. Maven dependency
 
@@ -36,14 +36,14 @@ maven-3.3.1+(support [toolchains](https://maven.apache.org/guides/mini/guide-usi
     <dependency>
         <groupId>cn.nextop</groupId>
         <artifactId>lite-pool</artifactId>
-        <version>1.0.0-RC3</version>
+        <version>1.1.0</version>
     </dependency>
 ```
 
 ## 1.4. Install from source code  
 
 ``` 
-    $mvn clean install -Dmaven.test.skip=true --global-toolchains ./toolchains.xml
+    $mvn clean install -Dmaven.test.skip=true
 ```  
 
 # 2. Usage  
@@ -58,11 +58,10 @@ maven-3.3.1+(support [toolchains](https://maven.apache.org/guides/mini/guide-usi
 | tenancy    | 1  minutes        | optional leak detection timeout, unit ms, (**MUST** >= `interval`)                       |
 | timeout    | 8  seconds        | default acquire timeout, unit ms                                                         |
 | interval   | 15 seconds        | default house keeping scheduler's interval, unit ms                                      |
-| local      | true              | use `ThreadAllocator` as L1 cache or not                                                 |
 | verbose    | false             | print log or not                                                                         |
 | fifo       | false             | pool allocation policy, `false` has better performance                                   |
 | allocator  | DefaultAllocator  | pool allocator, can be customized by extending `AbstractAllocator`                       |
-| supplier   |                   | required callback for creating pool objects                                              |
+| supplier   |                   | required callback for creating pool objects                                              |
 | consumer   |                   | optional callback for destroying pool objects                                            |
 | validator  |                   | optional callback for validating pool objects                                            |
 | validation | PULSE             | precondition for `validator`, e.g : `new PoolValidation((byte)(PULSE\|ACQUIRE\|RELEASE))`|
@@ -75,7 +74,6 @@ maven-3.3.1+(support [toolchains](https://maven.apache.org/guides/mini/guide-usi
     }
     
     Pool<YourPoolObject> pool = new PoolBuilder<YourPoolObject>()
-                    .local(true) // using thread local
                     .supplier(() -> new YourPoolObject())
                     .interval(interval)
                     .minimum(minimum)
@@ -148,25 +146,11 @@ Spring configuration:
 
 ```java  
     Pool<YourPoolObject> pool = new PoolBuilder<YourPoolObject>()
-                    .local(true) // using thread local
                     .supplier(() -> new YourPoolObject())
                     ...
                     .build("object pool");
-    pool.addListener(event -> {
-        YourPoolObject item = event.getItem();
-        switch (event.getType()) {
-            case ACQUIRE:
-                // your code goes here
-                break;
-            case RELEASE:
-                // your code goes here
-                break;
-            case LEAKAGE:
-                // your code goes here
-                break;
-            default:
-                throw new AssertionError();
-        }
+    pool.addListener(item -> {
+        // handle leakage item
     });
     pool.start();
 ```
@@ -235,7 +219,6 @@ MXBean : `cn.nextop.lite.pool:type=PoolConfig`
 | Timeout       | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
 | Tti           | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
 | Ttl           | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
-| Verbose       | Yes            | see [2.1. PoolBuilder](#21-poolbuilder) |
   
 MXBean : `cn.nextop.lite.pool:type=PoolAllocator`  
   

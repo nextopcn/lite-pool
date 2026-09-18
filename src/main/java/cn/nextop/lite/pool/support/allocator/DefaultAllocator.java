@@ -16,207 +16,223 @@
 
 package cn.nextop.lite.pool.support.allocator;
 
-import cn.nextop.lite.pool.Pool;
-import cn.nextop.lite.pool.glossary.Lifecyclet;
-import cn.nextop.lite.pool.support.PoolAllocator;
-import cn.nextop.lite.pool.support.PoolAllocatorFactory;
-import cn.nextop.lite.pool.support.allocator.allocation.AllocationQueue;
-import cn.nextop.lite.pool.util.Concurrents;
-import cn.nextop.lite.pool.util.DateTimes;
-import cn.nextop.lite.pool.util.concurrent.executor.XExecutorService;
-import cn.nextop.lite.pool.util.scheduler.impl.executor.ExecutorJob;
-import cn.nextop.lite.pool.util.scheduler.impl.executor.ExecutorScheduler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static cn.nextop.lite.pool.PoolEvent.leakage;
 import static cn.nextop.lite.pool.support.allocator.AbstractAllocator.Identity.id;
 import static cn.nextop.lite.pool.util.Assertion.assertTrue;
-import static cn.nextop.lite.pool.util.concurrent.executor.XExecutors.create;
-import static cn.nextop.lite.pool.util.scheduler.impl.executor.ExecutorTrigger.fixDelay;
+import static cn.nextop.lite.pool.util.Concurrents.terminateQuietly;
+import static cn.nextop.lite.pool.util.Exceptions.getRootCause;
+import static cn.nextop.lite.pool.util.Objects.requireNonNull;
+import static cn.nextop.lite.pool.util.Strings.isEmpty;
 import static java.lang.Boolean.TRUE;
 import static java.lang.System.nanoTime;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
+import static org.slf4j.LoggerFactory.getLogger;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BooleanSupplier;
+
+import org.slf4j.Logger;
+
+import cn.nextop.lite.pool.Pool;
+import cn.nextop.lite.pool.PoolConfig;
+import cn.nextop.lite.pool.glossary.Required;
+import cn.nextop.lite.pool.support.PoolAllocator;
+import cn.nextop.lite.pool.support.PoolAllocatorFactory;
+import cn.nextop.lite.pool.util.AssertionException;
+import cn.nextop.lite.pool.util.concurrent.thread.XThreadFactory;
 
 /**
+ * 
  * @author Baoyi Chen
  * @param <T>
  */
 public class DefaultAllocator<T> extends AbstractAllocator<T> {
 	//
-	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultAllocator.class);
-	
-	//
-	protected static final String LEAKAGE = "$LEAKAGE";
-	
-	//
-	protected AllocationQueue<T> queue;
-	protected final XExecutorService executor;
-	protected final ExecutorScheduler scheduler;
-	protected final Map<Identity<T>, Slot<T>> slots;
+	protected final AllocationQueue<T> queue;
+	protected final ScheduledExecutorService scheduler;
+	protected final ConcurrentMap<Identity<T>, Slot<T>> slots;
 	protected final AtomicInteger size = new AtomicInteger(0);
 	protected final AtomicInteger idle = new AtomicInteger(0);
 	protected final AtomicInteger wait = new AtomicInteger(0);
-
+	
+	//
+	protected static final String LEAKAGE = "$LEAKAGE";/*** cookie ***/
+	protected static Logger LOGGER = getLogger(DefaultAllocator.class);
+	
 	/**
 	 *
 	 */
-	@Override public int getEntireCount () { return size.get(); }
-	@Override public int getRestingCount() { return idle.get(); }
-	@Override public int getPendingCount() { return wait.get(); }
-	@Override public int getWorkingCount() { return size.get() - idle.get(); }
-
+	@Override
+	public int getEntireCount () { return size.get(); }
+	@Override
+	public int getRestingCount() { return idle.get(); }
+	@Override
+	public int getPendingCount() { return wait.get(); }
+	@Override
+	public int getWorkingCount() { return size.get() - idle.get(); }
+	
 	/**
 	 * 
 	 */
-	public DefaultAllocator(Pool<T> pool, String name) {
-		super(pool, name); executor = create(name + ".executor", 1);
-		slots = new ConcurrentHashMap<>(getConfig().getMaximum() << 2);
-		start(scheduler = new ExecutorScheduler(name + ".scheduler", 1));
+	public DefaultAllocator(String name , Pool<T> pool) {
+		super( name , pool ); this.queue = new AllocationQueue<>(pool);
+		final XThreadFactory f = new XThreadFactory(this.name , false);
+		this.slots = new ConcurrentHashMap<>(getConfig().getMaximum());
+		this.scheduler = Executors.newSingleThreadScheduledExecutor(f);
 	}
-
-	@Override
-	protected void doStart() throws Exception {
-		super.doStart(); this.queue = new AllocationQueue<>(this.pool);
-		scheduler.schedule(new ExecutorJob(name + ".pulse", this::pulse,
-		fixDelay(0L, getConfig().getInterval(), TimeUnit.MILLISECONDS)));
+	
+	@Override protected void doStart() throws Exception {
+		super.doStart(); final PoolConfig<T> config = this.getConfig();
+		var i = config.getInterval(); var unit = TimeUnit.MILLISECONDS;
+		this.scheduler.scheduleWithFixedDelay(this::pulse, i, i, unit);
 	}
 	
 	@Override
-	protected long doStop(long timeout, TimeUnit unit) throws Exception {
-		timeout = Lifecyclet.stopQuietly(this.scheduler, timeout, unit);
-		timeout = Concurrents.terminateQuietly(this.executor, timeout, unit);
-		for(Slot<T> v : slots.values()) { del(v); dequeue(v); consume(v.get()); }
-		return super.doStop(timeout, unit);
+	protected long doStop(long t , final TimeUnit u) throws Exception {
+		for(Slot<T> slot : this.slots.values()) { this.dispose(slot); }
+		return super.doStop(terminateQuietly(this.scheduler, t, u), u);
 	}
 	
 	/**
-	 *
-	 */
-	@Override
-	protected Slot<T> doRelease(T item) {
-		//
-		final Identity<T> id = id(item);
-		final Slot<T> r = slots.get(id); if(r == null) { return null; }
-		
-		//
-		r.setCookie(LEAKAGE, Boolean.FALSE);
-		if(isReleasable(r)) { if(r.release()){ enqueue(r); return r; }}
-		else if(r.abandon() && del(r)) { consume(r.get()); expand(1); }
-		return null;
-	}
-	
-	@Override
-	protected Slot<T> doAcquire(long timeout, TimeUnit unit) {
-		this.wait.incrementAndGet();
-		try {
-			expand(1);
-			long n = nanoTime(), t = unit.toNanos(timeout), i = 200L;
-			for ( ; t >= 0L; t -= (nanoTime() - n), n = nanoTime()) {
-				final Slot<T> v = dequeue(Math.min(t, i), TimeUnit.NANOSECONDS);
-				if (v == null) continue; /* timeout */
-				else if (isAcquirable(v)) { if(v.acquire()) return v; }
-				else if (v.destroy() && del(v)) { consume(v.get()); expand(1); }
-			}
-			return null;
-		} catch (InterruptedException t) { Thread.currentThread().interrupt(); }
-		finally { assertTrue((this.wait.decrementAndGet() >= 0)); } return null;
-	}
-	
-	/**
-	 *
-	 */
-	protected boolean isExpandable() {
-		final int min = getConfig().getMinimum();
-		final int max = getConfig().getMaximum();
-		if (this.size.get() >= max) return false;
-		return (this.idle.get() < min || this.wait.get() > this.size.get());
-	}
-	
-	protected int shrink() {
-		int r = getConfig().getMinimum();
-		for (Slot<T> v : this.slots.values()) {
-			if(isPulsable(v)) continue;
-			if(v.destroy() && del(v)) { dequeue(v); consume(v.get()); r++; }
-		}
-		return r;
-	}
-	
-	protected void expand(int n) {
-		for(int i = 0; i < n; i++) {
-			if (isExpandable()) this.executor.execute(() -> {
-				try {
-					if(!isExpandable()) return; final T t = supply();
-					Slot<T> slot = wrap(t); add(slot); enqueue(slot);
-				} catch (Throwable root) {
-					LOGGER.error("[" + name + "]failed to expand pool", root);
-				}
-			});
-		}
-	}
-	
-	/**
-	 *
+	 * 
 	 */
 	protected void pulse() {
 		//
-		final long mark = System.nanoTime();
-		final boolean verbose = getConfig().isVerbose();
-		try {
-			expand(shrink());
-		} catch (Throwable root) {
-			LOGGER.error("[" + name + "]failed to pulse pool", root);
-		}
-
-		// Leak?
+		final int min = getConfig().getMinimum();
 		final long tenancy = getConfig().getTenancy();
-		if(tenancy > 0) for(Slot<T> v : this.slots.values()) {
-			if(!v.isLeaked(tenancy)) continue;
-			if((TRUE == v.setCookie(LEAKAGE, TRUE))) continue;
-			if(verbose) LOGGER.warn("[{}]leak slot: {}", name, v);
-			listeners.onLeakage(v); pool.notify(leakage(v.get()));
+		final boolean verbose = this.pool.isVerbose();
+		try { shrink(); expand(min); } catch(Throwable cause) {
+			LOGGER.warn("[{}]failed to pulse", this.name, cause);
+		}
+		
+		// Leak?
+		if (tenancy > 0) for (Slot <T> v : this.slots.values()) {
+			if (!v.isLeaked(tenancy)) /*** nop ***/ { continue; }
+			if (TRUE == v.setCookie(LEAKAGE, TRUE)) { continue; }
+			LOGGER.warn("[{}]leak: {}", name, v); /** LEAKAGE **/
+			listeners.onLeakage (v); /** @see PoolAllocatorListener **/
 		}
 		
 		//
-		if (!verbose) { return; } final long et = nanoTime() - mark;
-		final int v1 = size.get(), v2 = idle.get(), v3 = wait.get();
-		final Object[] args = new Object[] {this.name, v1, v2, v3, DateTimes.toMillis(et)};
-		LOGGER.info("[{}]pulse, total: {}, idle: {}, wait: {}, elapsed time: {} ms", args);
+		int v1 = this.size.get(), max = getConfig().getMaximum();
+		if(v1 > max) { LOGGER.warn("[{}]overload: {}", name, v1); }
+		if(!verbose) return; int v2 = idle.get() , v3 = wait.get();
+		final String p = "[{}]pulse, total: {}, idle: {}, wait: {}";
+		var args = new Object[]{ name , v1, v2, v3 }; LOGGER.info(p , args);
 	}
 	
 	/**
 	 * 
 	 */
-	protected boolean add(final Slot<T> v) {
-		boolean r = slots.put(id(v.get()), v) == null; if (r) size.incrementAndGet(); return r;
+	@Override
+	protected Slot<T> doRelease(@Required T item) {
+		Slot<T> r = this.slots.get(id(item)); if(r == null) { return null; }
+		if (isReleasable(r)) { if(r.release()) { enqueue(r); return (r); } }
+		if (retire(r, r::abandon)) { this.consume(r.get()); } return (null);
 	}
 	
-	protected boolean del(final Slot<T> v) {
-		boolean r = slots.remove(id(v.get())) == v; if(r) { size.decrementAndGet(); } return r;
+	@Override
+	protected Slot <T> doAcquire( long timeout , @Required TimeUnit unit ) {
+		try {
+			this.wait.incrementAndGet(); if (this.isExpandable()) expand(1);
+			long now = System.nanoTime(); long nano = unit.toNanos(timeout);
+			for(; nano >= 0; nano -= (nanoTime() - now), now = nanoTime()) {
+				var r = dequeue(nano, NANOSECONDS); if (r == null) continue;
+				if (this.isAcquirable(r)) { if (r.acquire()) { return r; } }
+				if (retire(r , r::destroy)) { consume(r.get()); expand(1); }
+			}
+			return null;
+		} catch(InterruptedException interrupted) {
+			Thread.currentThread().interrupt(); /* cancelled */ return null;
+		} finally {
+			var waits = this.wait.decrementAndGet(); assertTrue(waits >= 0);
+		}
 	}
 	
-	protected boolean enqueue(Slot<T> slot) {
-		final boolean r = this.queue.offer(slot); if (r) this.idle.incrementAndGet(); return r;
+	/**
+	 * 
+	 */
+	protected int shrink() {
+		int n = 0; for(final var v : this.slots.values()) {
+			try {
+				if(!v.isIdle() || !this.dequeue(v)) /* idle */ { continue; }
+				if(this.isPulsable(v)) /* valid */ { enqueue(v); continue; }
+				if(this.retire(v, v::destroy)) { n += 1; consume(v.get()); }
+			} catch(Throwable cause) {
+				LOGGER.warn("[{}]failed to pulse: {}", this.name, v, cause);
+				if(this.retire(v, v::destroy)) { n += 1; consume(v.get()); }
+			}
+		}
+		return n;
 	}
 	
-	protected boolean dequeue(Slot<T> slot) {
+	protected void expand(int n) {
+		for(; n > 0; n -= 1) this.scheduler.execute(() -> {
+			try {
+				if(!isRunning() || !isExpandable()) return;
+				final var slot = supply(); if(add(slot)) this.enqueue(slot);
+			} catch(Throwable error) {
+				var cause = getRootCause(error); var m = cause.getMessage();
+				if ((isEmpty(m) || (cause instanceof AssertionException))) {
+					LOGGER.warn("[{}]failed to expand" , this.name , cause);
+				} else {
+					LOGGER.warn("[{}]failed to expand, cause: {}", name, m);
+				}
+			}
+		});
+	}
+	
+	/**
+	 * 
+	 */
+	protected boolean isExpandable() {/*** @see also this.expand(int n) ***/
+		var c = getConfig(); if (size.get() >= c.getMaximum()) return false;
+		return this.idle.get() < Math.max(c.getMinimum() , this.wait.get());
+	}
+	
+	protected boolean retire(@Required Slot<T> slot, BooleanSupplier test) {
+		if(!test.getAsBoolean()) return false; final var r = this.del(slot);
+		if(r) { LOGGER.info("[{}]retire: {}" , name , slot); return true ; }
+		LOGGER.warn("[{}]failed to retire: {}", new Object[]{ name, slot });
+		return false;
+	}
+	
+	public static final class Factory<T> implements PoolAllocatorFactory<T> {
+		@Override public final PoolAllocator<T> create (final Pool<T> pool) {
+			return new DefaultAllocator<>(pool.getName() + ".allocator", pool);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	protected boolean add(final @Required Slot<T> v) {
+		requireNonNull(v); final var id = id(v.get());
+		var r = slots.putIfAbsent(id, v) == null; if (r) this.size.incrementAndGet(); return r;
+	}
+	
+	protected boolean del(final @Required Slot<T> v) {
+		requireNonNull(v); final var id = id(v.get());
+		var r = slots.remove(id, v); /* atomic */ if (r) this.size.decrementAndGet(); return r;
+	}
+	
+	protected void dispose(final @Required Slot<T> v) {
+		if (retire(v , v::destroy) || retire(v , v::abandon)) { dequeue(v); consume(v.get()); }
+	}
+	
+	protected boolean enqueue(final @Required Slot<T> slot) {
+		final boolean r = this.queue.offer (slot); if(r) this.idle.incrementAndGet(); return r;
+	}
+	
+	protected boolean dequeue(final @Required Slot<T> slot) {
 		final boolean r = this.queue.remove(slot); if(r) this.idle.decrementAndGet(); return r;
 	}
 	
-	protected Slot<T> dequeue(long t, TimeUnit unit) throws InterruptedException {
-		final Slot<T> r = queue.poll(t, unit); if (r != null) idle.decrementAndGet(); return r;
-	}
-
-	/**
-	 * 
-	 */
-	public static class Factory<T> implements PoolAllocatorFactory<T> {
-		@Override public final PoolAllocator<T> create(final Pool<T> v) {
-			String n = v.getName() + ".allocator.default"; return new DefaultAllocator<>(v, n);
-		}
+	protected Slot<T> dequeue(long t, final @Required TimeUnit u) throws InterruptedException {
+		Slot<T> r = this.queue.poll(t, u); if(r != null) this.idle.decrementAndGet(); return r;
 	}
 }

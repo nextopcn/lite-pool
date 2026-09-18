@@ -31,18 +31,18 @@ import static cn.nextop.lite.pool.util.Strings.delete;
  * @author apache commons-lang3 team
  */
 public class ToStringBuilderStyle {
-    //
-    public static final ToStringBuilderStyle INSTANCE = new ToStringBuilderStyle();
-    protected static final ThreadLocal<WeakHashMap<Object, Object>> REGISTRY = new ThreadLocal<>();
+	//
+	public static final ToStringBuilderStyle INSTANCE = new ToStringBuilderStyle();
+	protected static final ThreadLocal<WeakHashMap<Object, Object>> REGISTRY = new ThreadLocal<>();
 
-    protected static final char ARRAY_ST = '{';
-    protected static final char ARRAY_ED = '}';
-    protected static final char CONTENT_ST = '[';
-    protected static final char CONTENT_ED = ']';
-    protected static final char SUMMARY_ST = '<';
-    protected static final char SUMMARY_ED = '>';
-    protected static final char SIZE_TEXT_ED = '>';
-    protected static final char ATTR_SEPARATOR = '=';
+	protected static final char ARRAY_ST = '{';
+	protected static final char ARRAY_ED = '}';
+	protected static final char CONTENT_ST = '[';
+	protected static final char CONTENT_ED = ']';
+	protected static final char SUMMARY_ST = '<';
+	protected static final char SUMMARY_ED = '>';
+	protected static final char SIZE_TEXT_ED = '>';
+	protected static final char ATTR_SEPARATOR = '=';
     protected static final char FIELD_SEPARATOR = ',';
     protected static final char ARRAY_SEPARATOR = ',';
 

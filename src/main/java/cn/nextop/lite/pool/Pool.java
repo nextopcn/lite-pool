@@ -26,22 +26,22 @@ import java.util.concurrent.TimeUnit;
  * @author Baoyi Chen
  */
 public interface Pool<T> extends Named, Lifecycle {
-
+	
 	/**
-	 *
+	 * 
 	 */
+	boolean isVerbose();
+	
 	PoolConfig<T> getConfig();
-
+	
 	T acquire(); void release(T t);
-
+	
 	T acquire(long timeout, TimeUnit unit);
-
+	
 	/**
-	 *
+	 * 
 	 */
-	void notify(PoolEvent<T> event);
-
 	boolean addListener(PoolListener<T> listener);
-
+	
 	boolean delListener(PoolListener<T> listener);
 }
