@@ -1,5 +1,6 @@
 package cn.nextop.lite.pool;
 
+import static cn.nextop.lite.pool.support.PoolAllocator.Phase;
 import static java.util.concurrent.ThreadLocalRandom.current;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
@@ -12,8 +13,6 @@ import java.util.function.Supplier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.parallel.Execution;
-
-import static cn.nextop.lite.pool.support.PoolAllocator.Phase;
 
 /**
  * 

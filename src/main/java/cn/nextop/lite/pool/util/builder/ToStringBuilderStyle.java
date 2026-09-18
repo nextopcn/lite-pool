@@ -17,15 +17,15 @@
 
 package cn.nextop.lite.pool.util.builder;
 
-import cn.nextop.lite.pool.util.Objects;
+import static cn.nextop.lite.pool.util.Classes.getShortClassName;
+import static cn.nextop.lite.pool.util.Objects.cast;
+import static cn.nextop.lite.pool.util.Strings.delete;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import static cn.nextop.lite.pool.util.Classes.getShortClassName;
-import static cn.nextop.lite.pool.util.Objects.cast;
-import static cn.nextop.lite.pool.util.Strings.delete;
+import cn.nextop.lite.pool.util.Objects;
 
 /**
  * @author apache commons-lang3 team

@@ -16,12 +16,7 @@
 
 package cn.nextop.lite.pool.glossary;
 
-import cn.nextop.lite.pool.util.Concurrents;
-import cn.nextop.lite.pool.util.Strings;
-import cn.nextop.lite.pool.util.concurrent.RuntimeInterruptedException;
-import cn.nextop.lite.pool.util.concurrent.future.impl.XFutureEx;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static cn.nextop.lite.pool.util.Iterators.iterable;
 
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
@@ -29,7 +24,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static cn.nextop.lite.pool.util.Iterators.iterable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.nextop.lite.pool.util.Concurrents;
+import cn.nextop.lite.pool.util.Strings;
+import cn.nextop.lite.pool.util.concurrent.RuntimeInterruptedException;
+import cn.nextop.lite.pool.util.concurrent.future.impl.XFutureEx;
 
 /**
  * @author Jingqi Xu

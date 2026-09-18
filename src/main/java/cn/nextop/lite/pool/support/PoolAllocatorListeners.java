@@ -16,13 +16,13 @@
 
 package cn.nextop.lite.pool.support;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static cn.nextop.lite.pool.support.PoolAllocator.Slot;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static cn.nextop.lite.pool.support.PoolAllocator.Slot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Jingqi Xu

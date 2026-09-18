@@ -16,11 +16,11 @@
 
 package cn.nextop.lite.pool.util;
 
+import static java.lang.System.identityHashCode;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.System.identityHashCode;
 
 import cn.nextop.lite.pool.glossary.Required;
 

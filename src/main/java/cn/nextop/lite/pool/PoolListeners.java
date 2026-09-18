@@ -16,11 +16,11 @@
 
 package cn.nextop.lite.pool;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cn.nextop.lite.pool.glossary.Required;
 

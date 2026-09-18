@@ -16,11 +16,6 @@
 
 package cn.nextop.lite.pool.util.concurrent.executor;
 
-import cn.nextop.lite.pool.util.Strings;
-import cn.nextop.lite.pool.util.concurrent.thread.XThreadFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -30,6 +25,12 @@ import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.nextop.lite.pool.util.Strings;
+import cn.nextop.lite.pool.util.concurrent.thread.XThreadFactory;
 
 /**
  * @author Jingqi Xu

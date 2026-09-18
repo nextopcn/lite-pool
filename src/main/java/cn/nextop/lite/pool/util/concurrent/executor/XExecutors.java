@@ -16,12 +16,12 @@
 
 package cn.nextop.lite.pool.util.concurrent.executor;
 
-import cn.nextop.lite.pool.util.concurrent.thread.XThreadFactory;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+
+import cn.nextop.lite.pool.util.concurrent.thread.XThreadFactory;
 
 /**
  * @author Jingqi Xu

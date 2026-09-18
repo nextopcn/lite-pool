@@ -16,12 +16,12 @@
 
 package cn.nextop.lite.pool.util;
 
+import static cn.nextop.lite.pool.util.Strings.EMPTY;
+import static cn.nextop.lite.pool.util.Strings.isEmpty;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import static cn.nextop.lite.pool.util.Strings.EMPTY;
-import static cn.nextop.lite.pool.util.Strings.isEmpty;
 
 /**
  * @author Baoyi Chen

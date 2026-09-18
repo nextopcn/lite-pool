@@ -16,11 +16,6 @@
 
 package cn.nextop.lite.pool.util.concurrent.thread;
 
-import cn.nextop.lite.pool.util.Classes;
-import cn.nextop.lite.pool.util.Objects;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
@@ -31,6 +26,12 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.nextop.lite.pool.util.Classes;
+import cn.nextop.lite.pool.util.Objects;
 
 /**
  * @author Jingqi Xu

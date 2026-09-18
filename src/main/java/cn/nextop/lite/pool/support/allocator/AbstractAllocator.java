@@ -16,8 +16,8 @@
 
 package cn.nextop.lite.pool.support.allocator;
 
-import static cn.nextop.lite.pool.support.PoolAllocator.Phase.PULSE;
 import static cn.nextop.lite.pool.support.PoolAllocator.Phase.ACQUIRE;
+import static cn.nextop.lite.pool.support.PoolAllocator.Phase.PULSE;
 import static cn.nextop.lite.pool.support.PoolAllocator.Phase.RELEASE;
 import static cn.nextop.lite.pool.support.allocator.AbstractAllocator.Status.BUSY;
 import static cn.nextop.lite.pool.support.allocator.AbstractAllocator.Status.GONE;

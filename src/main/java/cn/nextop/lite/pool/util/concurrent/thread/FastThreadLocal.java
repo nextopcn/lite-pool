@@ -17,10 +17,10 @@
 package cn.nextop.lite.pool.util.concurrent.thread;
 
 
-import cn.nextop.lite.pool.util.Objects;
-
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import cn.nextop.lite.pool.util.Objects;
 
 /**
  * To take advantage of this thread-local, your thread must implement Aware.

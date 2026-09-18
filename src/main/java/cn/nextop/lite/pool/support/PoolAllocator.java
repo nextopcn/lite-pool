@@ -16,10 +16,10 @@
 
 package cn.nextop.lite.pool.support;
 
+import java.util.concurrent.TimeUnit;
+
 import cn.nextop.lite.pool.glossary.Lifecycle;
 import cn.nextop.lite.pool.glossary.Required;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * 

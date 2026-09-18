@@ -1,9 +1,9 @@
 package cn.nextop.lite.pool;
 
+import static cn.nextop.lite.pool.support.PoolAllocator.Slot;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static cn.nextop.lite.pool.support.PoolAllocator.Slot;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

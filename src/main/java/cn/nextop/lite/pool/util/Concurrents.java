@@ -16,10 +16,10 @@
 
 package cn.nextop.lite.pool.util;
 
+import static java.lang.Math.max;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import static java.lang.Math.max;
 
 /**
  * @author Jingqi Xu

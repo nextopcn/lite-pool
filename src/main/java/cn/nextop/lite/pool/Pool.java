@@ -17,10 +17,10 @@
 package cn.nextop.lite.pool;
 
 
+import java.util.concurrent.TimeUnit;
+
 import cn.nextop.lite.pool.glossary.Lifecycle;
 import cn.nextop.lite.pool.glossary.Named;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Baoyi Chen

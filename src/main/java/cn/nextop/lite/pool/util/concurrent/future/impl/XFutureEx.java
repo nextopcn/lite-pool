@@ -16,11 +16,11 @@
 
 package cn.nextop.lite.pool.util.concurrent.future.impl;
 
-import cn.nextop.lite.pool.util.concurrent.future.FutureEx;
-
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import cn.nextop.lite.pool.util.concurrent.future.FutureEx;
 
 /**
  * @author Jingqi Xu
