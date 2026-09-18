@@ -237,11 +237,10 @@ MXBean : `cn.nextop.lite.pool:type=PoolAllocator`
 测试环境 :  
 
 ```xml  
-    OS : Windows 7 Home(64bit)
-    CPU: Intel(R) Core(TM) i3-4710 CPU @ 3.70GHz  3.70GHz
-    RAM: 8.00 GB
-    JDK: java version "1.8.0_151"
-
+    OS : Mac OS Tahoe
+    CPU: Apple M5
+    RAM: 16.00 GB
+    JDK: java version "25"
 ```
 
 测试用例 :  
@@ -252,20 +251,25 @@ MXBean : `cn.nextop.lite.pool:type=PoolAllocator`
     TestObject object = pool.acquire();
     if (object != null) pool.release(object);
 ```
-  
-(单位: ops/ms)  
-  
-测试参数: 参照 [BaseTest.java](./src/test/java/cn/nextop/lite/pool/BaseTest.java)  
-  
-测试类: 参照 [LitePoolBenchmark.java](./src/test/java/cn/nextop/lite/pool/benchmark/LitePoolBenchmark.java) 和 [CommonsPool2Benchmark.java](./src/test/java/cn/nextop/lite/pool/benchmark/CommonsPool2Benchmark.java)  
-  
-运行 [Benchmark.java](./src/test/java/cn/nextop/lite/pool/benchmark/Benchmark.java)  
-  
-用`ThreadAllocator`做L1缓存的结果:  
-  
-<img src="./benchmark/benchmark-local-true.png" width="80%" height="80%">  
-  
-未用`ThreadAllocator`做L1缓存的结果:  
-  
-<img src="./benchmark/benchmark-local-false.png" width="80%" height="80%">  
-  
+
+```shell
+1 threads
+Benchmark                     Mode  Cnt     Score     Error   Units
+ObjectPoolBenchmark.commons  thrpt    5  5501.433 ± 324.616  ops/ms
+ObjectPoolBenchmark.custom   thrpt    5  7683.207 ± 206.491  ops/ms
+
+4 threads
+Benchmark                     Mode  Cnt     Score      Error   Units
+ObjectPoolBenchmark.commons  thrpt    5  2727.373 ±  212.528  ops/ms
+ObjectPoolBenchmark.custom   thrpt    5  3070.611 ± 1000.787  ops/ms
+
+8 threads
+Benchmark                     Mode  Cnt     Score     Error   Units
+ObjectPoolBenchmark.commons  thrpt    5  2746.126 ±  82.568  ops/ms
+ObjectPoolBenchmark.custom   thrpt    5  2666.685 ± 126.661  ops/ms
+
+16 threads
+Benchmark                     Mode  Cnt     Score     Error   Units
+ObjectPoolBenchmark.commons  thrpt    5  2273.295 ± 110.835  ops/ms
+ObjectPoolBenchmark.custom   thrpt    5  2643.193 ± 107.818  ops/ms
+```

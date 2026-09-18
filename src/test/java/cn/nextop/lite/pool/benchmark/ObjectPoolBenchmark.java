@@ -1,11 +1,10 @@
 package cn.nextop.lite.pool.benchmark;
 
+import static cn.nextop.lite.pool.util.Arrays.length;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
@@ -25,7 +24,6 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.annotations.Warmup;
-import org.openjdk.jmh.results.RunResult;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
@@ -52,6 +50,7 @@ import cn.nextop.lite.pool.support.allocator.DefaultAllocator;
 @Measurement(iterations = 5, time = 1, timeUnit = SECONDS)
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(MILLISECONDS)
+@Threads(16)
 public class ObjectPoolBenchmark {
 	
 	private ObjectPool<PoolObject2> customPool;
@@ -138,18 +137,14 @@ public class ObjectPoolBenchmark {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		int[] threadCounts = {1, 4, 8, 16};
-		
-		List<RunResult> allResults = new ArrayList<>();
-		
-		for (int threads : threadCounts) {
-			Options options = new OptionsBuilder()
-					.include(ObjectPoolBenchmark.class.getSimpleName())
-					.threads(threads)
-					.shouldDoGC(true)
-					.build();
-			
-			allResults.addAll(new Runner(options).run());
+		new Runner(options(ObjectPoolBenchmark.class)).run();
+	}
+	
+	protected static Options options(Class<?>... clazz) {
+		final OptionsBuilder r = new OptionsBuilder();
+		for (int i = 0 , n = length(clazz); i < n; i++) {
+			var x = clazz[i].getSimpleName(); r.include(x);
 		}
+		return r.shouldDoGC(true).build();
 	}
 }
