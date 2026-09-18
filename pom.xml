@@ -22,7 +22,7 @@
 
     <groupId>cn.nextop</groupId>
     <artifactId>lite-pool</artifactId>
-    <version>1.0.0-RC3</version>
+    <version>1.1.0</version>
 
     <name>lite-pool</name>
     <description>A lite fast object pool written by java</description>
@@ -53,7 +53,6 @@
         <connection>scm:git:git@github.com:nextopcn/lite-pool.git</connection>
         <url>scm:git:git@github.com:nextopcn/lite-pool.git</url>
         <developerConnection>scm:git:git@github.com:nextopcn/lite-pool.git</developerConnection>
-        <tag>1.1.0</tag>
     </scm>
 
     <issueManagement>
@@ -167,6 +166,86 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <version>3.5.0</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/**.java</include>
+                    </includes>
+                    <argLine>
+                        --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED
+                    </argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.12.0</version>
+                <configuration>
+                    <doclint>none</doclint>
+                    <source>${maven.compiler.source}</source>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <additionalOptions>
+                        <option>--add-modules</option>
+                        <option>jdk.incubator.vector</option>
+                        <option>--add-exports</option>
+                        <option>java.base/jdk.internal.misc=ALL-UNNAMED</option>
+                    </additionalOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.2.8</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <gpgArguments>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.4.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.9.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>true</autoPublish>
+                    <waitUntil>validated</waitUntil>
+                </configuration>
             </plugin>
         </plugins>
     </build>
