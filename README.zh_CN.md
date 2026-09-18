@@ -17,12 +17,7 @@
 
 
 # 1. Lite-pool  
-## 1.1. 简介  
-[![Build Status](https://travis-ci.org/nextopcn/lite-pool.svg?branch=master)](https://travis-ci.org/nextopcn/lite-pool)
-[![Coverage Status](https://coveralls.io/repos/github/nextopcn/lite-pool/badge.svg?branch=master)](https://coveralls.io/github/nextopcn/lite-pool?branch=master)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.nextop/lite-pool/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.nextop/lite-pool)
-[![Javadocs](http://www.javadoc.io/badge/cn.nextop/lite-pool.svg)](http://www.javadoc.io/doc/cn.nextop/lite-pool)
-[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/nextopcn/lite-pool/blob/master/LICENSE)  
+## 1.1. 简介
   
 Lite-pool : 轻量快速的对象池  
 
